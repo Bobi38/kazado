@@ -4,6 +4,10 @@ import fastifyHttpProxy from '@fastify/http-proxy';
 
 const fastify = Fastify({ logger: { level: 'warn' } });
 
+async function test(request:any, reply:any){
+  console.log("coucou je suis le middleware")
+}
+
 const start = async () => {
   try {
     await fastify.register(fastifyHttpProxy, {
@@ -11,15 +15,21 @@ const start = async () => {
       prefix: '/api/user',
       rewritePrefix: '/user',
     });
-    await fastify.register(fastifyHttpProxy, {
-      upstream: 'http://resa:9102',
-      prefix: '/api/resa',
-      rewritePrefix: '/resa',
-    });
-    await fastify.register(fastifyHttpProxy, {
-      upstream: 'http://resa:9103',
-      prefix: '/api/calendar',
-      rewritePrefix: '/calendar',
+    await fastify.register(async (securedContext) => {
+
+
+      securedContext.addHook('preHandler', test);
+
+      await securedContext.register(fastifyHttpProxy, {
+        upstream: 'http://resa:9102',
+        prefix: '/api/resa',
+        rewritePrefix: '/resa',
+      });
+      await securedContext.register(fastifyHttpProxy, {
+        upstream: 'http://calendar:9103',
+        prefix: '/api/calendar',
+        rewritePrefix: '/calendar',
+      });
     });
     await fastify.listen({ port: 9100, host: '0.0.0.0' })
   } catch (err) {
