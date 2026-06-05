@@ -1,0 +1,31 @@
+{
+  "name": "fastify-prisma-api",
+  "version": "1.0.0",
+  "main": "src/server.ts",
+  "scripts": {
+    "dev": "nodemon --legacy-watch --watch src --ext ts,json --exec tsx src/server.ts",
+    "build": "tsc",
+    "start": "node dist/server.js",
+    "postinstall": "prisma generate --schema=/app/prisma"
+  },
+  "dependencies": {
+    "@fastify/type-provider-typebox": "^6.1.0",
+    "@prisma/client": "^6.19.3",
+    "@prisma/config": "^6.4.0",
+    "@sinclair/typebox": "^0.34.49",
+    "bcrypt": "^6.0.0",
+    "dotenv": "^17.4.2",
+    "fastify": "^5.8.5",
+    "hash": "^0.2.1",
+    "mysql2": "^3.22.3",
+    "nc": "^1.0.3",
+    "node-cron": "^4.2.1"
+  },
+  "devDependencies": {
+    "@types/node": "^25.6.0",
+    "nodemon": "^3.1.14",
+    "prisma": "^6.4.0",
+    "tsx": "^4.19.2",
+    "typescript": "^5.7.3"
+  }
+}

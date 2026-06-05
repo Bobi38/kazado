@@ -1,0 +1,25 @@
+model core_user { 
+	id        			Int		@id @default(autoincrement()) 
+	email     			String	@unique
+	name      			String
+	lastname			String
+	pseudo				String	@unique
+	password			String
+	invitationsSent     core_user_invit[]           @relation("UserHost")
+    invitationsReceived core_user_invit[]           @relation("UserGuest")
+    userAdm             core_calendar_admin[]       @relation("UserAdmin")
+    userValidator       core_calendar_validator[]   @relation("UserValidator")
+	reservationUser		core_reservation[]			@relation("UserIdResa")
+	inResaUser			core_reservation_user[]		@relation("UserId")
+}
+
+model core_user_invit {
+	id				Int				@id @default(autoincrement())
+	id_user_host	core_user		@relation("UserHost", fields: [hostId], references: [id])
+	id_user_guest	core_user		@relation("UserGuest", fields: [guestId], references: [id])
+	id_calendar		core_calendar	@relation("IdCalendar", fields: [calendarId], references: [id])
+	hostId			Int
+	guestId			Int
+	calendarId		Int
+}
+

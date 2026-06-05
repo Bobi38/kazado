@@ -1,0 +1,149 @@
+services:
+  mysql:
+    image: mysql:8.4
+    container_name: mysql
+    restart: always
+    volumes:
+      - ./conf/db/conf.cnf:/etc/mysql/conf.d/my.cnf
+      - mysql_data:/var/lib/mysql
+    networks:
+      - home
+    env_file: 
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD_FILE: /run/secrets/data_pswd
+    secrets:
+      - data_pswd
+    ports:
+      - "3306:3306"
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost"]
+      interval: 5s
+      timeout: 5s
+      retries: 15
+
+  
+  gateway:
+    container_name: gateway
+    build: 
+      context: ./web/back
+      dockerfile: ./gateway/Dockerfile
+      target: dev
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - home
+    env_file: 
+      - .env
+    ports:
+      - "9100:9100"
+    volumes:
+      - ./web/back/gateway/:/app
+      - ./web/back/prisma:/app/prisma
+      - /app/node_modules
+    restart: always
+
+  user:
+    container_name: user
+    build: 
+      context: ./web/back
+      dockerfile: ./user/Dockerfile
+      target: dev
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - home
+    env_file: 
+      - .env
+    ports:
+      - "9101:9101"
+    volumes:
+      - ./web/back/user/:/app
+      - ./web/back/prisma:/app/prisma
+      - /app/node_modules
+    restart: always
+
+  resa:
+    container_name: resa
+    build: 
+      context: ./web/back
+      dockerfile: ./resa/Dockerfile
+      target: dev
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - home
+    env_file: 
+      - .env
+    ports:
+      - "9102:9102"
+    volumes:
+      - ./web/back/resa/:/app
+      - ./web/back/prisma:/app/prisma
+      - /app/node_modules
+    restart: always
+
+  calendar:
+    container_name: calendar
+    build: 
+      context: ./web/back
+      dockerfile: ./calendar/Dockerfile
+      target: dev
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - home
+    env_file: 
+      - .env
+    ports:
+      - "9103:9103"
+    volumes:
+      - ./web/back/calendar/:/app
+      - ./web/back/prisma:/app/prisma
+      - /app/node_modules
+    restart: always
+
+  front:
+    container_name: front
+    build: 
+      context: ./web/front
+      dockerfile: Dockerfile
+      target: dev
+    depends_on:
+      mysql:
+        condition: service_healthy
+    networks:
+      - home
+    env_file: 
+      - .env
+    ports:
+      - "5173:5173"
+    volumes:
+      - ./web/front:/app
+      - /app/node_modules
+    restart: always
+
+
+secrets:
+  data_pswd:
+    file: ./conf/secrets/data_pswd
+  cle_chat:
+    file: ./conf/secrets/cle_chat
+  cle_pswd:
+    file: ./conf/secrets/cle_pswd
+  nginx_cert:
+    file: ./conf/secrets/nginx.crt
+  nginx_key:
+    file: ./conf/secrets/nginx.key
+
+networks:
+  home:
+    driver: bridge
+
+
+volumes:
+  mysql_data:
