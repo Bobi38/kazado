@@ -10,15 +10,15 @@ export async function Calendar(fastify: FastifyInstance) {
 
     fastify.get('/getMy', {schema: {query: CalendarSchema.Id ,response: {200: CalendarSchema.test}}},
     controller.myCal)
-    fastify.get('/addValidator', {schema: {query: CalendarSchema.Id ,response: {200: CalendarSchema.test}}, 
+    fastify.post('/addValidator', {schema: {query: CalendarSchema.Id ,response: {200: CalendarSchema.test}}, 
         preHandler: [H.checkCal, H.checkUser, H.checkNewRole, H.checkAdm("Validator")]},
-    controller.myCal)
-    fastify.get('/addAdm', {schema: {query: CalendarSchema.Id ,response: {200: CalendarSchema.test}}, 
+    controller.addVal)
+    fastify.post('/addAdm', {schema: {query: CalendarSchema.Id ,response: {200: CalendarSchema.test}}, 
         preHandler: [H.checkCal, H.checkUser, H.checkNewRole, H.checkAdm("Admin")]},
-    controller.myCal)
-    fastify.get('/addHome', {schema: {query: CalendarSchema.Id ,response: {200: CalendarSchema.test}}, 
+    controller.addAdm)
+    fastify.post('/addHome', {schema: {query: CalendarSchema.Id ,response: {200: CalendarSchema.test}}, 
         preHandler: [H.checkCal, H.checkUser, H.checkAdm("Home")]},
-    controller.myCal)
-    fastify.get('/addCalendar', {schema: {query: CalendarSchema.Id ,response: {200: CalendarSchema.test}}, },
-    controller.myCal)
+    controller.addHome)
+    fastify.post('/addCalendar', {schema: {query: CalendarSchema.Id ,response: {200: CalendarSchema.test}}, },
+    controller.addCal)
 }
