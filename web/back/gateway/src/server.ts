@@ -1,24 +1,58 @@
 
-import Fastify from 'fastify';
+import Fastify, { FastifyRequest, FastifyReply } from 'fastify';
 import fastifyHttpProxy from '@fastify/http-proxy';
+import fastifyCookie from '@fastify/cookie';
+import fs from "fs"
+import jwt from "jsonwebtoken";
 
+declare module 'fastify' {
+  interface FastifyRequest {
+    user?: { id: number };
+  }
+}
+
+export const secretTOK = fs.readFileSync('/run/secrets/cle_pswd', 'utf-8').trim();
 const fastify = Fastify({ logger: { level: 'warn' } });
 
-async function test(request:any, reply:any){
-  console.log("coucou je suis le middleware")
+
+async function MiddCoocki(req:FastifyRequest, rep:FastifyReply){
+    const token = req.cookies.auth;
+    console.log("coucou")
+    if (!token) {
+        return rep.status(401).send({ success: false, message: `Token doesn't exist` });
+    }
+    try{
+        const decoded = jwt.verify(token, secretTOK) as { id: number };
+        req.user = decoded;
+    }catch(err){
+        return rep.status(401).send({ success: false, message: `Token invalide` });
+    }
+}
+
+async function callPath(req: FastifyRequest, rep:FastifyReply){
+  console.log("WELCOME to gateaway")
+  console.log(req.url)
 }
 
 const start = async () => {
   try {
+    await fastify.register(fastifyCookie);
+    fastify.addHook('onRequest', callPath);
     await fastify.register(fastifyHttpProxy, {
       upstream: 'http://user:9101',
       prefix: '/api/user',
       rewritePrefix: '/user',
     });
+
+    await fastify.register(fastifyHttpProxy, {
+      upstream: 'http://user:9101',
+      prefix: '/api/secu',
+      rewritePrefix: '/secu',
+    });
     await fastify.register(async (securedContext) => {
 
 
-      securedContext.addHook('preHandler', test);
+      securedContext.addHook('onRequest', MiddCoocki);
 
       await securedContext.register(fastifyHttpProxy, {
         upstream: 'http://resa:9102',

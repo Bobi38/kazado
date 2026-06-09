@@ -1,13 +1,14 @@
 model core_user { 
 	id        			Int		@id @default(autoincrement()) 
 	email     			String	@unique
-	name      			String
-	lastname			String
+	name      			String?
+	lastname			String?
 	pseudo				String	@unique
 	password			String
 	invitationsSent     core_user_invit[]           @relation("UserHost")
     invitationsReceived core_user_invit[]           @relation("UserGuest")
     userAdm             core_calendar_admin[]       @relation("UserAdmin")
+    UserId				core_calendar_user[]		@relation("UserId")
     userValidator       core_calendar_validator[]   @relation("UserValidator")
 	reservationUser		core_reservation[]			@relation("UserIdResa")
 	inResaUser			core_reservation_user[]		@relation("UserId")

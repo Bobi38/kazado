@@ -38,6 +38,8 @@ services:
       - .env
     ports:
       - "9100:9100"
+    secrets:
+      - cle_pswd
     volumes:
       - ./web/back/gateway/:/app
       - ./web/back/prisma:/app/prisma
@@ -59,6 +61,8 @@ services:
       - .env
     ports:
       - "9101:9101"
+    secrets:
+      - cle_pswd
     volumes:
       - ./web/back/user/:/app
       - ./web/back/prisma:/app/prisma

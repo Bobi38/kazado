@@ -1,0 +1,13 @@
+Firebase Cloud Messaging (FCM) pour les notifications mobile
+
+-L'application DOIT être installée sur l'écran d'accueil : Si un membre de la famille ouvre simplement 
+le lien dans Safari, les notifications ne fonctionneront pas. 
+Il faut obligatoirement qu'il ait cliqué sur "Sur l'écran d'accueil" pour créer l'icône.
+
+-Une action utilisateur est obligatoire : Vous ne pouvez pas activer les notifications automatiquement à l'ouverture de l'app. 
+Vous devez obligatoirement afficher un bouton (ex: "Activer les alertes de réservation") et l'utilisateur doit cliquer dessus pour que 
+l'iPhone affiche la demande d'autorisation officielle.
+
+-Le compte développeur (parfois) : Sur les versions récentes d'iOS, Apple exige que le site web utilise un protocole de clé sécurisé (VAPID).
+Heureusement, c'est gratuit à générer.
+

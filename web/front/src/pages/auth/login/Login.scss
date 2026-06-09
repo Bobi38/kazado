@@ -1,0 +1,23 @@
+.log{
+    display: flex;
+    flex-direction: column;
+    gap: 12px;   
+
+    form{
+        display: flex;
+        flex-direction: column;
+        .toggle-icon {
+            position: absolute;
+            right: 12px;
+            display: flex;
+            align-items: center;
+            color: grey;
+            font-size: 1.2rem;
+			transition: all 0.2s;
+
+            &:hover {
+                color: black;
+            }
+        }
+    }
+}

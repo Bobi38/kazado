@@ -16,10 +16,12 @@
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",
     "fastify": "^5.8.5",
+    "fastify-plugin": "^5.1.0",
     "hash": "^0.2.1",
     "mysql2": "^3.22.3",
     "nc": "^1.0.3",
-    "node-cron": "^4.2.1"
+    "node-cron": "^4.2.1",
+    "socket.io": "^4.8.3"
   },
   "devDependencies": {
     "@types/node": "^25.6.0",

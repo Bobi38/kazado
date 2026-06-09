@@ -1,0 +1,23 @@
+html, body, #root {
+  height: 100%;
+  margin: 0;
+  font-family: "Space Grotesk", sans-serif;
+}
+
+body {
+  min-height: 100vh;
+  background: linear-gradient(180deg, #e0f6bc, #e3f5c561);
+}
+
+
+button{
+    border-radius: 4px;
+    padding: 6px 16px;
+    border: none;
+    background-color: #0070f3;
+    color: white;
+    cursor: pointer;
+    &.hoover{
+        background-color: #f30000;
+    }
+}

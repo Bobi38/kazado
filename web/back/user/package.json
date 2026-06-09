@@ -9,6 +9,7 @@
     "postinstall": "prisma generate --schema=/app/prisma"
   },
   "dependencies": {
+    "@fastify/cookie": "^11.0.2",
     "@fastify/type-provider-typebox": "^6.1.0",
     "@prisma/adapter-mariadb": "^6.19.3",
     "@prisma/client": "^6.19.3",
@@ -17,12 +18,15 @@
     "bcrypt": "^6.0.0",
     "dotenv": "^17.4.2",
     "fastify": "^5.8.5",
+    "fs": "^0.0.1-security",
     "hash": "^0.2.1",
+    "jsonwebtoken": "^9.0.3",
     "mysql2": "^3.22.3",
     "nc": "^1.0.3",
     "node-cron": "^4.2.1"
   },
   "devDependencies": {
+    "@types/jsonwebtoken": "^9.0.10",
     "@types/node": "^25.6.0",
     "nodemon": "^3.1.14",
     "prisma": "^6.4.0",

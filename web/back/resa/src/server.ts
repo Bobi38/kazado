@@ -1,7 +1,8 @@
-
+import socketPlugin from './initServerSocket.ts';
 import Fastify from 'fastify';
 import { registerRoutes } from './routes/index.ts';
 import prisma from './lib/prisma'
+import { Server } from "socket.io";
 
 const fastify = Fastify({ logger: { level: 'warn' } });
 
@@ -14,6 +15,7 @@ fastify.addHook('onClose', async (instance) => {
 const start = async () => {
   try {
     fastify.register(registerRoutes);
+    await fastify.register(socketPlugin);
     await fastify.listen({ port: 9102, host: '0.0.0.0' })
     console.log("SERVER resa good ")
   } catch (err) {

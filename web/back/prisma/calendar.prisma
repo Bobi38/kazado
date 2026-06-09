@@ -1,30 +1,36 @@
 model core_calendar{
 	id				Int		@id @default(autoincrement())
-	code_calendar	Int
 	name			String
 	nb_home			Int
+	validator		Boolean
 	invitationSentUser			core_user_invit[]	@relation("IdCalendar")
 	userCalendar				core_calendar_user[]	@relation("IdCalendar")
     admCalendar         		core_calendar_admin[]   @relation("IdCalendar")
     validatorCalendar			core_calendar_validator[]	@relation("IdCalendar")
 	reservationCalendat			core_reservation[]		@relation("IdCalendar")
 	relationCalHome				core_relation_CalendarHome[] @relation("IdCalendar")
+	HomeCalendar				core_home[]	@relation("IdCalendar")
 }
 
 model core_home{
 	id				Int		@id @default(autoincrement())
 	nb_people		Int
 	nb_bedroom		Int
-	adress			String
-	relationHomeCal				core_relation_CalendarHome[]	@relation("IdHome")
+	adress			String?
+	name			String
+	id_calendar		core_calendar	@relation("IdCalendar", fields: [calendarId], references: [id])
+	calendarId		Int
 	idReservation				core_reservation[]				@relation("IdHome")
+	calRelation					core_relation_CalendarHome[]	@relation("IdHome")
 }
 
 model core_calendar_user{
 	id				Int		@id @default(autoincrement())
 	id_calendar		core_calendar	@relation("IdCalendar", fields: [calendarId], references: [id])
+	id_user			core_user		@relation("UserId", fields: [userId], references: [id])
 	status			Boolean
 	calendarId		Int
+	userId			Int
 }
 
 model core_calendar_admin{

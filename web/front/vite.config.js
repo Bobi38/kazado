@@ -9,7 +9,7 @@ export default defineConfig({
     host: '0.0.0.0',
     proxy: {
         '/api': {
-            target: 'http://back:9000',
+            target: 'http://gateway:9100',
             changeOrigin: true,
         },
     }
