@@ -12,7 +12,7 @@ export default function App() {
   			<Route path={`/`}				element={<Home />		} />
 			<Route path={`/login`}			element={<Login />		} />
 			<Route path={`/register`}		element={<Register />		} />
-			<Route path={`/calendar/:id`}	element={<CalendarPage />} />
+			<Route path={`/calendar/:id/:name`}	element={<CalendarPage />} />
 		</Routes> 
 	</BrowserRouter>
 	)

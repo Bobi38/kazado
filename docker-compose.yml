@@ -82,6 +82,8 @@ services:
       - home
     env_file: 
       - .env
+    secrets:
+      - cle_pswd
     ports:
       - "9102:9102"
     volumes:
@@ -103,6 +105,8 @@ services:
       - home
     env_file: 
       - .env
+    secrets:
+      - cle_pswd
     ports:
       - "9103:9103"
     volumes:

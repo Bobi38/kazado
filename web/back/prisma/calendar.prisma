@@ -1,5 +1,5 @@
 model core_calendar{
-	id				Int		@id @default(autoincrement())
+	id                 String                      @id @default(cuid())
 	name			String
 	nb_home			Int
 	validator		Boolean
@@ -18,10 +18,20 @@ model core_home{
 	nb_bedroom		Int
 	adress			String?
 	name			String
+	isToDo			Boolean		@default(false)
 	id_calendar		core_calendar	@relation("IdCalendar", fields: [calendarId], references: [id])
-	calendarId		Int
-	idReservation				core_reservation[]				@relation("IdHome")
+	calendarId		String
 	calRelation					core_relation_CalendarHome[]	@relation("IdHome")
+	toDoTasks					core_todo[]						@relation("IdHome")
+	allResa						core_reservation_home[]			@relation("IdHome")
+}
+
+model core_todo {
+	id				Int		@id @default(autoincrement())
+    id_home			core_home		@relation("IdHome", fields: [homeId], references: [id])
+	homeId			Int
+	task			String
+	status			Boolean		@default(false)
 }
 
 model core_calendar_user{
@@ -29,7 +39,7 @@ model core_calendar_user{
 	id_calendar		core_calendar	@relation("IdCalendar", fields: [calendarId], references: [id])
 	id_user			core_user		@relation("UserId", fields: [userId], references: [id])
 	status			Boolean
-	calendarId		Int
+	calendarId		String
 	userId			Int
 }
 
@@ -37,7 +47,7 @@ model core_calendar_admin{
 	id				Int		@id @default(autoincrement())
 	id_calendar		core_calendar	@relation("IdCalendar", fields: [calendarId], references: [id])
 	id_user			core_user		@relation("UserAdmin", fields: [idadm], references: [id])
-	calendarId		Int
+	calendarId		String
 	idadm			Int
 }
 
@@ -45,7 +55,7 @@ model core_calendar_validator{
 	id				Int		@id @default(autoincrement())
 	id_calendar		core_calendar	@relation("IdCalendar", fields: [calendarId], references: [id])
 	id_user			core_user		@relation("UserValidator", fields: [idvalidator], references: [id])
-	calendarId		Int
+	calendarId		String
 	idvalidator		Int
 }
 
@@ -53,6 +63,6 @@ model core_relation_CalendarHome{
 	id				Int		@id @default(autoincrement())
 	id_calendar		core_calendar	@relation("IdCalendar", fields: [calendarId], references: [id])
     id_home			core_home		@relation("IdHome", fields: [homeId], references: [id])
-    calendarId		Int
+    calendarId		String
 	homeId			Int
 }

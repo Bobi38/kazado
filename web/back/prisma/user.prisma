@@ -21,6 +21,6 @@ model core_user_invit {
 	id_calendar		core_calendar	@relation("IdCalendar", fields: [calendarId], references: [id])
 	hostId			Int
 	guestId			Int
-	calendarId		Int
+	calendarId		String
 }
 

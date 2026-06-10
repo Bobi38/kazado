@@ -22,8 +22,7 @@ async function MiddCoocki(req:FastifyRequest, rep:FastifyReply){
         return rep.status(401).send({ success: false, message: `Token doesn't exist` });
     }
     try{
-        const decoded = jwt.verify(token, secretTOK) as { id: number };
-        req.user = decoded;
+        const decoded = await jwt.verify(token, secretTOK) as { id: number };
     }catch(err){
         return rep.status(401).send({ success: false, message: `Token invalide` });
     }
@@ -63,6 +62,11 @@ const start = async () => {
         upstream: 'http://calendar:9103',
         prefix: '/api/calendar',
         rewritePrefix: '/calendar',
+      });
+      await securedContext.register(fastifyHttpProxy, {
+        upstream: 'http://calendar:9103',
+        prefix: '/api/gestion',
+        rewritePrefix: '/gestion',
       });
     });
     await fastify.listen({ port: 9100, host: '0.0.0.0' })

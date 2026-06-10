@@ -1,23 +1,45 @@
-html, body, #root {
-  height: 100%;
-  margin: 0;
-  font-family: "Space Grotesk", sans-serif;
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap');
+
+.home {
+    font-family: 'Inter', sans-serif;
+    background-color: #FAFAFA;
+    color: #333333;
+    min-height: 100vh;
+    padding: 2rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
-body {
-  min-height: 100vh;
-  background: linear-gradient(180deg, #e0f6bc, #e3f5c561);
+/* Titres */
+h2 {
+    font-weight: 600;
+    color: #4A5568;
+    margin-bottom: 1.5rem;
+    font-size: 1.5rem;
 }
 
+h3 {
+    font-weight: 500;
+    color: #718096;
+    margin-top: 2rem;
+    margin-bottom: 1rem;
+    font-size: 1.2rem;
+}
 
-button{
-    border-radius: 4px;
-    padding: 6px 16px;
-    border: none;
-    background-color: #0070f3;
+button[type="submit"], .btn-add {
+    background-color: #7C9D96; /* Vert pastel */
     color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: 500;
     cursor: pointer;
-    &.hoover{
-        background-color: #f30000;
-    }
+    transition: background-color 0.2s ease;
+    margin-top: 1rem;
+}
+
+button[type="submit"]:hover, .btn-add:hover {
+    background-color: #67847E;
 }

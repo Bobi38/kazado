@@ -1,12 +1,27 @@
 import socketPlugin from './initServerSocket.ts';
 import Fastify from 'fastify';
 import { registerRoutes } from './routes/index.ts';
-import prisma from './lib/prisma'
-import { Server } from "socket.io";
+import fastifyCookie from '@fastify/cookie';
+import {prisma} from './lib/prisma.ts'
+import fs from "fs"
+import jwt from "jsonwebtoken";
+
+export const secret = fs.readFileSync('/run/secrets/cle_pswd', 'utf-8').trim();
 
 const fastify = Fastify({ logger: { level: 'warn' } });
 
-
+async function callPath(req: any, rep:any){
+  console.log("WELCOME to RESA")
+  console.log(req.url)
+  const token = req.cookies.auth;
+  try{
+    const decoded = jwt.verify(token, secret) as { id: number };
+    req.user = decoded.id;
+  }catch(err){
+    return rep.status(401).send({ success: false, message: `Token invalide` });
+  }
+  console.log(req.user)
+}
 
 fastify.addHook('onClose', async (instance) => {
   await prisma.$disconnect()
