@@ -13,6 +13,11 @@ export const Data = Type.Object({
   name: Type.String(),
 });
 
+export const DataNumber = Type.Object({
+  id: Type.Number(),
+  name: Type.String(),
+});
+
 export const ReturnMessage = Type.Object({
   success: Type.Boolean(),
   message: Type.String(),
@@ -26,6 +31,12 @@ export const ReturIdCal = Type.Object({
 
 
 export const ReturnData = Type.Object({
+  success: Type.Boolean(),
+  message: Type.String(),
+  data: Type.Array(Data),
+});
+
+export const ReturnDataNumber = Type.Object({
   success: Type.Boolean(),
   message: Type.String(),
   data: Type.Array(Data),

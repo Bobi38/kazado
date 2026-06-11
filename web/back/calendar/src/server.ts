@@ -8,8 +8,14 @@ import jwt from "jsonwebtoken";
 
 export const secret = fs.readFileSync('/run/secrets/cle_pswd', 'utf-8').trim();
 
+
 const fastify = Fastify({ logger: { level: 'warn' } });
 
+declare module 'fastify' {
+  interface FastifyRequest {
+    user?: number; 
+  }
+}
 async function callPath(req: any, rep:any){
   console.log("WELCOME to CALENDAR")
   console.log(req.url)

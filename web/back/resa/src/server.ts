@@ -8,6 +8,12 @@ import jwt from "jsonwebtoken";
 
 export const secret = fs.readFileSync('/run/secrets/cle_pswd', 'utf-8').trim();
 
+declare module 'fastify' {
+  interface FastifyRequest {
+    user?: number; 
+  }
+}
+
 const fastify = Fastify({ logger: { level: 'warn' } });
 
 async function callPath(req: any, rep:any){
@@ -29,6 +35,8 @@ fastify.addHook('onClose', async (instance) => {
 
 const start = async () => {
   try {
+    await fastify.register(fastifyCookie);
+    await fastify.addHook('preHandler', callPath);
     fastify.register(registerRoutes);
     await fastify.register(socketPlugin);
     await fastify.listen({ port: 9102, host: '0.0.0.0' })

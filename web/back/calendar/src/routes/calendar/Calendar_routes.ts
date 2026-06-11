@@ -15,4 +15,8 @@ export async function Calendar(fastify: FastifyInstance) {
     controller.addHome)
     fastify.post('/Calendar', {schema: {body: CalendarSchema.BodyCal ,response: {200: CalendarSchema.ReturIdCal}}, },
     controller.addCal)
+    fastify.post('/AllHomes', {schema: {response: {200: CalendarSchema.ReturnDataNumber}}, preHandler: H.checkCal },
+    controller.allHomes)
+    fastify.post('/AllUsers', {schema: {response: {200: CalendarSchema.ReturnDataNumber}}, preHandler: H.checkCal },
+    controller.allUsers)
 }

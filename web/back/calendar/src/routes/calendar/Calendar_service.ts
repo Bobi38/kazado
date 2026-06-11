@@ -75,4 +75,37 @@ export class CalendarService{
         }
     }
 
+    async allHomes(calendar: string){
+        try{
+            const homes: any[] = await prisma.$queryRaw`
+                SELECT
+                    home.id as id,
+                    home.name as name,
+                FROM core_home home
+                INNER JOIN core_relation_CalendarHome rel ON home.id = rel.homeId
+                WHERE rel.calendarId = ${calendar}
+            `;
+            return {success: true, message: "good", data: homes}
+        }catch(err){
+            return {success: false, message: "wrong allHomes " + err, data: []}
+        }
+    }
+
+    async allUsers(calendar: string, userId: number){
+        try{
+            const Users: any[] = await prisma.$queryRaw`
+                SELECT
+                    user.id as id,
+                    user.name as name
+                FROM core_user user
+                INNER JOIN core_calendar_user rel ON user.id = rel.userId
+                WHERE rel.calendarId = ${calendar}
+                AND rel.userId IS NOT ${userId}
+            `;
+            return {success: true, message: "good", data: Users}
+        }catch(err){
+            return {success: false, message: "wrong allUsers " + err, data: []}
+        }
+    }
+
 }
