@@ -3,8 +3,8 @@ model core_reservation {
 	id_user			core_user		@relation("UserIdResa", fields: [userId], references: [id])
 	id_calendar		core_calendar	@relation("IdCalendar", fields: [calendarId], references: [id])
     name            String
-    Date_start      DateTime
-    Date_end        DateTime
+    date_start      DateTime
+    date_end        DateTime
     status          Boolean @default(false)
     nb_adult        Int
     nb_children     Int

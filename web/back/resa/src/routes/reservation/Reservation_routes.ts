@@ -9,6 +9,9 @@ export async function Reservation(fastify: FastifyInstance) {
     const controller = new ReservationController(service);
 
     fastify.post('/reservation', {schema: {body: ReservationSchema.IncomeReservation, response: {200: ReservationSchema.ReservationReturnMessage}}, 
-        preHandler: [H.checkCal, H.checkUser]},
+        preHandler: [H.checkCal, H.checkUser, H.checkDate]},
     controller.addReservation)
+    fastify.get('/reservation', {schema: {query: ReservationSchema.IncomeCalendar, response: 200}, 
+        preHandler: [H.checkCal, H.checkUser]},
+    controller.getReservation)
 }

@@ -6,7 +6,15 @@ export class ReservationController{
 
     addReservation = async (req: FastifyRequest, reply: FastifyReply) => {
         const bodyData = req.body as any;
+        const id = req.user;
         const {calendar} = req.query as {calendar: string};
-        const ret = await this.ReservationService.addReservation(bodyData, calendar);
+        const ret = await this.ReservationService.addReservation(bodyData, calendar, id!);
         reply.status(200).send({success: ret.success, message: ret.message });
+    }
+
+    getReservation = async (req: FastifyRequest, reply: FastifyReply) => {
+        const {calendar, start, end} = req.query as {calendar: string, start: string, end:string};
+        const ret = await this.ReservationService.getReservation(calendar, end, start);
+        reply.status(200).send({success: ret.success, message: ret.message, data: ret.data });
+    }
 }

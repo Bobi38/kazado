@@ -80,7 +80,7 @@ export class CalendarService{
             const homes: any[] = await prisma.$queryRaw`
                 SELECT
                     home.id as id,
-                    home.name as name,
+                    home.name as name
                 FROM core_home home
                 INNER JOIN core_relation_CalendarHome rel ON home.id = rel.homeId
                 WHERE rel.calendarId = ${calendar}
@@ -93,6 +93,7 @@ export class CalendarService{
 
     async allUsers(calendar: string, userId: number){
         try{
+            console.log(calendar)
             const Users: any[] = await prisma.$queryRaw`
                 SELECT
                     user.id as id,
@@ -100,7 +101,7 @@ export class CalendarService{
                 FROM core_user user
                 INNER JOIN core_calendar_user rel ON user.id = rel.userId
                 WHERE rel.calendarId = ${calendar}
-                AND rel.userId IS NOT ${userId}
+                AND rel.userId != ${userId}
             `;
             return {success: true, message: "good", data: Users}
         }catch(err){

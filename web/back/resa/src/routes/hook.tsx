@@ -1,4 +1,4 @@
-import  {prisma} from "../../lib/prisma";
+import  {prisma} from "../lib/prisma";
 import { FastifyReply, FastifyRequest } from 'fastify';
 
 declare module 'fastify' {
@@ -8,25 +8,34 @@ declare module 'fastify' {
 }
 
 export async function checkUser(req: FastifyRequest, rep: FastifyReply) {
-        const {calendar: calId} = req.query as {calendar : number}
+        const {calendar: calId} = req.query as {calendar : string}
         const userId = req.user;
 
         if (!userId || !calId)
             return;
-        const isUser = await prisma.core_calendar_user.findUnique({where:{calendarId: calId, userId: userId}})
+        const isUser = await prisma.core_calendar_user.findFirst({where:{calendarId: calId, userId: userId}})
         if (!isUser)
             return rep.status(401).send({success: false, message: `You are not in this Calendar`})   
 }
 
 export async function checkDate(req: FastifyRequest, rep: FastifyReply) {
+    try{
         const {calendar: calId} = req.query as {calendar : number}
         const databody = req.body as any;
 
         if (!databody || !calId || !databody.date_end || !databody.date_start)
             return;
-        const isUser = await prisma.core_reservation.findFirst({where:{calendarId: calId, userId: userId}})
-        if (!isUser)
-            return rep.status(401).send({success: false, message: `You are not in this Calendar`})   
+        const start = new Date(databody.date_start + "T00:00:00.000Z")
+        const end = new Date(databody.date_end + "T00:00:00.000Z")
+        const validDate = await prisma.core_reservation.findFirst({where: {
+                                                                        calendarId: calId,date_start: {lt: end},
+                                                                        date_end: {gt: start}}
+                                                                    })
+        if (validDate)
+            return rep.status(401).send({success: false, message: `Créneau déjà pris`}) 
+    }catch(err){
+        return rep.status(500).send({success: false, message: `error checkdate ${err}`})
+    } 
 }
 
 export async function checkNewRole(req: FastifyRequest, rep: FastifyReply) {

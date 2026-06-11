@@ -106,12 +106,6 @@ export default function Home(){
 
     useEffect(() => {
         const co = async () => {
-            const rep = await checko()
-            console.log(`je suis la reponse de checko ${rep.message}`)
-            if (!rep.success){
-                navigate('/login')
-                return;
-            }
             if (formCal === false)
                 await cal_submit();
         }
