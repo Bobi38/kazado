@@ -11,6 +11,7 @@ export default function CalendarPage(){
     const [home, setHome] = useState([])
     const [invit, setInvite] = useState([])
     const [selectedHomes, setSelectedHomes] = useState([]);
+    const [currentMonth, setCurrentMonth] = useState("");
 
     const toggle = (id, settab: any) => {
         settab((prev) =>
@@ -22,7 +23,7 @@ export default function CalendarPage(){
 
     const updateHome = async (id:string) => {
         try{
-            const url = `/api/calendar/HomeUpdate?calendar=${encodeURIComponent(id)}`
+            const url = `/api/calendar/AllHomes?calendar=${encodeURIComponent(id)}`
 
             const rep = await fetch(url,{
                 method: 'GET',
@@ -86,7 +87,7 @@ export default function CalendarPage(){
         const dataRes = {
             name: d.name_resa.value,
             Date_start: d.Date_start.value,
-            Date_end: d.DAte_end.value,
+            Date_end: d.Date_end.value,
             nb_adult: Number(d.nb_adult.value),
             nb_children: Number(d.nb_children.value),
             Home: selectedHomes,
@@ -119,6 +120,12 @@ export default function CalendarPage(){
           plugins={[dayGridPlugin]}
           initialView="dayGridMonth"
           events={events}
+          datesSet={(arg) => {
+              const date = arg.view.currentStart
+              const month = date.toLocaleString("fr-FR", { month: "long" })
+              const year = date.getFullYear()
+              setCurrentMonth(`${month} ${year}`)
+          }}
           height="auto"
         />
       </div>
@@ -131,7 +138,7 @@ export default function CalendarPage(){
                 <strong>Date de debut</strong>
                 <input type="date" id="date_start" required/>
                 <strong>Date de fin</strong>
-                <input type="date" id="date_end" required />
+                <input type="date" id="date_end" min="date_start" required />
                 <strong>Nombre d'adultes</strong>
                 <input type="number"  name="nb_adult" required/>
                 <strong>Nombre d'enfants</strong>
