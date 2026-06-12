@@ -5,7 +5,7 @@ export class ReservationService{
     async addReservation(data: any, calendar: string, id: number){
         try {
             const bool = await prisma.core_calendar.findFirst({where:{id: calendar}, select:{validator:true}})
-            const validator = bool?.validator
+            const validator = !bool?.validator
             const start = new Date(data.date_start + "T00:00:00.000Z")
             const end = new Date(data.date_end + "T00:00:00.000Z")
             const result = await prisma.$transaction(async (tx: any) => {

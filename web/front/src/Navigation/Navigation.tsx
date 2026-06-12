@@ -7,6 +7,8 @@ export default function Navigation({ children }) {
 
   const navigate = useNavigate()
 
+  const [hello,setHello] = useState("")
+
 	useEffect(() => {
 		const co = async () => {
       const ret = await checko()
@@ -17,8 +19,13 @@ export default function Navigation({ children }) {
 	}, [])
 
   return (
+    <div>
+      <div>
+          <button>Not</button>
+      </div>
 			<div className={`children-container`}>
 				{children}
 			</div>
+    </div>
   );
 }

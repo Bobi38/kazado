@@ -3,6 +3,7 @@ import { useEffect, useState } from 'react';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import "./CalendarPage.scss"
+import SetupAdm from '../setupAdm/SetupAdm';
 
 export default function CalendarPage(){
     const {id, name} = useParams<{id: string, name:string}>();
@@ -10,6 +11,7 @@ export default function CalendarPage(){
     const [addevent, setAddEvent] = useState(false)
     const [home, setHome] = useState([])
     const [invit, setInvite] = useState([])
+    const [modal, setModal] = useState<"no" | "yes" | "popup" | "home_edit" | "home_create">("no");
     const [selectedHomes, setSelectedHomes] = useState([]);
     const [period, setPeriod] = useState<{start: string, end: string} | null>(null)
 
@@ -87,6 +89,25 @@ export default function CalendarPage(){
         }
     }
 
+    const AdmCal = async (id:string) => {
+        try{
+            const url = `/api/gestion/setAdm?calendar=${encodeURIComponent(id)}`
+
+            const rep = await fetch(url,{
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                credentials: "include"
+            })
+
+            const ret = await rep.json()
+            if (ret.success)
+                    setModal(ret.bool)
+            console.log(`in ADMCAL = ${ret.message} && ${ret.bool}`)
+        }catch(err){
+            console.log(`error front catch update ${err}`)
+        }
+    }
+
     const addResa = async (data: any, id : string) => {
         try{
             const url = `/api/resa/reservation?calendar=${encodeURIComponent(id)}`
@@ -134,11 +155,18 @@ export default function CalendarPage(){
 
     useEffect(() => {
         const co = async () => {
-            await updateHome(id!)
             await updateInvit(id!)
+            await AdmCal(id!)
         }
         co()
     }, [])
+
+    useEffect(() => {
+        const co = async () => {
+            await updateHome(id!)
+        }
+        co()
+    }, [modal])
 
     useEffect(() => {
         const t = async () => {
@@ -157,6 +185,9 @@ export default function CalendarPage(){
             <div>
           <h2>Calendrier: {name}</h2>
             <button onClick={() => {setAddEvent(true)}}>+</button>
+            {modal === "yes" && (
+                <button onClick={() => {setModal("popup")}}>...</button>
+            )}
             </div>
           <div style={{ marginTop: "20px" }}>
         <FullCalendar
@@ -216,6 +247,11 @@ export default function CalendarPage(){
                 )}
             </form>
             </>
+          )}
+          {modal != "no" && modal != "yes"  && (
+            <div className="popup">
+      		    <SetupAdm id={id!} setModal ={setModal} modal={modal} home={home} setHome={setHome}/>
+            </div>
           )}
         </div>
     );

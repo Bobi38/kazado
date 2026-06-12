@@ -27,6 +27,15 @@ export class CalendarController{
             return reply.send({success: rep.success, message: rep.message})
     }
 
+    updateHome = async (req: FastifyRequest, reply: FastifyReply) => {
+            const {homeid} = req.query as {homeid: number};
+            const bodyData = req.body as any;
+            const rep = await this.CalendarService.updateHome(homeid, bodyData);
+            if (bodyData.tasksArray.length > 0 && rep.success)
+                await this.CalendarService.updateToDo(bodyData.tasksArray, rep.HomeId!)
+            return reply.send({success: rep.success, message: rep.message})
+    }
+
     allHomes = async (req: FastifyRequest, reply: FastifyReply) => {
             const {calendar} = req.query as {calendar: string};
             const rep = await this.CalendarService.allHomes(calendar);

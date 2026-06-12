@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify';
 import * as CalendarSchema from './Calendar_schema';
 import { CalendarController } from './Calendar_controllers';
 import { CalendarService } from './Calendar_service';
-import * as H from '../hook';
+import * as H from '../preHandler/hook';
 
 export async function Calendar(fastify: FastifyInstance) {
     const service = new CalendarService();
@@ -19,4 +19,5 @@ export async function Calendar(fastify: FastifyInstance) {
     controller.allHomes)
     fastify.get('/AllUsers', {schema: {response: {200: CalendarSchema.ReturnDataNumber}}, preHandler: H.checkCal },
     controller.allUsers)
+
 }

@@ -2,7 +2,7 @@ import { FastifyInstance } from 'fastify';
 import * as ReservationSchema from './Reservation_schema';
 import { ReservationController } from './Reservation_controllers';
 import { ReservationService } from './Reservation_service';
-import * as H from '../hook';
+import * as H from '../preHandler/hook';
 
 export async function Reservation(fastify: FastifyInstance) {
     const service = new ReservationService();

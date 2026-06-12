@@ -12,7 +12,7 @@ export const UserReturnMess= Type.Object({
 
 export const UserPost= Type.Object({
   email: Type.String({ format: 'email' }),
-  username: Type.String({ minLength: 3 }),
+  username: Type.String({ minLength: 3, pattern: "^[a-zA-Z0-9_]+$" }),
   password: Type.String({
     minLength: 4,
     pattern: '(?=.*[A-Z])(?=.*[0-9])'

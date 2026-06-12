@@ -5,7 +5,7 @@ export const CalendarReturnBool= Type.Object({
 });
 
 export const Id= Type.Object({
-  id:  Type.Number(),
+  id:  Type.String(),
 });
 
 export const Data = Type.Object({
@@ -22,4 +22,10 @@ export const ReturnData = Type.Object({
   success: Type.Boolean(),
   message: Type.String(),
   data: Type.Array(Data),
+});
+
+export const ReturnBool= Type.Object({
+  success: Type.Boolean(),
+  message: Type.String(),
+  bool: Type.String(),
 });

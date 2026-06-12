@@ -2,6 +2,7 @@ import { useNavigate, useLocation}      from    "react-router-dom";
 import { useEffect, useRef, useState }            from    "react";
 import { Link } from 'react-router-dom'
 import "./Home.scss"
+import HomeForm from "../../Composant/HomeForm/homeForm";
 
 import checko from "../../tool/function.usefull"
 
@@ -102,6 +103,7 @@ export default function Home(){
         if(ret.success)
             await AddHome(dataHome, ret.id)
         setFormCal(false)
+        await cal_submit()
     }
 
     useEffect(() => {
@@ -141,21 +143,7 @@ export default function Home(){
                 <strong className="text">Souhaitez_vous une politique de validation</strong>
                 <input type="checkbox" name="validator" />
             <h2>Premiere Home</h2>
-                <strong className="text">Nom</strong>
-                <input type="text"  name="name_home" placeholder="Nom de votre home" required/>
-                <strong className="text">Nombre de chambre</strong>
-                <input type="number"  name="nb_bedroom" required/>
-                <strong className="text">Nombre de personne max</strong>
-                <input type="number"  name="nb_people" required/>
-                <strong className="text">adresse</strong>
-                <input type="text"  name="adress" placeholder="optionnelle" default=""/>
-            <h3>Options de Fin de Séjour</h3>
-                <strong className="text">Activer une To-do list de Checkout ?</strong>
-                <input type="checkbox" name="has_todo_checkout" checked={showTodo} onChange={(e) => setShowTodo(e.target.checked)} />
-                {showTodo && (
-                <div>
-                <strong className="text">Tâches initiales (séparées par des virgules)</strong>
-                <textarea name="todo_init_tasks" placeholder="Ex: Sortir les poubelles, Défaire les lits, Fermer les fenêtres"></textarea></div>)}
+                <HomeForm/>
                 <button type="submit">valider</button>
             </form>
             </div>

@@ -28,6 +28,13 @@ async function MiddCoocki(req:FastifyRequest, rep:FastifyReply){
     }
 }
 
+async function DeleteCoock(req:FastifyRequest, rep:FastifyReply){
+    const token = req.cookies.auth;
+    console.log("coucou")
+    if (token) 
+      rep.clearCookie("auth");
+}
+
 async function callPath(req: FastifyRequest, rep:FastifyReply){
   console.log("WELCOME to gateaway")
   console.log(req.url)

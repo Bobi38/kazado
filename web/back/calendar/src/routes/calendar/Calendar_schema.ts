@@ -42,6 +42,11 @@ export const ReturnDataNumber = Type.Object({
   data: Type.Array(Data),
 });
 
+export const ReturnBool= Type.Object({
+  success: Type.Boolean(),
+  message: Type.String(),
+  bool: Type.String(),
+});
 
 export const BodyHome = Type.Object({
   nb_people: Type.Number(),

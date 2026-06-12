@@ -1,1 +1,7 @@
 @use '_global.scss';
+@use "_variable" as *;
+
+#alert-container{
+	&.danger { color: $red; }
+	&.success { color: $green; }
+}

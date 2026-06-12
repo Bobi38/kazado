@@ -3,6 +3,7 @@ import Fastify from 'fastify';
 import { registerRoutes } from './routes/index.ts';
 import fastifyCookie from '@fastify/cookie';
 import prisma from './lib/prisma'
+import { errorHandler } from './routes/preHandler/errorHandler.ts';
 import fs from "fs"
 
 const fastify = Fastify({ logger: { level: 'warn' } });
@@ -21,6 +22,7 @@ const start = async () => {
   try {
     await fastify.register(fastifyCookie);
     fastify.addHook('onRequest', callPath);
+    fastify.setErrorHandler(errorHandler);
     fastify.register(registerRoutes);
     await fastify.listen({ port: 9101, host: '0.0.0.0' })
     console.log("SERVER User running ")

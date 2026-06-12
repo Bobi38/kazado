@@ -1,5 +1,6 @@
 import { validateHeaderName } from "node:http";
 import  {prisma} from "../../lib/prisma";
+import { AppError } from "../preHandler/AppError";
 
 
 export class CalendarService{
@@ -57,6 +58,22 @@ export class CalendarService{
         }
     }
 
+    async updateHome(homeId: number, data: any){
+        try{
+            const res = await prisma.core_home.findFirst({where:{id: {not : homeId}, name: data.name}})
+            if (res)
+                return {success: false, message: "home name already use in this calendar"}
+            await prisma.core_home.update({where : {id: homeId}, data:{nb_people: data.nb_people,
+                                                                 nb_bedroom: data.nb_bedroom,
+                                                                 adress: data.adress,
+                                                                 name: data.name,
+                                                                }})
+            return {success: true, message: "good addHome"}
+        }catch(err){
+            return {success: false, message: "back error addHome " + err}
+        }
+    }
+
     async createToDo(tasksArray: string[], homeId: number){
         try{
             const dataToInsert = tasksArray.map(taskName => ({
@@ -108,5 +125,6 @@ export class CalendarService{
             return {success: false, message: "wrong allUsers " + err, data: []}
         }
     }
+
 
 }

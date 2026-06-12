@@ -13,3 +13,16 @@ export default async function checkCo(){
         return false;
     }
 }
+
+export function showAlert(message : string, type = "danger") {
+    const container = document.getElementById("alert-container");
+    if (!container) return
+
+    container.className = type === "danger" ? "danger" : "success";
+    container.textContent = message;
+
+    setTimeout(() => {
+        container.textContent = "";
+        container.className = "";
+    }, 5000);
+}
