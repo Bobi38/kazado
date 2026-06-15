@@ -20,3 +20,19 @@ export const IncomeCalendar= Type.Object({
   start: Type.String(),
   end: Type.String(),
 })
+
+export const DataResa= Type.Object({
+  name: Type.String(),
+  start: Type.String(),
+  end: Type.String(),
+  status: Type.Boolean(),
+  name_cal: Type.String(),
+  calId: Type.String(),
+  homes: Type.String(),
+})
+
+export const ReturnDataResa = Type.Object({
+  success: Type.Boolean(),
+  message: Type.String(),
+  data: Type.Union([DataResa, Type.Null()]),
+})

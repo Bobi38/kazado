@@ -100,7 +100,7 @@ export default function Home(){
             tasksArray: checkoutTasks
         };
         const ret = await AddCal(dataCal)
-        if(ret.success)
+        if(ret.success && ret.id)
             await AddHome(dataHome, ret.id)
         setFormCal(false)
         await cal_submit()

@@ -6,8 +6,8 @@ import "./Navigation.scss";
 export default function Navigation({ children }) {
 
   const navigate = useNavigate()
+  const location = useLocation();
 
-  const [hello,setHello] = useState("")
 
 	useEffect(() => {
 		const co = async () => {
@@ -18,11 +18,15 @@ export default function Navigation({ children }) {
     co()
 	}, [])
 
+  const isHome = location.pathname === "/";
+
   return (
     <div>
       <div>
           <button>🔔</button>
-          <button onClick={() => navigate("/reservations")}>📅 Réservations</button>
+          <button onClick={() => navigate("/reservation")}>📅 Réservations</button>
+          {!isHome && (<button onClick={() => navigate("/")}>🏠 Home</button>)}
+          
       </div>
 			<div className={`children-container`}>
 				{children}

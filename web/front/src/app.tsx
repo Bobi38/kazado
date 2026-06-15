@@ -4,6 +4,7 @@ import Home from "./pages/Home/Home";
 import Login from "./pages/auth/login/Login";
 import Register from "./pages/auth/register/Register";
 import CalendarPage from "./pages/calendar/CalendarPage/CalendarPage";
+import Reservation from "./pages/reservation/reservation.tsx"
 
 export default function App() {
 
@@ -15,7 +16,9 @@ export default function App() {
   			<Route path={`/`}				element={<Navigation><Home /></Navigation>}/>
 			<Route path={`/login`}			element={<Login/>} />
 			<Route path={`/register`}		element={<Register/>} />
+			<Route path={`/reservation`}	element={<Navigation><Reservation /></Navigation>}/>
 			<Route path={`/calendar/:id/:name`}	element={<Navigation><CalendarPage/></Navigation>} />
+  			<Route path={`/*`}				element={<Navigation><Home /></Navigation>}/>
 		</Routes> 
 	</BrowserRouter>
 	</>

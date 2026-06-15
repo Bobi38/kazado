@@ -1,4 +1,4 @@
-import { useParams, Link } from 'react-router-dom';
+import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
@@ -6,6 +6,8 @@ import "./CalendarPage.scss"
 import SetupAdm from '../setupAdm/SetupAdm';
 
 export default function CalendarPage(){
+
+    const navigate = useNavigate()
     const {id, name} = useParams<{id: string, name:string}>();
     const [events, setEvents] = useState([]);
     const [addevent, setAddEvent] = useState(false)
@@ -100,6 +102,8 @@ export default function CalendarPage(){
             })
 
             const ret = await rep.json()
+            if (ret.code == 404)
+                navigate('/')
             if (ret.success)
                     setModal(ret.bool)
             console.log(`in ADMCAL = ${ret.message} && ${ret.bool}`)

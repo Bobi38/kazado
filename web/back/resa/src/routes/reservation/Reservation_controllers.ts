@@ -17,4 +17,12 @@ export class ReservationController{
         const ret = await this.ReservationService.getReservation(calendar, end, start);
         reply.status(200).send({success: ret.success, message: ret.message, data: ret.data });
     }
+
+    getReservationId = async (req: FastifyRequest, reply: FastifyReply) => {
+        const {calendar} = req.query as {calendar: string};
+        const id = req.user;
+        const ret = await this.ReservationService.getReservationid(calendar, id);
+        console.log(JSON.stringify(ret))
+        reply.status(200).send({success: ret.success, message: ret.message, data: ret.data });
+    }
 }

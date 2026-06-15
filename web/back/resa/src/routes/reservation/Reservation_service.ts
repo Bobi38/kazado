@@ -40,4 +40,48 @@ export class ReservationService{
                                                               }})
             return { success: true, message: "all resa good", data: resa };
     }
+
+    async getReservationid(calendar: string, id: number){
+        const today = new Date()
+        const now = today.toISOString().slice(0, 19).replace('T', ' ');
+        let oneCalendar ="";
+        if (calendar != "null"){
+            oneCalendar = `AND resa.calendarId = ${calendar}`
+        }
+        console.log("coucou" + id + " " + now)
+        const data: any[] = await prisma.$queryRawUnsafe(`
+            SELECT
+                resa.name as name,
+                resa.date_start as start,
+                resa.date_end as end,
+                resa.status as status,
+                cal.name as name_cal,
+                cal.id as calId,
+                GROUP_CONCAT(h.name SEPARATOR ', ') as homes
+                FROM core_reservation_user core
+                INNER JOIN core_reservation resa ON core.resaId = resa.id
+                INNER JOIN core_calendar cal ON resa.calendarId = cal.id
+                INNER JOIN core_reservation_home rh ON resa.id = rh.resaId
+                INNER JOIN core_home h ON rh.homeId = h.id
+                WHERE core.userId = ${id}
+                    AND resa.date_end >= '${now}'
+                    ${oneCalendar}
+                ORDER BY start ASC
+                `)
+        console.log(data)
+const formattedData = data.map(resa => ({
+            ...resa,
+            homes: resa.homes ? resa.homes.split(', ') : []
+        }));
+
+    
+        console.log("coucou");
+        if (formattedData.length > 0) {
+            console.log("Nom de la première résa :", formattedData[0].name);
+        } else {
+            console.log("Aucune réservation trouvée.");
+        }
+        console.log("au revoir");
+        return { success: true, message: "all resa good", data: data };
+    }
 }

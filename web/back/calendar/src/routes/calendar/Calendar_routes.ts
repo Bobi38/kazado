@@ -19,5 +19,11 @@ export async function Calendar(fastify: FastifyInstance) {
     controller.allHomes)
     fastify.get('/AllUsers', {schema: {response: {200: CalendarSchema.ReturnDataNumber}}, preHandler: H.checkCal },
     controller.allUsers)
+    fastify.patch('/home/:id', {schema: {query: CalendarSchema.Id, body: CalendarSchema.BodyHome ,response: {200: CalendarSchema.ReturnMessage}},
+        preHandler: [H.checkCal, H.checkUser, H.checkHome, H.checkAdm("Home")]},
+    controller.patchHome)
+    fastify.get('/home/:id', {schema: {params: CalendarSchema.ParamsHome, query: CalendarSchema.Id ,response: {200: CalendarSchema.ReturnBodyHome}},
+        preHandler: [H.checkCal, H.checkUser, H.checkHome, H.checkAdm("Home")] },
+    controller.infoHome)
 
 }

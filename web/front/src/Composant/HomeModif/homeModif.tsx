@@ -1,15 +1,21 @@
 import { useState, useEffect } from "react";
 
-export default function HomeModif({homeid}: {homeid: number}) {
+type Props = {
+  homeid: number
+  calendar: string
+  setModal: (value: string | boolean) => void
+}
+
+export default function HomeModif({homeid, calendar, setModal}: Props) {
 
     const [homeInfo, setHomeInfo] = useState([])
 
     const UpdateHome = async (data: any, id:number) => {
         try{
-            const url = `/api/calendar/Home?home=${encodeURIComponent(id)}`
+            const url = `/api/calendar/home/${encodeURIComponent(id)}?calendar=${encodeURIComponent(calendar)}`
 
             const rep = await fetch(url,{
-                method: 'UPDATE',
+                method: 'PATCH',
                 headers: {'Content-Type': 'application/json'},
                 body: JSON.stringify(data),
                 credentials: "include"
@@ -24,9 +30,9 @@ export default function HomeModif({homeid}: {homeid: number}) {
         }    
     }
 
-    const get_info_home = async (id : number) => {
+    const get_info_home = async (id: number, calendar: string) => {
         try{
-            const url = `/api/calendar/homeInfo?home=${encodeURIComponent(id)}`
+            const url = `/api/calendar/home/${encodeURIComponent(id)}?calendar=${encodeURIComponent(calendar)}`
 
             const rep = await fetch(url,{
                 method: 'GET',
@@ -37,6 +43,7 @@ export default function HomeModif({homeid}: {homeid: number}) {
             const ret = await rep.json()
             if (ret.success)
                     setHomeInfo(ret.data)
+            console.log(ret.message)
         }catch (err){
             console.log(`error get_info_home catch front: ${err}`)
         }
@@ -46,8 +53,9 @@ export default function HomeModif({homeid}: {homeid: number}) {
         e.preventDefault();
         const d = e.target;
         let checkoutTasks = [];
-        if (d.has_todo_checkout && d.has_todo_checkout.checked) {
-            const rawTasks = d.todo_init_tasks.value;
+        console.log(d.todo_init_tasks.value.length)
+        if (d.todo_init_tasks.value.length > 0){
+        const rawTasks = d.todo_init_tasks.value;
             if (rawTasks.trim() !== "") {
                 checkoutTasks = rawTasks.split(',').map(task => task.trim()).filter(task => task !== "");
             }
@@ -60,11 +68,12 @@ export default function HomeModif({homeid}: {homeid: number}) {
             tasksArray: checkoutTasks
         };
         UpdateHome(dataHome, homeid)
+        setModal("popup")
     }
 
     useEffect(() => {
         const co = async () => {
-            await get_info_home(homeid)
+            await get_info_home(homeid, calendar)
         }
         co()
     }, [])
@@ -73,27 +82,21 @@ export default function HomeModif({homeid}: {homeid: number}) {
     <>
     <form onSubmit={change_home}>
         <strong className="text">Nom</strong>
-        <input type="text" name="name_home" placeholder={homeInfo.name}/>      
+        <input type="text" name="name_home" defaultValue={homeInfo.name}/>      
         <strong className="text">Nombre de chambre</strong>
-        <input type="number" name="nb_bedroom" placeholder={homeInfo.nb_bedroom}  />       
+        <input type="number" name="nb_bedroom" defaultValue={homeInfo.nb_bedroom}  />       
         <strong className="text">Nombre de personne max</strong>
-        <input type="number" name="nb_people" placeholder={homeInfo.nb_people}/>       
+        <input type="number" name="nb_people" defaultValue={homeInfo.nb_people}/>       
         <strong className="text">Adresse</strong>
-        <input type="text" name="adress" placeholder={homeInfo.adress} />      
+        <input type="text" name="adress" defaultValue={homeInfo.adress} />      
         <h3>Options de Fin de Séjour</h3>
-
-        {homeInfo.todo === true && (
-          <>
             <strong className="text">
               Tâches initiales (séparées par des virgules)
             </strong>       
             <textarea
               name="todo_init_tasks"
-              placeholder={homeInfo.todotasks}
+              defaultValue={homeInfo.tasksArray}
             />
-          </>
-        )}
-
         <button type="submit">Sauvegarder</button>
     </form>
     </>

@@ -72,6 +72,29 @@ export class CalendarService{
             return {success: true, message: "todo add with success"}
     }
 
+    async updateToDo(tasksArray: string[], homeId: number){
+        console.log("i m in updatetodo")
+            const dataToInsert = tasksArray.map(taskName => ({
+                homeId: homeId,
+                task: taskName,
+                status: false
+            }));
+            await prisma.$transaction([
+                    prisma.core_todo.deleteMany({
+                        where: { homeId: homeId }
+                    }),
+                    prisma.core_home.update({
+                        where: { id: homeId },
+                        data: { isToDo: true }
+                    }),
+                    prisma.core_todo.createMany({
+                        data: dataToInsert,
+                        skipDuplicates: true
+                    })
+                ]);
+            return {success: true, message: "todo add with success"}
+    }
+
     async allHomes(calendar: string){
             const homes: any[] = await prisma.$queryRaw`
                 SELECT
@@ -98,5 +121,33 @@ export class CalendarService{
             return {success: true, message: "good", data: Users}
     }
 
+    async infoHome(id: number){
+        const home = await prisma.core_home.findUnique({
+            where: { id: id },
+            select: {
+                nb_people: true,
+                nb_bedroom: true,
+                adress: true,
+                name: true,
+                toDoTasks: {
+                    select: {
+                        task: true
+                    }
+                }
+            }
+        });
+        if (!home) 
+            throw new AppError("Home not found", 404);
+
+        const formattedData = {
+            nb_people: home.nb_people,
+            nb_bedroom: home.nb_bedroom,
+            adress: home.adress,
+            name: home.name,
+            tasksArray: home.toDoTasks.map(t => t.task).join(", ")
+        };
+        console.log(formattedData)
+        return {success: true, message: "good recup data home", data : formattedData}
+    }
 
 }

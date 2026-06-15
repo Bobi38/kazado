@@ -136,7 +136,7 @@ export default function SetupAdm({id, setModal, modal, home, setHome}: Props){
             )}
             {modal === "home_modif" && (
                 <>
-                    <HomeModif homeid={homeId} />
+                    <HomeModif homeid={homeId} calendar={id} setModal={setModal} />
                 </>
             )}
             
