@@ -8,6 +8,8 @@ import CalendarPage from "./pages/calendar/CalendarPage/CalendarPage";
 export default function App() {
 
   return (
+	<>
+	            <p id={'alert-container'}></p>
 	<BrowserRouter>   
 		<Routes> 
   			<Route path={`/`}				element={<Navigation><Home /></Navigation>}/>
@@ -16,5 +18,6 @@ export default function App() {
 			<Route path={`/calendar/:id/:name`}	element={<Navigation><CalendarPage/></Navigation>} />
 		</Routes> 
 	</BrowserRouter>
+	</>
 	)
 }

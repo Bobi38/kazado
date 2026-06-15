@@ -1,6 +1,7 @@
 import { useNavigate, useLocation}      from    "react-router-dom";
 import { useEffect, useRef, useState }            from    "react";
 import { VscEye, VscEyeClosed }     from    "react-icons/vsc";
+import { showAlert } from "../../../tool/function.usefull";
 import "./Login.scss"
 
 
@@ -30,6 +31,11 @@ export default function Login(){
             })
 
             const ret = await rep.json()
+            if (!ret.success){
+                console.log(`front register success false: ${ret.message}`)
+                showAlert(`front register success false: ${ret.message}`, "danger")
+            }
+
             if (ret.success)
                 navigate("/")
             else 
@@ -42,6 +48,7 @@ export default function Login(){
 
     return (
         <div className="log">
+
             <h1>Login</h1>
             <div className="auth_form">
                 <form onSubmit={(e) => {login_submit(e)}}>

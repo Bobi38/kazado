@@ -21,7 +21,8 @@ export default function Navigation({ children }) {
   return (
     <div>
       <div>
-          <button>Not</button>
+          <button>🔔</button>
+          <button onClick={() => navigate("/reservations")}>📅 Réservations</button>
       </div>
 			<div className={`children-container`}>
 				{children}
