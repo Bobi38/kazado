@@ -42,46 +42,40 @@ export class ReservationService{
     }
 
     async getReservationid(calendar: string, id: number){
-        const today = new Date()
-        const now = today.toISOString().slice(0, 19).replace('T', ' ');
+        const now = new Date()
         let oneCalendar ="";
         if (calendar != "null"){
             oneCalendar = `AND resa.calendarId = ${calendar}`
         }
         console.log("coucou" + id + " " + now)
-        const data: any[] = await prisma.$queryRawUnsafe(`
-            SELECT
-                resa.name as name,
-                resa.date_start as start,
-                resa.date_end as end,
-                resa.status as status,
-                cal.name as name_cal,
-                cal.id as calId,
-                GROUP_CONCAT(h.name SEPARATOR ', ') as homes
-                FROM core_reservation_user core
-                INNER JOIN core_reservation resa ON core.resaId = resa.id
-                INNER JOIN core_calendar cal ON resa.calendarId = cal.id
-                INNER JOIN core_reservation_home rh ON resa.id = rh.resaId
-                INNER JOIN core_home h ON rh.homeId = h.id
-                WHERE core.userId = ${id}
-                    AND resa.date_end >= '${now}'
-                    ${oneCalendar}
-                ORDER BY start ASC
-                `)
+        const data = await prisma.core_reservation.findMany({
+            where: {
+                userId: id,
+                date_end: { gte: now },
+                calendarId: calendar !== "null" ? calendar : undefined
+            },
+            select:{
+                id: true,
+                name: true,
+                date_start: true,
+                date_end: true,
+                status: true,
+                id_calendar: { select: { id: true, name: true } },
+                allHome: { select: { id_home: { select: { id: true, name: true } } } }
+            },
+        })
         console.log(data)
-const formattedData = data.map(resa => ({
-            ...resa,
-            homes: resa.homes ? resa.homes.split(', ') : []
+        const dataparse = data.map(reservation => ({
+            name: reservation.name,
+            start: reservation.date_start,
+            end: reservation.date_end,
+            status: reservation.status === true ? "validé":"en attente",
+            name_cal: reservation.id_calendar.name,
+            calId: reservation.id_calendar.id,
+            homes: reservation.allHome.map(h => h.id_home.name ).join(", ")
         }));
-
-    
-        console.log("coucou");
-        if (formattedData.length > 0) {
-            console.log("Nom de la première résa :", formattedData[0].name);
-        } else {
-            console.log("Aucune réservation trouvée.");
-        }
         console.log("au revoir");
-        return { success: true, message: "all resa good", data: data };
+        console.log(dataparse)
+        return { success: true, message: "all resa good", data: dataparse };
     }
 }

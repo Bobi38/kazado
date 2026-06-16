@@ -38,8 +38,7 @@ export default function Reservation (){
         <h1>Mes reservations</h1>
             {resa.map((m) => (
                 <label key={m.id} style={{ display: "block", marginBottom: "5px" }}>
-                    {m.name} - {m.calendar}
-                    <button onClick={() => {setModal("home_modif"); setHomeId(m.id);}}>modif</button>
+                   . {m.name} - {m.name_cal} - {m.homes} - {m.start.slice(0, 10)} to {m.end.slice(0, 10)} - Status: {m.status.toString()}
                 </label>
             ))}
         </div>

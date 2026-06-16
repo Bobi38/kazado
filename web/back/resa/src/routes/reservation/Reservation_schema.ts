@@ -25,7 +25,7 @@ export const DataResa= Type.Object({
   name: Type.String(),
   start: Type.String(),
   end: Type.String(),
-  status: Type.Boolean(),
+  status: Type.String(),
   name_cal: Type.String(),
   calId: Type.String(),
   homes: Type.String(),
@@ -34,5 +34,5 @@ export const DataResa= Type.Object({
 export const ReturnDataResa = Type.Object({
   success: Type.Boolean(),
   message: Type.String(),
-  data: Type.Union([DataResa, Type.Null()]),
+  data: Type.Array(DataResa),
 })
