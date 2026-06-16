@@ -42,7 +42,7 @@ export default function SetupAdm({id, setModal, modal, home, setHome}: Props){
 
     const Add_people = async (id: string, name: string, road:string) => {
         try{
-            const url = `/api/calendar/${road}?calendar=${encodeURIComponent(id)}`
+            const url = `/api/gestion/${road}?calendar=${encodeURIComponent(id)}`
 
             const rep = await fetch(url,{
                 method: 'POST',
@@ -87,13 +87,15 @@ export default function SetupAdm({id, setModal, modal, home, setHome}: Props){
         if (what === "admin") {
           value = document.getElementById("new_adm")?.value || "";
           Add_people(id, value, "User")
-          return 
         }       
-        if (what === "user") {
+        else if (what === "user") {
           value = document.getElementById("new_user")?.value || "";
-          Add_people(id, value, "Adm")
-          return 
-        }       
+          Add_people(id, value, "Adm") 
+        }
+        else {
+          value = document.getElementById("new_validator")?.value || "";
+          Add_people(id, value, "Validator") 
+        } 
         console.log(what, value);
     }
 
@@ -112,9 +114,12 @@ export default function SetupAdm({id, setModal, modal, home, setHome}: Props){
             <span>Nouvelle administrateur</span>
             <input type="text" id="new_adm"></input>
             <button type="button" onClick={()=> {new_people("amd")}}>add</button>
-            <span>Nouvelle utilisateur</span>
+            <span>Nouveau Validator</span>
             <input type="text" id="new_user"></input>
-            <button type="button" onClick={()=> {new_people("amd")}}>add</button>
+            <button type="button" onClick={()=> {new_people("user")}}>add</button>
+            <span>Nouvelle utilisateur</span>
+            <input type="text" id="new_validator"></input>
+            <button type="button" onClick={()=> {new_people("validator")}}>add</button>
             <span>Les homes</span>
             {home.map((m) => (
                 <label key={m.id} style={{ display: "block", marginBottom: "5px" }}>
@@ -123,7 +128,6 @@ export default function SetupAdm({id, setModal, modal, home, setHome}: Props){
                 </label>
             ))}
             <button type="button" onClick={() =>(setModal("home_add"))}>Créer Home</button>
-
             </>
             )}
             {modal === "home_add" && (

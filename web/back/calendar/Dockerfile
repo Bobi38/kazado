@@ -10,7 +10,7 @@ COPY ./prisma ./prisma
 COPY ./calendar .
 
 RUN npm install
-RUN npx prisma generate --schema=/app/prisma
+RUN npx prisma generate --schema=./prisma
 
 EXPOSE 9103
 CMD ["npm", "run", "dev"]

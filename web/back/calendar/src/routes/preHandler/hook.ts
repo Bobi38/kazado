@@ -33,6 +33,20 @@ export async function checkNewRole(req: FastifyRequest, rep: FastifyReply) {
         req.nuser = isUser.id;
 }
 
+export async function checkNewUser(req: FastifyRequest, rep: FastifyReply) {
+        const {name, calendar} = req.query as {name : string, calendar : string}
+
+        if (!name)
+            return;
+        const isUser = await prisma.core_user.findFirst({where:{pseudo: name}})
+        if (!isUser)
+            throw new AppError(`The name doesn't exist`, 401)
+        const isInCal= await prisma.core_calendar_user.findFirst({where:{calendarId: calendar, userId: isUser.id}});
+        if (isInCal)
+            throw new AppError(`The user is already in the calendar`, 401)
+        req.nuser = isUser.id;
+}
+
 export  async function checkCal(req: FastifyRequest, rep: FastifyReply) {
         const {calendar: calId} = req.query as {calendar : string}
 

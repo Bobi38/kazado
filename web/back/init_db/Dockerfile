@@ -4,13 +4,12 @@ RUN apt-get update -y && apt-get install -y openssl
 
 WORKDIR /app
 
-COPY ./user/package*.json ./
+COPY ./init_db/package*.json ./
 
 COPY ./prisma ./prisma
-COPY ./user .
+COPY ./init_db .
 
 RUN npm install
 RUN npx prisma generate --schema=./prisma
 
-EXPOSE 9101
-CMD ["npm", "run", "dev"]
+CMD ["npm", "start"]

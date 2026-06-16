@@ -12,6 +12,7 @@ model core_user {
     userValidator       core_calendar_validator[]   @relation("UserValidator")
 	reservationUser		core_reservation[]			@relation("UserIdResa")
 	inResaUser			core_reservation_user[]		@relation("UserId")
+	receiveNotifUser	core_notification_user_receive[]		@relation("UserId")
 }
 
 model core_user_invit {

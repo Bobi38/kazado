@@ -1,0 +1,26 @@
+model core_notification{
+    id          Int         @id @default(autoincrement())
+    calendarId  Int
+    id_template core_notification_template @relation("TemplateId", fields: [affichage], references: [key])
+    affichage   String
+    createdAt   DateTime    @default(now())
+    variables   Json?
+    UserRelation    core_notification_user_receive[]    @relation("NotifId")
+}
+
+model core_notification_template{
+    id          Int         @id @default(autoincrement())
+    key         String      @unique
+    title       String
+    message     String
+    notifId     core_notification[] @relation("TemplateId")
+}
+
+model core_notification_user_receive{
+    id          Int                 @id @default(autoincrement())
+    id_notif    core_notification    @relation("NotifId", fields: [notifId], references: [id])
+    id_user     core_user           @relation("UserId", fields: [userId], references: [id])
+    notifId     Int
+    userId      Int  
+    isRead      Boolean     @default(false)
+}

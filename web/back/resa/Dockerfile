@@ -10,7 +10,7 @@ COPY ./prisma ./prisma
 COPY ./resa .
 
 RUN npm install
-RUN npx prisma generate --schema=/app/prisma
+RUN npx prisma generate --schema=./prisma
 
 EXPOSE 9102
 CMD ["npm", "run", "dev"]

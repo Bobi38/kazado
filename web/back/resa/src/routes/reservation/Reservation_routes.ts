@@ -16,7 +16,6 @@ export async function Reservation(fastify: FastifyInstance) {
     controller.getReservation)
     fastify.get('/reservationId', {schema: {response: {200: ReservationSchema.ReturnDataResa}}},
     controller.getReservationId)
-    // fastify.get('/reservationAdm', {schema: {response: {200: ReservationSchema.ReturnDataResa}}, 
-    //     preHandler: H.checkUser},
-    // controller.getReservationId)
+    fastify.get('/reservationVal', {schema: {response: {200: ReservationSchema.ReturnDataResaAdm}}},
+    controller.getValidation)
 }

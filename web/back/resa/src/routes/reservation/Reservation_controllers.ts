@@ -25,4 +25,12 @@ export class ReservationController{
         console.log(JSON.stringify(ret))
         reply.status(200).send({success: ret.success, message: ret.message, data: ret.data });
     }
+
+    getValidation = async (req: FastifyRequest, reply: FastifyReply) => {
+        const {calendar} = req.query as {calendar: string};
+        const id = req.user;
+        const ret = await this.ReservationService.getValidation(calendar, id);
+        console.log(JSON.stringify(ret))
+        reply.status(200).send({success: ret.success, message: ret.message, data: ret.data });
+    }
 }

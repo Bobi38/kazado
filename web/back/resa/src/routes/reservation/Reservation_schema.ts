@@ -36,3 +36,21 @@ export const ReturnDataResa = Type.Object({
   message: Type.String(),
   data: Type.Array(DataResa),
 })
+
+export const DataResaAdm= Type.Object({
+  name: Type.String(),
+  id_resa: Type.Number(),
+  start: Type.String(),
+  end: Type.String(),
+  name_cal: Type.String(),
+  homes: Type.String(),
+  user: Type.String(),
+  nb_adult: Type.Number(),
+  nb_children: Type.Number()
+})
+
+export const ReturnDataResaAdm = Type.Object({
+  success: Type.Boolean(),
+  message: Type.String(),
+  data: Type.Array(DataResaAdm),
+})

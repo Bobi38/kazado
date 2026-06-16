@@ -20,6 +20,11 @@ export class GestionService{
         return {success: true, message: "good addAdmin"}
     }
 
+    async addUser(calendar: string, newId: number){
+        await prisma.core_calendar_user.create({data:{calendarId: calendar, userId: newId, status: false}})
+        return {success: true, message: "good addUser"}
+    }
+
     async setAdm(calendar: string, userId: number){
             console.log(calendar)
             const ret = await prisma.core_calendar_admin.findFirst({where:{calendarId: calendar, idadm: userId}})
