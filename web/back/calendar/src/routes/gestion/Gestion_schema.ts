@@ -5,7 +5,8 @@ export const CalendarReturnBool= Type.Object({
 });
 
 export const Id= Type.Object({
-  id:  Type.String(),
+  calendar:  Type.String(),
+  name: Type.String(),
 });
 
 export const Data = Type.Object({

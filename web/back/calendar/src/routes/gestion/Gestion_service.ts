@@ -20,9 +20,14 @@ export class GestionService{
         return {success: true, message: "good addAdmin"}
     }
 
-    async addUser(calendar: string, newId: number){
-        await prisma.core_calendar_user.create({data:{calendarId: calendar, userId: newId, status: false}})
-        return {success: true, message: "good addUser"}
+    async addUser(calendar: string, user:number, newId: number){
+        
+        await prisma.$transaction([
+            prisma.core_calendar_user.create({data:{calendarId: calendar, userId: newId, status: false}}),
+            prisma.core_user_invit.deleteMany({where:{hostId: user, guestId: newId, calendarId: calendar}}),
+            prisma.core_user_invit.create({data:{hostId: user, guestId: newId, calendarId: calendar}})
+        ]);
+        return {success: true, message: "good addUser + send invit"}
     }
 
     async setAdm(calendar: string, userId: number){

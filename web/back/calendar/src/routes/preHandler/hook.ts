@@ -40,10 +40,14 @@ export async function checkNewUser(req: FastifyRequest, rep: FastifyReply) {
             return;
         const isUser = await prisma.core_user.findFirst({where:{pseudo: name}})
         if (!isUser)
-            throw new AppError(`The name doesn't exist`, 401)
+            throw new AppError(`Le user ${name} n'existe pas `, 401)
         const isInCal= await prisma.core_calendar_user.findFirst({where:{calendarId: calendar, userId: isUser.id}});
-        if (isInCal)
-            throw new AppError(`The user is already in the calendar`, 401)
+        if (isInCal){
+            if (isInCal.status === false)
+                throw new AppError(`Le user ${name} a déjà une invitation en attente`, 401)
+            else            
+                throw new AppError(`Le user ${name} est déjà dans le calendar`, 401)
+        }
         req.nuser = isUser.id;
 }
 

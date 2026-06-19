@@ -1,5 +1,5 @@
 import Fastify from 'fastify';
-import {add_db} from "./add_db"
+import add_db from "./add_db"
 
 const fastify = Fastify({ logger: { level: 'warn' } });
 

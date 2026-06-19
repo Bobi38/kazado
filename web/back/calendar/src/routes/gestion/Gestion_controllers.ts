@@ -19,9 +19,10 @@ export class GestionController{
     }
 
     addUser = async (req: FastifyRequest, reply: FastifyReply) => {
-            const userId = req.nuser as number;
+			const user = req.user as number
+            const nuserId = req.nuser as number;
             const {calendar} = req.query as {calendar: string};
-            const rep = await this.GestionService.addUser(calendar, userId);
+            const rep = await this.GestionService.addUser(calendar, user, nuserId);
             return reply.send({success: rep.success, message: rep.message})
     }
 

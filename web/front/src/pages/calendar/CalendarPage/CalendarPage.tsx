@@ -15,6 +15,7 @@ export default function CalendarPage(){
     const [invit, setInvite] = useState([])
     const [modal, setModal] = useState<"no" | "yes" | "popup" | "home_edit" | "home_create">("no");
     const [selectedHomes, setSelectedHomes] = useState([]);
+    const [selectedInvit, setSelectedInvit] = useState([]);
     const [period, setPeriod] = useState<{start: string, end: string} | null>(null)
 
     const toggle = (id, settab: any) => {
@@ -85,7 +86,8 @@ export default function CalendarPage(){
             const ret = await rep.json()
             if (ret.success)
                     setInvite(ret.data)
-            console.log(`in add home = ${ret.message} && ${ret.id}`)
+            console.log(`in allUser = ${ret.message} && ${ret.id}`)
+            console.log(invit)
         }catch(err){
             console.log(`error front catch update ${err}`)
         }
@@ -145,13 +147,14 @@ export default function CalendarPage(){
             nb_adult: Number(d.nb_adult.value),
             nb_children: Number(d.nb_children.value),
             Home: selectedHomes,
-            Invit : invit
+            Invit : selectedInvit
         }
 
         console.log("APRES LA DATA")
         console.log(`data from = ${dataRes.date_end}`)
         await addResa(dataRes, id!)
         setSelectedHomes([])
+        setSelectedInvit([])
         setInvite([])
         setAddEvent(false)
         updateEvent(id!, period.start!, period.end!)
@@ -226,8 +229,8 @@ export default function CalendarPage(){
                   <label key={m.id} style={{ display: "block", marginBottom: "5px" }}>
                     <input
                       type="checkbox"
-                      checked={selectedHomes.includes(m.id)}
-                      onChange={() => toggle(m.id, setInvite)}
+                      checked={selectedInvit.includes(m.id)}
+                      onChange={() => toggle(m.id, setSelectedInvit)}
                     />
                     {m.name}
                   </label>

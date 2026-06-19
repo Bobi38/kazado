@@ -108,16 +108,16 @@ export class CalendarService{
     }
 
     async allUsers(calendar: string, userId: number){
-            console.log(calendar)
             const Users: any[] = await prisma.$queryRaw`
                 SELECT
                     user.id as id,
-                    user.name as name
+                    user.pseudo as name
                 FROM core_user user
                 INNER JOIN core_calendar_user rel ON user.id = rel.userId
                 WHERE rel.calendarId = ${calendar}
                 AND rel.userId != ${userId}
                 `;
+                console.log(Users)
             return {success: true, message: "good", data: Users}
     }
 

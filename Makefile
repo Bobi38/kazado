@@ -29,8 +29,6 @@ secrets:
 	openssl req -x509 -nodes -days 365 -newkey rsa:2048 -keyout ./conf/secrets/nginx.key -out ./conf/secrets/nginx.crt -subj "/CN=tvoisin.42.fr"
 
 update_prisma:
-	@echo "🚀 Synchronisation du schéma Prisma avec la base de données..."
-	cd web/back && npx prisma@6.19.3 db push --schema=./prisma
 	@echo "📦 Régénération du client Prisma dans les conteneurs Docker..."
 	docker compose exec gateway npx prisma generate --schema=./prisma
 	docker compose exec resa npx prisma generate --schema=./prisma
@@ -57,4 +55,4 @@ fclean: clean
 
 
 
-.PHONY: all down prune creat rmi volumes  clean  fclean delete_secret compose update_prisma
+.PHONY: all down prune creat rmi volumes  clean  fclean delete_secret compose update_prisma add_dev

@@ -42,7 +42,7 @@ export default function SetupAdm({id, setModal, modal, home, setHome}: Props){
 
     const Add_people = async (id: string, name: string, road:string) => {
         try{
-            const url = `/api/gestion/${road}?calendar=${encodeURIComponent(id)}`
+            const url = `/api/gestion/${road}?calendar=${encodeURIComponent(id)}&name=${encodeURIComponent(name)}`
 
             const rep = await fetch(url,{
                 method: 'POST',
@@ -86,11 +86,11 @@ export default function SetupAdm({id, setModal, modal, home, setHome}: Props){
         let value = "";     
         if (what === "admin") {
           value = document.getElementById("new_adm")?.value || "";
-          Add_people(id, value, "User")
+          Add_people(id, value, "Adm")
         }       
         else if (what === "user") {
           value = document.getElementById("new_user")?.value || "";
-          Add_people(id, value, "Adm") 
+          Add_people(id, value, "User") 
         }
         else {
           value = document.getElementById("new_validator")?.value || "";
@@ -115,11 +115,11 @@ export default function SetupAdm({id, setModal, modal, home, setHome}: Props){
             <input type="text" id="new_adm"></input>
             <button type="button" onClick={()=> {new_people("amd")}}>add</button>
             <span>Nouveau Validator</span>
-            <input type="text" id="new_user"></input>
-            <button type="button" onClick={()=> {new_people("user")}}>add</button>
-            <span>Nouvelle utilisateur</span>
             <input type="text" id="new_validator"></input>
             <button type="button" onClick={()=> {new_people("validator")}}>add</button>
+            <span>Nouvelle utilisateur</span>
+            <input type="text" id="new_user"></input>
+            <button type="button" onClick={()=> {new_people("user")}}>add</button>
             <span>Les homes</span>
             {home.map((m) => (
                 <label key={m.id} style={{ display: "block", marginBottom: "5px" }}>
