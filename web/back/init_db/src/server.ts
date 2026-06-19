@@ -1,6 +1,6 @@
 
 import Fastify from 'fastify';
-import init_db from './init_template';
+import init_db from './init_template.ts';
 
 const fastify = Fastify({ logger: { level: 'warn' } });
 

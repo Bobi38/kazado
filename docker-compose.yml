@@ -26,13 +26,17 @@ services:
     container_name: init_db
     build:
       context: ./web/back
-      dockerfile: init_db/Dockerfile
+      dockerfile: ./init_db/Dockerfile
     env_file: 
       - .env
     depends_on:
       mysql:
         condition: service_healthy
     restart: "no"
+    volumes:
+      - ./web/back/init_db/:/app
+      - ./web/back/prisma:/app/prisma
+      - /app/node_modules
     networks:
       - home
 

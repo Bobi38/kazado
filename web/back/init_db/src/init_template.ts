@@ -1,4 +1,4 @@
-import prisma from "./lib/prisma"
+import {prisma} from "./lib/prisma.ts"
 
 export default async function init_db(){
     const templates = [
@@ -29,8 +29,10 @@ export default async function init_db(){
         },
     ];
 
+    console.log("MODELS:");
+console.log(Object.keys(prisma).filter(k => !k.startsWith("$")));
     for(const temp of templates){
-        await prisma.core_notification_template({data:{
+        await prisma.core_notification_template.create({data:{
                                                         key: temp.key,
                                                         title: temp.title,
                                                         message: temp.message

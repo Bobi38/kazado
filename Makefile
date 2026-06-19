@@ -1,6 +1,6 @@
 export DATABASE_URL=mysql://bobi:123@localhost:3306/Cal
 
-all: secrets compose
+all: secrets compose update_prisma
 
 compose:
 	docker compose up -d
