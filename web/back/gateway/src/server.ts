@@ -24,6 +24,7 @@ async function MiddCoocki(req:FastifyRequest, rep:FastifyReply){
     try{
         const decoded = await jwt.verify(token, secretTOK) as { id: number };
     }catch(err){
+        rep.clearCookie("auth");
         return rep.status(401).send({ success: false, message: `Token invalide` });
     }
 }
@@ -69,6 +70,11 @@ const start = async () => {
         upstream: 'http://calendar:9103',
         prefix: '/api/calendar',
         rewritePrefix: '/calendar',
+      });
+      await securedContext.register(fastifyHttpProxy, {
+        upstream: 'http://calendar:9103',
+        prefix: '/api/invitation',
+        rewritePrefix: '/invitation',
       });
       await securedContext.register(fastifyHttpProxy, {
         upstream: 'http://calendar:9103',

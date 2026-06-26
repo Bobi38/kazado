@@ -5,6 +5,7 @@ import Login from "./pages/auth/login/Login";
 import Register from "./pages/auth/register/Register";
 import CalendarPage from "./pages/calendar/CalendarPage/CalendarPage";
 import Reservation from "./pages/reservation/reservation.tsx"
+import Invitation from "./pages/invitation/invitation.tsx";
 
 export default function App() {
 
@@ -13,10 +14,11 @@ export default function App() {
 	            <p id={'alert-container'}></p>
 	<BrowserRouter>   
 		<Routes> 
-  			<Route path={`/`}				element={<Navigation><Home /></Navigation>}/>
+  			<Route path={`/`}				element={<Navigation><Home/></Navigation>}/>
 			<Route path={`/login`}			element={<Login/>} />
 			<Route path={`/register`}		element={<Register/>} />
-			<Route path={`/reservation`}	element={<Navigation><Reservation /></Navigation>}/>
+			<Route path={`/reservation`}	element={<Navigation><Reservation/></Navigation>}/>
+			<Route path={`/invitation`}	element={<Navigation><Invitation/></Navigation>}/>
 			<Route path={`/calendar/:id/:name`}	element={<Navigation><CalendarPage/></Navigation>} />
   			<Route path={`/*`}				element={<Navigation><Home /></Navigation>}/>
 		</Routes> 
