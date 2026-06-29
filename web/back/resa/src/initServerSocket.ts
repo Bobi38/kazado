@@ -20,7 +20,7 @@ async function socketPlugin(fastify: FastifyInstance) {
     }
   });
 
-  // 3. Gestion des événements en temps réel
+  console.log("Socket.io initialisé avec succès");
   io.on("connection", (socket) => {
     fastify.log.warn(`[Socket.io] Smartphone connecté : ${socket.id}`);
 
