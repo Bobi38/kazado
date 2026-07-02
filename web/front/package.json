@@ -26,6 +26,10 @@
     "react-simple-maps": "^1.0.0",
     "recharts": "^3.8.1",
     "socket.io": "^4.8.3",
+<<<<<<< HEAD
+=======
+    "socket.io-client": "^4.8.3",
+>>>>>>> 444d05c34360c18f6f92b39501b9b7c3fcace700
     "typescript": "^5.9.3",
     "zustand": "^5.0.13"
   },

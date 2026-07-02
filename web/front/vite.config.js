@@ -12,6 +12,10 @@ export default defineConfig({
             target: 'http://gateway:9100',
             changeOrigin: true,
         },
+          '/ws': {
+            target: 'http://gateway:9100',
+            changeOrigin: true,
+          }
     }
   }
 });

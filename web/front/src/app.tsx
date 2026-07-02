@@ -1,4 +1,6 @@
 import { BrowserRouter, Routes, Route} from    "react-router-dom";
+import { useEffect } from "react";
+import socketStore from "./Composant/context/socketContext.tsx";
 import Navigation from "./Navigation/Navigation.tsx";
 import Home from "./pages/Home/Home";
 import Login from "./pages/auth/login/Login";
@@ -8,6 +10,11 @@ import Reservation from "./pages/reservation/reservation.tsx"
 import Invitation from "./pages/invitation/invitation.tsx";
 
 export default function App() {
+	  const connect = socketStore((state) => state.connect);
+
+	useEffect(() => {
+		connect();
+	}, [connect]);
 
   return (
 	<>
