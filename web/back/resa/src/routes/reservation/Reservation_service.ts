@@ -5,7 +5,7 @@ import { AppError } from "../preHandler/AppError";
 export class ReservationService{
     async addReservation(data: any, calendar: string, id: number){
             const bool = await prisma.core_calendar.findFirst({where:{id: calendar}, select:{validator:true}})
-            const vali = await prisma.core_calendar_validator.findFirst({where:{calendarId: calendar, idadm: id}})
+            const vali = await prisma.core_calendar_validator.findFirst({where:{calendarId: calendar, idvalidator: id}})
             let validator: boolean = false;
             if (vali)
                 validator = false;
@@ -55,7 +55,7 @@ export class ReservationService{
         console.log("coucou" + id + " " + now)
         const data = await prisma.core_reservation.findMany({
             where: {
-                allUser:{userId : id},
+                allUser:{some:{userId : id}},
                 date_end: { gte: now },
                 calendarId: calendar !== "null" ? calendar : undefined
             },

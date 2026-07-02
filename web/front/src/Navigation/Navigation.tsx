@@ -19,12 +19,15 @@ export default function Navigation({ children }) {
 	}, [])
 
   const isHome = location.pathname === "/";
+  const isReservation = location.pathname === "/reservation";
+  const isInvitations = location.pathname === "/invitations";
 
   return (
     <div>
       <div>
           <button>🔔</button>
-          <button onClick={() => navigate("/reservation")}>📅 Réservations</button>
+          {!isInvitations && (<button onClick={() => navigate("/invitation")}>📩 Invitations</button>)}
+          {!isReservation && (<button onClick={() => navigate("/reservation")}>📅 Réservations</button>)}
           {!isHome && (<button onClick={() => navigate("/")}>🏠 Home</button>)}
           
       </div>

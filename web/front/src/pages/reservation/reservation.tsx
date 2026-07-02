@@ -20,6 +20,7 @@ export default function Reservation (){
                 })
 
                 const ret = await rep.json()
+                console.log(ret)
                 if (ret.success)
                     setResa(ret.data)
                 else 
@@ -52,15 +53,18 @@ export default function Reservation (){
     }
 
     useEffect(() =>{
+        console.log("useeffect")
         const co = async () => {
             await get_all_my_resa()
-            get_all_validation()
+            await get_all_validation()
         }
         co()
-    }, [aff])
+    }, [])
 
     return (
         <div>
+            <button onClick={() => setAff("resa")}>Mes reservations</button>
+            <button onClick={() => setAff("adm")}>Reservations en attente</button>
         { aff === "resa" && (
         <>
         <h1>Mes reservations</h1>

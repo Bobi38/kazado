@@ -14,6 +14,7 @@ async function callPath(req: any, rep:any){
   console.log(req.url)
 }
 
+
 fastify.addHook('onClose', async (instance) => {
   await prisma.$disconnect()
 })

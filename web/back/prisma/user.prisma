@@ -16,7 +16,7 @@ model core_user {
 }
 
 model core_user_invit {
-	id				Int				@id @default(autoincrement())
+	id				String			@id @default(cuid())
 	id_user_host	core_user		@relation("UserHost", fields: [hostId], references: [id])
 	id_user_guest	core_user		@relation("UserGuest", fields: [guestId], references: [id])
 	id_calendar		core_calendar	@relation("IdCalendar", fields: [calendarId], references: [id])
