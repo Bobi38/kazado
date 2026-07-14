@@ -10,11 +10,15 @@ import Reservation from "./pages/reservation/reservation.tsx"
 import Invitation from "./pages/invitation/invitation.tsx";
 
 export default function App() {
-	  const connect = socketStore((state) => state.connect);
+	const connect = socketStore((state) => state.connect);
 
-	useEffect(() => {
-		connect();
-	}, [connect]);
+useEffect(() => {
+    connect();
+    return () => {
+        const { socket } = socketStore.getState();
+        socket?.disconnect();
+    };
+}, [connect]);
 
   return (
 	<>

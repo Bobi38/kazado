@@ -33,6 +33,13 @@ async function socketPlugin(fastify: FastifyInstance) {
       fastify.log.warn(`Le socket ${socket.id} a rejoint le calendrier : ${calendarId}`);
     });
 
+    socket.on("TEST", (data) => {
+      fastify.log.warn(`[Socket.io] Message reçu sur TEST : ${data.payload}`);
+      if (data.test) {
+        fastify.log.trace(`[Socket.io] Erreur reçue sur TEST : ${data.test}`);
+      } 
+    });
+
     socket.on("disconnect", () => {
       fastify.log.warn(`[Socket.io] Déconnexion : ${socket.id}`);
     });

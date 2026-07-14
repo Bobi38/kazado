@@ -1,0 +1,9 @@
+#! /bin/bash
+
+echo "Hello, World!"
+
+mysql -u root -p"$ROOT_PASSWORD" <<EOF
+CREATE USER IF NOT EXISTS 'bobi'@'%' IDENTIFIED BY '$BOBI_PASSWORD';
+GRANT ALL PRIVILEGES ON *.* TO 'bobi'@'%' WITH GRANT OPTION;
+FLUSH PRIVILEGES;
+EOF

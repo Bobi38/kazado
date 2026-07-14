@@ -23,13 +23,16 @@
     "react-icons": "^5.5.0",
     "react-leaflet": "^5.0.0",
     "react-router-dom": "^7.13.0",
-    "react-simple-maps": "^1.0.0",
     "recharts": "^3.8.1",
     "socket.io": "^4.8.3",
 <<<<<<< HEAD
 =======
     "socket.io-client": "^4.8.3",
+<<<<<<< HEAD
 >>>>>>> 444d05c34360c18f6f92b39501b9b7c3fcace700
+=======
+    "sonner": "^2.0.7",
+>>>>>>> ba1e3a2c (a lot of ... socket, mui, ...)
     "typescript": "^5.9.3",
     "zustand": "^5.0.13"
   },

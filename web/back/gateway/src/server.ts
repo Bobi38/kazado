@@ -56,6 +56,12 @@ const start = async () => {
       prefix: '/api/secu',
       rewritePrefix: '/secu',
     });
+    await fastify.register(fastifyHttpProxy, {
+        upstream: 'http://resa:9102',
+        prefix: '/socket.io',
+        rewritePrefix: '/socket.io',
+        ws: true
+    });
     await fastify.register(async (securedContext) => {
 
 
