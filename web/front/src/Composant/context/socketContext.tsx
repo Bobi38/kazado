@@ -40,6 +40,10 @@ socket.on("disconnect", (reason) => {
   console.log("❌ DISCONNECT", reason);
 });
 
+socket.on("test", (data) => {
+  console.log("Received test event from context \"test\":", data);
+});
+
 socket.io.on("reconnect_attempt", () => {
   console.log("Tentative de reconnexion...");
 });

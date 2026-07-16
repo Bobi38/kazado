@@ -21,10 +21,6 @@ async function socketPlugin(fastify: FastifyInstance) {
   });
 
   console.log("Socket.io initialisé avec succès");
-<<<<<<< HEAD
-=======
-  console.log(io)
->>>>>>> 444d05c34360c18f6f92b39501b9b7c3fcace700
   io.on("connection", (socket) => {
     fastify.log.warn(`[Socket.io] Smartphone connecté : ${socket.id}`);
 
@@ -34,10 +30,13 @@ async function socketPlugin(fastify: FastifyInstance) {
     });
 
     socket.on("TEST", (data) => {
+      socket.join("TEST");
       fastify.log.warn(`[Socket.io] Message reçu sur TEST : ${data.payload}`);
       if (data.test) {
         fastify.log.trace(`[Socket.io] Erreur reçue sur TEST : ${data.test}`);
-      } 
+      }
+      socket.emit("test", { data: "Message reçu depuis le server" });
+      socket.to("TEST").emit("test", { data: `Message broadcasté à tous les sockets dans la salle TEST ${socket.id}` });
     });
 
     socket.on("disconnect", () => {
