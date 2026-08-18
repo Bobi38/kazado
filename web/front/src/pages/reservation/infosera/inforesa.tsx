@@ -11,6 +11,10 @@ type Props = {
 export default function InfoResa({id, setPop, data} : Props){
     const [rep, setRep] = useState("")
 
+    const rep_reservation = async () => {
+        // Logique pour la réponse de réservation
+    }
+
     const handle_action = async (e) => {
         e.preventDefault();
     }

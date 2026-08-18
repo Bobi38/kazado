@@ -1,7 +1,6 @@
 import { useNavigate, useLocation}      from    "react-router-dom";
 import { useEffect, useRef, useState }            from    "react";
 import { VscEye, VscEyeClosed }     from    "react-icons/vsc";
-import { showAlert } from "../../../tool/function.usefull";
 import socketStore from "../../../Composant/context/socketContext";
 import {Button} from "@mui/material"
 import "./Login.scss"
@@ -41,7 +40,6 @@ export default function Login(){
             const ret = await rep.json()
             if (!ret.success){
                 console.log(`front register success false: ${ret.message}`)
-                showAlert(`front register success false: ${ret.message}`, "danger")
             }
 
             if (ret.success)

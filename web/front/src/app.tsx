@@ -21,8 +21,6 @@ useEffect(() => {
 }, [connect]);
 
   return (
-	<>
-	            <p id={'alert-container'}></p>
 	<BrowserRouter>   
 		<Routes> 
   			<Route path={`/`}				element={<Navigation><Home/></Navigation>}/>
@@ -34,6 +32,5 @@ useEffect(() => {
   			<Route path={`/*`}				element={<Navigation><Home /></Navigation>}/>
 		</Routes> 
 	</BrowserRouter>
-	</>
 	)
 }

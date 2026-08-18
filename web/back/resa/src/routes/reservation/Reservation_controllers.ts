@@ -5,9 +5,12 @@ export class ReservationController{
     constructor (private ReservationService: ReservationService) {}
 
     addReservation = async (req: FastifyRequest, reply: FastifyReply) => {
+        console.log("Adding reservation...");
         const bodyData = req.body as any;
         const id = req.user;
         const {calendar} = req.query as {calendar: string};
+        console.log("User ID:", id);
+        console.log("Calendar ID:", calendar);
         const ret = await this.ReservationService.addReservation(bodyData, calendar, id!);
         reply.status(200).send({success: ret.success, message: ret.message });
     }

@@ -1,7 +1,6 @@
 import { useNavigate, useLocation}      from    "react-router-dom";
 import { useEffect, useRef, useState }            from    "react";
 import { VscEye, VscEyeClosed }     from    "react-icons/vsc";
-import { showAlert } from "../../../tool/function.usefull";
 import "./Register.scss"
 
 
@@ -34,7 +33,6 @@ export default function Register(){
             const ret = await rep.json()
             if (ret.success)
                 navigate("/login")
-            else return showAlert(`${ret.message}`, "danger")
         }catch(err){
             console.log(`Register error TRY ${err}`)
         }
