@@ -1,7 +1,7 @@
 services:
   mysql:
     container_name: mysql
-    image: bobi38/kaz-mysql:1.0.0
+    image: bobi38/kaz-mysql:latest
     build:
       context: ./conf/db
       dockerfile: Dockerfile
@@ -27,7 +27,7 @@ services:
 
   init_db:
     container_name: init_db
-    image: bobi38/kaz-init_db:1.0.0
+    image: bobi38/kaz-init_db:latest
     build:
       context: ./web/back
       dockerfile: ./init_db/Dockerfile
@@ -62,7 +62,7 @@ services:
 
   gateway:
     container_name: gateway
-    image: bobi38/kaz-gateway:1.0.0
+    image: bobi38/kaz-gateway:latest
     build: 
       context: ./web/back
       dockerfile: ./gateway/Dockerfile
@@ -86,7 +86,7 @@ services:
 
   user:
     container_name: user
-    image: bobi38/kaz-user:1.0.0
+    image: bobi38/kaz-user:latest
     build: 
       context: ./web/back
       dockerfile: ./user/Dockerfile
@@ -110,7 +110,7 @@ services:
 
   resa:
     container_name: resa
-    image: bobi38/kaz-resa:1.0.0
+    image: bobi38/kaz-resa:latest
     build: 
       context: ./web/back
       dockerfile: ./resa/Dockerfile
@@ -134,7 +134,7 @@ services:
 
   calendar:
     container_name: calendar
-    image: bobi38/kaz-calendar:1.0.0
+    image: bobi38/kaz-calendar:latest
     build: 
       context: ./web/back
       dockerfile: ./calendar/Dockerfile
@@ -158,7 +158,7 @@ services:
 
   front:
     container_name: front
-    image: bobi38/kaz-front:1.0.0
+    image: bobi38/kaz-front:latest
     build: 
       context: ./web/front
       dockerfile: Dockerfile

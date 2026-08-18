@@ -39,13 +39,13 @@ update_prisma:
 
 push_images:
 	@echo "[START] push images ..."
-	docker push bobi38/kaz-mysql:1.0.0
-	docker push bobi38/kaz-init_db:1.0.0
-	docker push bobi38/kaz-gateway:1.0.0
-	docker push bobi38/kaz-user:1.0.0
-	docker push bobi38/kaz-resa:1.0.0
-	docker push bobi38/kaz-calendar:1.0.0
-	docker push bobi38/kaz-front:1.0.0
+	docker push bobi38/kaz-mysql:latest
+	docker push bobi38/kaz-init_db:latest
+	docker push bobi38/kaz-gateway:latest
+	docker push bobi38/kaz-user:latest
+	docker push bobi38/kaz-resa:latest
+	docker push bobi38/kaz-calendar:latest
+	docker push bobi38/kaz-front:latest
 	@echo "[END] push images COMPLETED"
 
 delete_secret:

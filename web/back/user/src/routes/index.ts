@@ -3,7 +3,9 @@ import {Secu} from "./secu/Secu_routes"
 import {User} from "./user/User_routes"
 import fs from "fs"
 
-export const secret =
+const status = process.env.STATUS
+
+export const secret=
   process.env.CLE_PSWD ??
   fs.readFileSync('/run/secrets/cle_pswd', 'utf-8').trim();
 
