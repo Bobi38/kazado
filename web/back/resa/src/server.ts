@@ -6,7 +6,9 @@ import {prisma} from './lib/prisma.ts'
 import fs from "fs"
 import jwt from "jsonwebtoken";
 
-export const secret = fs.readFileSync('/run/secrets/cle_pswd', 'utf-8').trim();
+export const secret =
+  process.env.CLE_PSWD ??
+  fs.readFileSync('/run/secrets/cle_pswd', 'utf-8').trim();
 
 declare module 'fastify' {
   interface FastifyRequest {

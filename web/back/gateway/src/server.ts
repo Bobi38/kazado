@@ -11,7 +11,9 @@ declare module 'fastify' {
   }
 }
 
-export const secretTOK = fs.readFileSync('/run/secrets/cle_pswd', 'utf-8').trim();
+export const secretTOK =
+  process.env.CLE_PSWD ??
+  fs.readFileSync('/run/secrets/cle_pswd', 'utf-8').trim();
 const fastify = Fastify({ logger: { level: 'warn' } });
 
 

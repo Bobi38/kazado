@@ -7,7 +7,6 @@ import { errorHandler } from './routes/preHandler/errorHandler.ts';
 import fs from "fs"
 
 const fastify = Fastify({ logger: { level: 'warn' } });
-// export const secretTOK = fs.readFileSync('/run/secrets/cle_pswd', 'utf-8').trim();
 
 async function callPath(req: any, rep:any){
   console.log("WELCOME to USER")

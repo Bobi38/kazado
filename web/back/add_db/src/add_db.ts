@@ -20,6 +20,10 @@ async function add_user(){
     });
 }
 
+async function add_cal(){
+    
+}
+
 export default async function add_db(){
     await add_user()
 }

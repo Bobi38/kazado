@@ -30,10 +30,23 @@ secrets:
 
 update_prisma:
 	@echo "📦 Régénération du client Prisma dans les conteneurs Docker..."
-	docker compose exec gateway npx prisma generate --schema=./prisma
 	docker compose exec resa npx prisma generate --schema=./prisma
 	docker compose exec user npx prisma generate --schema=./prisma
+	@echo "generate client GOOD"
+	docker compose exec resa npx prisma db push --schema=./prisma
+	docker compose exec user npx prisma db push --schema=./prisma
 	@echo "✅ Tout est à jour !"
+
+push_images:
+	@echo "[START] push images ..."
+	docker push bobi38/kaz-mysql:1.0.0
+	docker push bobi38/kaz-init_db:1.0.0
+	docker push bobi38/kaz-gateway:1.0.0
+	docker push bobi38/kaz-user:1.0.0
+	docker push bobi38/kaz-resa:1.0.0
+	docker push bobi38/kaz-calendar:1.0.0
+	docker push bobi38/kaz-front:1.0.0
+	@echo "[END] push images COMPLETED"
 
 delete_secret:
 	rm -r conf/secrets

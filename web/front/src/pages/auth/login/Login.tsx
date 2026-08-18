@@ -1,7 +1,7 @@
 import { useNavigate, useLocation}      from    "react-router-dom";
 import { useEffect, useRef, useState }            from    "react";
 import { VscEye, VscEyeClosed }     from    "react-icons/vsc";
-import socketStore from "../../../Composant/context/socketContext";
+// import socketStore from "../../../Composant/context/socketContext";
 import {Button} from "@mui/material"
 import "./Login.scss"
 
@@ -10,12 +10,12 @@ export default function Login(){
 
     const [showPassword, setShowPassword] = useState(false);
     const navigate = useNavigate()
-    const send = socketStore((state) => state.send);
+    // const send = socketStore((state) => state.send);
 
-    const testSocket = () => {
-        console.log("testSocket")
-        send("TEST", { payload: "Hello from Login", test: "attention la team" });
-    };
+    // const testSocket = () => {
+    //     console.log("testSocket")
+    //     send("TEST", { payload: "Hello from Login", test: "attention la team" });
+    // };
 
     const login_submit = async (e: any) =>{
         try{
@@ -78,9 +78,9 @@ export default function Login(){
                     <button type="submit">Connect</button>
                 </form>
             <button type="onClick" onClick={() => navigate("/register")}>Register</button>
-            <Button type="button" variant="contained" color="primary" onClick={() => testSocket()}>
+            {/* <Button type="button" variant="contained" color="primary" onClick={() => testSocket()}>
                 socket
-            </Button>
+            </Button> */}
             </div>
         </div>
     )

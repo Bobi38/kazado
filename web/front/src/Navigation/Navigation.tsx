@@ -1,12 +1,16 @@
+import { BottomNavigation, BottomNavigationAction, Paper, Container, Box } from '@mui/material';
+import HomeIcon from '@mui/icons-material/Home';
+import EventIcon from '@mui/icons-material/Event';
+import MailIcon from '@mui/icons-material/Mail';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import checko from "../tool/function.usefull"
 import "./Navigation.scss";
 
-export default function Navigation({ children }) {
+export default function Navigation({children}) {
 
   const navigate = useNavigate()
-  const location = useLocation();
+  const {pathname} = useLocation();
 
 
 	useEffect(() => {
@@ -18,22 +22,25 @@ export default function Navigation({ children }) {
     co()
 	}, [])
 
-  const isHome = location.pathname === "/";
-  const isReservation = location.pathname === "/reservation";
-  const isInvitations = location.pathname === "/invitations";
-
   return (
-    <div>
-      <div>
-          <button>🔔</button>
-          {!isInvitations && (<button onClick={() => navigate("/invitation")}>📩 Invitations</button>)}
-          {!isReservation && (<button onClick={() => navigate("/reservation")}>📅 Réservations</button>)}
-          {!isHome && (<button onClick={() => navigate("/")}>🏠 Home</button>)}
-          
-      </div>
-			<div className={`children-container`}>
-				{children}
-			</div>
-    </div>
+    <Container>
+      <Box>
+        {children}
+      </Box>
+      <Paper
+        sx={{ position: 'fixed', bottom: 0, left: 0, right: 0, zIndex: 1000 }}
+        elevation={3}
+      >
+        <BottomNavigation
+          value={pathname}
+          onChange={(e, newValue) => navigate(newValue)}
+          showLabels
+        >
+          <BottomNavigationAction label="Home" value="/" icon={<HomeIcon />} />
+          <BottomNavigationAction label="Réservations" value="/reservation" icon={<EventIcon />} />
+          <BottomNavigationAction label="Invitations" value="/invitation" icon={<MailIcon />} />
+        </BottomNavigation>
+      </Paper>
+    </Container>
   );
 }

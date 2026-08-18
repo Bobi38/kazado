@@ -1,35 +1,16 @@
-import { useNavigate, useLocation}      from    "react-router-dom";
+import {Box, Container, Grid, Paper, Stack, Tabs, Tab, Badge} from '@mui/material'
 import { useEffect, useRef, useState }            from    "react";
-import InfoResa from "./infosera/inforesa";
+import InfoResa from "./component/inforesa";
+import Res from "./component/resa"
+import Attente from './component/attente';
 
 export default function Reservation (){
 
-    const [resa, setResa] = useState([])
     const [valid, setValid] = useState([])
     const [aff, setAff] = useState<"resa" | "adm" >("resa");
     const [pop,setPop] = useState(null)
     
-    const get_all_my_resa = async () => {
-        try{
-            const url =`/api/resa/reservationId`
 
-            const rep = await fetch(url,{
-                    method: 'GET',
-                    headers: {'Content-Type': 'application/json'},
-                    credentials: "include"
-                })
-
-                const ret = await rep.json()
-                console.log(ret)
-                if (ret.success)
-                    setResa(ret.data)
-                else 
-                    console.log(`front cal_submit success false: ${ret.message}`)
-        }catch(err){
-            console.log(`cal_submit error TRY ${err}`)
-        }
-
-    }
 
     const get_all_validation = async () => {
         try{
@@ -52,45 +33,31 @@ export default function Reservation (){
 
     }
 
-    useEffect(() =>{
-        console.log("useeffect")
-        const co = async () => {
-            await get_all_my_resa()
-            await get_all_validation()
-        }
-        co()
-    }, [])
+    const handleChange = (event, newValue: string) => {
+        setAff(newValue);
+    };
+
+    const badgeAttente = (length: number) => {
+        return (
+            <Badge badgeContent={length} color="error">
+                <span style={{ paddingRight: length > 0 ? 12 : 0 }}>En attente</span>
+            </Badge>
+        )
+    }
+
 
     return (
-        <div>
-            <button onClick={() => setAff("resa")}>Mes reservations</button>
-            <button onClick={() => setAff("adm")}>Reservations en attente</button>
-        { aff === "resa" && (
-        <>
-        <h1>Mes reservations</h1>
-            {resa.map((m) => (
-                <label key={m.id} style={{ display: "block", marginBottom: "5px" }}>
-                   . {m.name} - {m.name_cal} - {m.homes} - {m.start.slice(0, 10)} to {m.end.slice(0, 10)} - Status: {m.status.toString()}
-                </label>
-            ))}
-        </>
-        )}
-        { aff === "adm" && (
-        <>
-        <h1>Les réservations en attentes de validations</h1>
-            {valid.map((m) => (
-                <label key={m.id} style={{ display: "block", marginBottom: "5px" }}>
-                   . {m.name} - {m.name_cal} - {m.homes} - {m.start.slice(0, 10)} to {m.end.slice(0, 10)}
-                   <button type="button" onClick={() => (setPop(m))}>✍️</button>
-                </label>
-            ))}
-        </>
-        )}
-        {pop != null && (
-            <div className="popup">
-                <InfoResa id={pop.id} setPop ={setPop} data={pop}/>
-            </div>
-        )}
-        </div>
+        <Box>
+            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                <Tabs value={aff} onChange={handleChange}>
+                    <Tab label="Mes résa" value="resa"/>
+                    <Tab label={badgeAttente(valid.length)} value="adm"/>
+                </Tabs>
+            </Box>
+            <Box sx={{p:3}}>
+                {aff === 'resa' && <Res/> }
+                {aff === 'adm' && <Attente/>}
+            </Box>
+        </Box>
     );
 }
