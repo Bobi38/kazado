@@ -1,6 +1,7 @@
 import { useNavigate, useLocation}      from    "react-router-dom";
 import { useEffect, useRef, useState }            from    "react";
 import { VscEye, VscEyeClosed }     from    "react-icons/vsc";
+import {Container, Paper, Box, Stack, TextField, Typography, Button} from "@mui/material"
 import "./Register.scss"
 
 
@@ -40,38 +41,38 @@ export default function Register(){
     }
 
     return (
-        <div className="reg">
-            <h1>REGISTER</h1>
-            <div className="auth_form">
+        <Container sx={{alignItems: "center", display:"flex", justifyContent:"center", minHeight: "100vh"}}>
+            <Paper sx={{display: "flex", p:2, alignItems:"center", justifyContent:"center", flexDirection:"column" }}>
+                <Typography variant="h3Custom" align="center">Register</Typography>
                 <form onSubmit={(e) => {register_submit(e)}}>
-                    <label  type="text">Username</label>
-                    <input  type="text"
+                    <Stack sx={{p:2, "& .MuiInputBase-input::placeholder": {fontSize: "10px"}}} spacing={2} >
+                        <TextField
+                            type="username"
                             id="username"
-                            name="username"
-                            placeholder="Lola la buche"
-                            required
-                    />
-                    <label  htmlFor="email">Email</label>
-                    <input  type="email"
-                            id= "email"
-                            name="email"
-                            placeholder="exemple@test.com"
-                            required
-                    />
-                    <label html="password">Password</label>
-                    <input  type={showPassword ? "text" : "password"}
+                            label="username"
+                            placeholder="Only letter, number or underscore"
+                            required/>
+                        <TextField
+                            type="email"
+                            id="email"
+                            label="email"
+                            required/>
+                        <TextField
+                            type={showPassword ? "text" : "password"}
+                            label="password"
                             id="password"
-                            name="password"
-                            placeholder="Password"
-                            required
-                    />
-                    <span className="toggle-icon" onClick={() => setShowPassword(!showPassword)}>
-                        {showPassword ? <VscEyeClosed /> : <VscEye />}
-                    </span>
-                    <button type="submit">Valider</button>
-                </form>
-            <button type="onClick" onClick={() => navigate("/login")}>Login</button>
-            </div>
-        </div>
+                            placeholder="1 number, min 4 carac"
+                            required/>
+                     <span className="toggle-icon" onClick={() => setShowPassword(!showPassword)}>
+                         {showPassword ? <VscEyeClosed /> : <VscEye />}
+                     </span>
+                </Stack>
+                <Box sx={{display:"flex", justifyContent:"center", gap:2}} >
+                    <Button type="submit" variant="valid">Valider</Button>
+                    <Button type="button" variant="redir" onClick={() => navigate("/login")}>Login</Button>
+                </Box>
+                 </form>
+            </Paper>
+        </Container>
     )
 }

@@ -1,8 +1,8 @@
 import { useNavigate, useLocation}      from    "react-router-dom";
+import {Container, Paper, Box, Stack, TextField, Typography, Button} from "@mui/material"
 import { useEffect, useRef, useState }            from    "react";
 import { VscEye, VscEyeClosed }     from    "react-icons/vsc";
 // import socketStore from "../../../Composant/context/socketContext";
-import {Button} from "@mui/material"
 import "./Login.scss"
 
 
@@ -53,35 +53,31 @@ export default function Login(){
     }
 
     return (
-        <div className="log">
-
-            <h1>Login</h1>
-            <div className="auth_form">
+        <Container sx={{alignItems: "center", display:"flex", justifyContent:"center", minHeight: "100vh"}}>
+            <Paper sx={{display: "flex", p:2, alignItems:"center", justifyContent:"center", flexDirection:"column" }}>
+                <Typography variant="h3Custom" align="center">Login</Typography>
                 <form onSubmit={(e) => {login_submit(e)}}>
-                    <label htmlFor="email">Email</label>
-                    <input  type="email"
-                            id= "email"
-                            name="email"
-                            placeholder="exemple@test.com"
-                            required
-                    />
-                    <label html="password">Password</label>
-                    <input  type={showPassword ? "text" : "password"}
+                    <Stack sx={{p:2}} spacing={2} >
+                        <TextField
+                            type="email"
+                            id="email"
+                            label="email"
+                            required/>
+                        <TextField
+                            type={showPassword ? "text" : "password"}
+                            label="password"
                             id="password"
-                            name="password"
-                            placeholder="Password"
-                            required
-                    />
-                    <span className="toggle-icon" onClick={() => setShowPassword(!showPassword)}>
-                        {showPassword ? <VscEyeClosed /> : <VscEye />}
-                    </span>
-                    <button type="submit">Connect</button>
-                </form>
-            <button type="onClick" onClick={() => navigate("/register")}>Register</button>
-            {/* <Button type="button" variant="contained" color="primary" onClick={() => testSocket()}>
-                socket
-            </Button> */}
-            </div>
-        </div>
+                            required/>
+                     <span className="toggle-icon" onClick={() => setShowPassword(!showPassword)}>
+                         {showPassword ? <VscEyeClosed /> : <VscEye />}
+                     </span>
+                </Stack>
+                <Box sx={{display:"flex", justifyContent:"center", gap:2}} >
+                    <Button type="submit" variant="valid">Connect</Button>
+                    <Button type="button" variant="redir" onClick={() => navigate("/register")}>Register</Button>
+                </Box>
+                 </form>
+            </Paper>
+        </Container>
     )
 }
