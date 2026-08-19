@@ -5,34 +5,52 @@ declare module "@mui/material/Button" {
     interface ButtonPropsVariantOverrides {
         valid: true;
         redir: true;
+        close: true;
+        addResa: true;
     }
 }
 
 declare module "@mui/material/styles" {
     interface TypographyVariants {
         h3Custom: React.CSSProperties;
+        FormTitle: React.CSSProperties;
     }
 
     interface TypographyVariantsOptions {
         h3Custom?: React.CSSProperties;
+        FormTitle: React.CSSProperties;
     }
 }
 
 declare module "@mui/material/Typography" {
     interface TypographyPropsVariantOverrides {
         h3Custom: true;
+        FormTitle: true;
     }
 }
 
 const theme = createTheme({
     typography: {
+        fontFamily: "-apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
         h3Custom: {
             fontSize: "2.5rem",
             fontWeight: 700,
             color: "#7C9D96",
         },
+        FormTitle: {
+            fontSize: "20px",
+            fontWeight: 700,
+            color: "#7C9D96",
+        },
     },
     components: {
+        MuiCssBaseline: {
+            styleOverrides: {
+                body: {
+                    fontFamily: "'Trebuchet MS', sans-serif",
+                },
+            },
+        },
         MuiButton: {
             variants: [
                 {
@@ -75,6 +93,60 @@ const theme = createTheme({
                         },
                     },
                 },
+{
+                    props: { variant: "close" },
+                    style: {
+                        minWidth: "32px",
+                        width: "32px",
+                        height: "32px",
+                        padding: 0,
+
+                        backgroundColor: "transparent",
+                        color: "#9D7C83",
+
+                        border: "none",
+                        borderRadius: "50%",
+
+                        fontSize: "1.2rem",
+                        fontWeight: 700,
+                        lineHeight: 1,
+
+                        textTransform: "none",
+
+                        "&:hover": {
+                            backgroundColor: "#7C9D96",
+                            color: "white",
+                        },
+                    },
+                },
+                {
+                props: { variant: "addResa" },
+                style: {
+                    minWidth: "48px",
+                    width: "48px",
+                    height: "48px",
+                    padding: 0,
+
+                    borderRadius: "50%",
+
+                    backgroundColor: "#7C9D96",
+                    color: "white",
+
+                    boxShadow: "0 4px 12px rgba(124, 157, 150, 0.25)",
+
+                    transition: "all 0.2s ease",
+
+                    "&:hover": {
+                        backgroundColor: "#6B8B84",
+                        transform: "scale(1.05)",
+                        boxShadow: "0 6px 16px rgba(124, 157, 150, 0.3)",
+                    },
+
+                    "&:active": {
+                        transform: "scale(0.95)",
+                    },
+                },
+            },
             ],
         },
     },

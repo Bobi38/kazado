@@ -1,9 +1,12 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
+import {Box, Paper, Container, Button} from "@mui/material"
+import AddBoxIcon from '@mui/icons-material/AddBox';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import "./CalendarPage.scss"
 import SetupAdm from '../setupAdm/SetupAdm';
+import FormAddResa from '../component/FormAddResa';
 
 export default function CalendarPage(){
 
@@ -170,33 +173,27 @@ export default function CalendarPage(){
 
     useEffect(() => {
         const co = async () => {
-            await updateHome(id!)
-        }
-        co()
-    }, [modal])
-
-    useEffect(() => {
-        const t = async () => {
             if (!period || !period.start || !period.end) 
                 return
+            await updateHome(id!)
             await updateEvent(id!, period.start!, period.end!)
-            }
-        t()
-    }, [period])
+        }
+        co()
+    }, [modal, period])
 
     return (
-        <div>
-          <Link to="/">⬅ Retour à la liste</Link>
+        <Container sx={{minHeight: "100vh"}}>
           {addevent === false ? (
-            <>
+            <Box>
             <div>
           <h2>Calendrier: {name}</h2>
-            <button onClick={() => {setAddEvent(true)}}>+</button>
+            <Button variant="addResa" onClick={() => {setAddEvent(true)}}><AddBoxIcon/></Button>
             {modal === "yes" && (
                 <button onClick={() => {setModal("popup")}}>...</button>
             )}
             </div>
           <div style={{ marginTop: "20px" }}>
+        <Paper elevation ={1} sx={{p:2, borderRadius:4}} className="my-calendar">
         <FullCalendar
           plugins={[dayGridPlugin]}
           initialView="dayGridMonth"
@@ -209,57 +206,17 @@ export default function CalendarPage(){
             }}
           height="auto"
         />
+        </Paper>
       </div>
-      </>
+      </Box>
           ) :(
-            <>
-            <form className="res_form" onSubmit={resaFrom_submit}>
-                <strong>Titre</strong>
-                <input type="text" id="name_resa" required/>
-                <strong>Date de debut</strong>
-                <input type="date" id="date_start" required/>
-                <strong>Date de fin</strong>
-                <input type="date" id="date_end" min="date_start" required />
-                <strong>Nombre d'adultes</strong>
-                <input type="number"  name="nb_adult" required/>
-                <strong>Nombre d'enfants</strong>
-                <input type="number"  name="nb_children" required/>
-                <strong>Invités</strong>
-                {invit.map((m) => (
-                  <label key={m.id} style={{ display: "block", marginBottom: "5px" }}>
-                    <input
-                      type="checkbox"
-                      checked={selectedInvit.includes(m.id)}
-                      onChange={() => toggle(m.id, setSelectedInvit)}
-                    />
-                    {m.name}
-                  </label>
-                ))}
-                <strong>Selectionne les "home" reservés</strong>
-                {home.map((m) => (
-                  <label key={m.id} style={{ display: "block", marginBottom: "5px" }}>
-                    <input
-                      type="checkbox"
-                      checked={selectedHomes.includes(m.id)}
-                      onChange={() => toggle(m.id, setSelectedHomes)}
-                    />
-                    {m.name}
-                  </label>
-                ))}
-                <button type="submit" disabled={selectedHomes.length === 0}>valider</button>
-                {selectedHomes.length === 0 && (
-                  <span style={{ color: "#ef4444", fontSize: "12px" }}>
-                    Vous devez sélectionner au moins une home
-                  </span>
-                )}
-            </form>
-            </>
+            <FormAddResa id={id} setEvent={setAddEvent} home={home}/>
           )}
           {modal != "no" && modal != "yes"  && (
             <div className="popup">
       		    <SetupAdm id={id!} setModal ={setModal} modal={modal} home={home} setHome={setHome}/>
             </div>
           )}
-        </div>
+        </Container>
     );
 }

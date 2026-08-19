@@ -47,17 +47,21 @@ export default function Reservation (){
 
 
     return (
-        <Box>
-            <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
-                <Tabs value={aff} onChange={handleChange}>
-                    <Tab label="Mes résa" value="resa"/>
-                    <Tab label={badgeAttente(valid.length)} value="adm"/>
-                </Tabs>
-            </Box>
-            <Box sx={{p:3}}>
-                {aff === 'resa' && <Res/> }
-                {aff === 'adm' && <Attente/>}
-            </Box>
-        </Box>
+        <Container sx={{minHeight: "100vh"}}>
+            <Paper sx={{p:2, my: 2}}>
+                <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
+                    <Tabs value={aff} onChange={handleChange}>
+                        <Tab label="Mes résa" value="resa"/>
+                        <Tab label={badgeAttente(valid.length)} value="adm"/>
+                    </Tabs>
+                </Box>
+            </Paper>
+            <Paper sx={{p:2}}>
+                <Box sx={{p:3}}>
+                    {aff === 'resa' && <Res/> }
+                    {aff === 'adm' && <Attente/>}
+                </Box>
+            </Paper>
+        </Container>
     );
 }

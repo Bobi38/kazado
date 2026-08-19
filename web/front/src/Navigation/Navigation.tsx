@@ -23,7 +23,7 @@ export default function Navigation({children}) {
 	}, [])
 
   return (
-    <Container>
+    <Container sx={{pb:"70px"}}>
       <Box>
         {children}
       </Box>
