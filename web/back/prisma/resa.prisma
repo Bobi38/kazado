@@ -8,6 +8,7 @@ model core_reservation {
     status          Boolean @default(false)
     nb_adult        Int
     nb_children     Int
+    nb_bedroom      Int
     note            String?
     userId          Int
     calendarId      String

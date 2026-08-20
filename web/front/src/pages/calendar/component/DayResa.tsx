@@ -1,7 +1,7 @@
 import {Container, Paper, Box, Stack, Typography, Button, Divider} from "@mui/material"
 import ArrowBackIosIcon from '@mui/icons-material/ArrowBackIos';
 import AddIcon from '@mui/icons-material/AddBox';
-import { useEffect, useRef, useState } from "react"
+import { useEffect, useState } from "react"
 import { CardResa } from "./CardResa";
 
 
@@ -15,7 +15,7 @@ type Props ={
 export default function DayResa({setEvent, data, date, title}: Props){
 
     const [dataParse, setDataParse] = useState([])
-    
+
     useEffect(() =>{
         const parse = data.filter((event) =>{
             if (!event.start || !event.status) return false;

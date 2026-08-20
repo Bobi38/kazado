@@ -85,6 +85,7 @@ export default function FormAddResa({id, setEvent, home, today}: Props){
             date_end: d.date_end.value,
             nb_adult: Number(d.nb_adult.value),
             nb_children: Number(d.nb_children.value),
+            nb_bedroom: Number(d.nb_bedroom.value),
             Home: selectedHomes,
             Invit : selectedInvit
         }
@@ -121,6 +122,8 @@ export default function FormAddResa({id, setEvent, home, today}: Props){
                 <input type="number"  name="nb_adult" min="1" required/>
                 <strong>Nombre d'enfants</strong>
                 <input type="number"  name="nb_children" min="0" required/>
+                <strong>Nombre de chambres</strong>
+                <input type="number"  name="nb_bedroom" min="0" required/>
                 <strong>Invités</strong>
                 {invit.map((m) => (
                   <label key={m.id} style={{ display: "block", marginBottom: "5px" }}>

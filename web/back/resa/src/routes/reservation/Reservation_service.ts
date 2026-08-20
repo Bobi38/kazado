@@ -19,6 +19,7 @@ export class ReservationService{
                     name: data.name,
                     nb_adult: data.nb_adult,
                     nb_children: data.nb_children,
+                    nb_bedroom: data.nb_bedroom,
                     date_start: start,
                     date_end: end,
                     calendarId: calendar,

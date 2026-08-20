@@ -3,7 +3,6 @@ import PersonIcon from "@mui/icons-material/Person";
 import CheckCircleIcon from '@mui/icons-material/CheckCircle';
 import HomeFilledIcon from '@mui/icons-material/HomeFilled';
 import HourglassBottomIcon from '@mui/icons-material/HourglassBottom';
-import GroupIcon from '@mui/icons-material/Group';
 
 import {Container, Paper, Box, Stack, Typography, Button, Divider} from "@mui/material"
 

@@ -1,5 +1,6 @@
 import { useNavigate, useLocation}      from    "react-router-dom";
 import { useEffect, useRef, useState }            from    "react";
+import {Container, Paper, Box, Stack, Typography, Button, Divider} from "@mui/material"
 
 export default function Invitation (){
 
@@ -55,7 +56,7 @@ export default function Invitation (){
     }, []);
 
     return (
-        <div>
+        <Container sx={{minHeight:"100vh"}}>
             <h1>Mes invitations</h1>
                 <h2>En attentes</h2>
                 <div>
@@ -73,7 +74,7 @@ export default function Invitation (){
                         // <InfoInvit key={invitation.id} data={invitation} />
                     ))} */}
                 </div>
-        </div>
+        </Container>
 
     )
 }
