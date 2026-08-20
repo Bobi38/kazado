@@ -1,33 +1,32 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {Box, Paper, Container, Button} from "@mui/material"
-import AddBoxIcon from '@mui/icons-material/AddBox';
+import AddIcon from '@mui/icons-material/AddBox';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
+import interactionPlugin from "@fullcalendar/interaction";
 import "./CalendarPage.scss"
 import SetupAdm from '../setupAdm/SetupAdm';
 import FormAddResa from '../component/FormAddResa';
+import DayResa from '../component/DayResa';
 
 export default function CalendarPage(){
+
+    const formatDate = (date: Date) => {
+        return date.toISOString().split("T")[0];
+    };
 
     const navigate = useNavigate()
     const {id, name} = useParams<{id: string, name:string}>();
     const [events, setEvents] = useState([]);
-    const [addevent, setAddEvent] = useState(false)
+    const [addevent, setAddEvent] = useState<"month" | "add" | "day">("month")
     const [home, setHome] = useState([])
     const [invit, setInvite] = useState([])
     const [modal, setModal] = useState<"no" | "yes" | "popup" | "home_edit" | "home_create">("no");
     const [selectedHomes, setSelectedHomes] = useState([]);
     const [selectedInvit, setSelectedInvit] = useState([]);
-    const [period, setPeriod] = useState<{start: string, end: string} | null>(null)
-
-    const toggle = (id, settab: any) => {
-        settab((prev) =>
-            prev.includes(id)
-             ? prev.filter((h) => h !== id)
-            : [...prev, id]
-        );
-    };
+    const [period, setPeriod] = useState({start: new Date().toISOString(), end: new Date().toISOString()})
+    const [today, setToday] = useState(formatDate(new Date()))
 
 
     const updateHome = async (id:string) => {
@@ -51,7 +50,6 @@ export default function CalendarPage(){
 
     const updateEvent = async (id:string, start: string, end: string) => {
         try{
-            console.log(`start = ${start} end = ${end}`)
             const url = `/api/resa/reservation?calendar=${encodeURIComponent(id)}&start=${encodeURIComponent(start)}&end=${encodeURIComponent(end)}`
 
             const rep = await fetch(url,{
@@ -61,16 +59,21 @@ export default function CalendarPage(){
             })
 
             const ret = await rep.json()
+            ret.data.map((r:any) => {console.log(r)})
             if (ret.success)
                 setEvents(
                     ret.data.map((r: any) => ({
-                      title: r.name,          // obligatoire
-                      start: r.date_start,    // obligatoire
-                      end: r.date_end,
-                        backgroundColor: r.status ? "#22c55e" : "#f59e0b", // vert / orange
-                        borderColor: r.status ? "#16a34a" : "#d97706",
+                        title: r.name,
+                        start: r.date_start,
+                        end: r.date_end,
+                        status: r.status,
+                        nb_adult: r.nb_adult,
+                        nb_children: r.nb_children,
+                        backgroundColor: r.status ? "#7C9D96" : "#D4B483",
+                        borderColor: r.status ? "#668780" : "#B8955F",
+                        userby: r.userby,
+                        allHome: r.allHome
                     })))
-            console.log(`in getresa = ${ret.message} && ${ret.data}`)
         }catch(err){
             console.log(`error front catch update ${err}`)
         }
@@ -117,52 +120,6 @@ export default function CalendarPage(){
         }
     }
 
-    const addResa = async (data: any, id : string) => {
-        try{
-            const url = `/api/resa/reservation?calendar=${encodeURIComponent(id)}`
-
-            const rep = await fetch(url,{
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify(data),
-                credentials: "include"
-            })
-
-            const ret = await rep.json()
-            if (ret.success)
-                    console.log("resa good")
-            console.log(`in add home = ${ret.message} && ${ret.id}`)
-        }catch(err){
-            console.log(`error front catch update ${err}`)
-        }
-    }
-
-    const resaFrom_submit = async (e) => {
-        console.log("JE SUIS LA")
-        e.preventDefault();
-        const d = e.target;
-        if (selectedHomes.length === 0)
-            return ;
-        const dataRes = {
-            name: d.name_resa.value,
-            date_start: d.date_start.value,
-            date_end: d.date_end.value,
-            nb_adult: Number(d.nb_adult.value),
-            nb_children: Number(d.nb_children.value),
-            Home: selectedHomes,
-            Invit : selectedInvit
-        }
-
-        console.log("APRES LA DATA")
-        console.log(`data from = ${dataRes.date_end}`)
-        await addResa(dataRes, id!)
-        setSelectedHomes([])
-        setSelectedInvit([])
-        setInvite([])
-        setAddEvent(false)
-        updateEvent(id!, period.start!, period.end!)
-    }
-
     useEffect(() => {
         const co = async () => {
             await updateInvit(id!)
@@ -181,37 +138,87 @@ export default function CalendarPage(){
         co()
     }, [modal, period])
 
+    const testHandle = (info) => {
+        setToday(info.dateStr)
+        setAddEvent("day")
+
+    }
+
+function renderDayCell(arg) {
+    const date = arg.date.toLocaleDateString("sv-SE");
+
+    const count = events.filter((event) => {
+        if (!event.start || !event.status) return false;
+
+        const eventDateS = new Date(event.start).toLocaleDateString("sv-SE");
+        const eventDateE= new Date(event.end).toLocaleDateString("sv-SE");
+
+        return ((eventDateS <= date) && (eventDateE >= date));
+    }).length;
+    return (
+        <Box
+            sx={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+            }}
+        >
+            <Box className="my-day-number">
+                {arg.dayNumberText}
+            </Box>
+
+            {count > 0 && (
+                <Box className="reservation-count">
+                    <Box className="green-dot" />
+                    {count}
+                </Box>
+            )}
+        </Box>
+    );
+}
+
+
+
     return (
         <Container sx={{minHeight: "100vh"}}>
-          {addevent === false ? (
+          {addevent === "month" && (
             <Box>
-            <div>
-          <h2>Calendrier: {name}</h2>
-            <Button variant="addResa" onClick={() => {setAddEvent(true)}}><AddBoxIcon/></Button>
-            {modal === "yes" && (
-                <button onClick={() => {setModal("popup")}}>...</button>
-            )}
-            </div>
-          <div style={{ marginTop: "20px" }}>
-        <Paper elevation ={1} sx={{p:2, borderRadius:4}} className="my-calendar">
-        <FullCalendar
-          plugins={[dayGridPlugin]}
-          initialView="dayGridMonth"
-          events={events}
-            datesSet={(arg) => {
-              const start = arg.start.toISOString()
-              const end = arg.end.toISOString()
-            
-              setPeriod({ start:start, end:end })
-            }}
-          height="auto"
-        />
-        </Paper>
-      </div>
-      </Box>
-          ) :(
-            <FormAddResa id={id} setEvent={setAddEvent} home={home}/>
-          )}
+                <Box sx={{display: "flex",justifyContent: "space-between",alignItems: "center",}}>
+                    <h2>Calendrier: {name}</h2>
+                    <Box>
+                        <Button variant="addResa" aria-label="Ajouter une réservation" onClick={() => {setAddEvent("add")}}><AddIcon/></Button>
+                        {modal === "yes" && (
+                            <button onClick={() => {setModal("popup")}}>...</button>
+                        )}
+                    </Box>
+                </Box>
+                <div style={{ marginTop: "20px" }}>
+                    <Paper elevation ={1} sx={{p:2, borderRadius:4}} className="my-calendar">
+                        <FullCalendar
+                        plugins={[dayGridPlugin, interactionPlugin]}
+                        initialView="dayGridMonth"
+                        dateClick={testHandle}
+                        // events={events}
+                        datesSet={(arg) => {
+                            const start = arg.start.toISOString()
+                            const end = arg.end.toISOString()
+                            
+                            setPeriod({ start:start, end:end })
+                        }}
+                        dayCellContent={renderDayCell}
+                        height="auto"
+                        />
+                    </Paper>
+                </div>
+            </Box>
+        )}
+        {addevent === "add" && (
+            <FormAddResa id={id} setEvent={setAddEvent} home={home} today={today}/>
+        )}
+        {addevent === "day" && (
+            <DayResa setEvent={setAddEvent} data={events} date={today} title={name}/>
+        )}
           {modal != "no" && modal != "yes"  && (
             <div className="popup">
       		    <SetupAdm id={id!} setModal ={setModal} modal={modal} home={home} setHome={setHome}/>

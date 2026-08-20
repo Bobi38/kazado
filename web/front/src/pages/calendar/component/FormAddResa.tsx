@@ -1,19 +1,26 @@
 import {Container, Paper, Box, Stack, Typography, Button, Divider} from "@mui/material"
 import CloseIcon from '@mui/icons-material/Close';
 import { useEffect, useRef, useState } from "react"
+import {toast} from "sonner"
 
 
 type Props ={
     id: string | undefined;
-    setEvent: (mod: boolean)=> void;
+    setEvent: (mod: string)=> void;
     home: [] | never[];
+    today: string
 }
 
-export default function FormAddResa({id, setEvent, home}: Props){
+export default function FormAddResa({id, setEvent, home, today}: Props){
+    
+    const formatDate = (date: Date) => {
+        return date.toISOString().split("T")[0];
+    };
 
     const [selectedHomes, setSelectedHomes] = useState([]);
     const [selectedInvit, setSelectedInvit] = useState([]);
     const [invit, setInvite] = useState([])
+    const [dateStart, setDateStart] = useState(formatDate(new Date()));
 
 
     const toggle = (id, settab: any) => {
@@ -56,9 +63,12 @@ export default function FormAddResa({id, setEvent, home}: Props){
             })
 
             const ret = await rep.json()
-            if (ret.success)
-                    console.log("resa good")
-            console.log(`in add home = ${ret.message} && ${ret.id}`)
+            if (ret.success){
+                toast.success(ret.message)
+                return true
+            }
+            toast.error(ret.message)
+            return false
         }catch(err){
             console.log(`error front catch update ${err}`)
         }
@@ -78,11 +88,12 @@ export default function FormAddResa({id, setEvent, home}: Props){
             Home: selectedHomes,
             Invit : selectedInvit
         }
-        await addResa(dataRes, id)
+        const res = await addResa(dataRes, id)
         setSelectedHomes([])
         setSelectedInvit([])
         setInvite([])
-        setEvent(false)
+        if (res)
+            setEvent("month")
     }
 
     useEffect(() => {
@@ -91,24 +102,25 @@ export default function FormAddResa({id, setEvent, home}: Props){
         }
         co()
     },[])
+
     return (
         <Paper elevation={3} sx={{ p:2, mt:2, bt:2}}>
             <Box sx={{display: "flex",justifyContent: "space-between",alignItems: "center",}}>
                 <Typography variant="FormTitle">Nouvelle réservation</Typography>
-                <Button type="button" variant="close" onClick={()=> setEvent(false)}><CloseIcon/></Button>
+                <Button type="button" variant="close" onClick={()=> setEvent("month")}><CloseIcon/></Button>
             </Box>
             <form onSubmit={resaFrom_submit}>
                 <Stack sx={{p:2}} spacing={2}>
                 <strong>Titre</strong>
                 <input type="text" id="name_resa" required/>
                 <strong>Date de debut</strong>
-                <input type="date" id="date_start" required/>
+                <input type="date" id="date_start" value={dateStart > today ? dateStart : today} min={today} onChange={(e) => setDateStart(e.target.value)} required/>
                 <strong>Date de fin</strong>
-                <input type="date" id="date_end" min="date_start" required />
+                <input type="date" id="date_end" min={dateStart > today ? dateStart: today}  required />
                 <strong>Nombre d'adultes</strong>
-                <input type="number"  name="nb_adult" required/>
+                <input type="number"  name="nb_adult" min="1" required/>
                 <strong>Nombre d'enfants</strong>
-                <input type="number"  name="nb_children" required/>
+                <input type="number"  name="nb_children" min="0" required/>
                 <strong>Invités</strong>
                 {invit.map((m) => (
                   <label key={m.id} style={{ display: "block", marginBottom: "5px" }}>

@@ -11,3 +11,20 @@ l'iPhone affiche la demande d'autorisation officielle.
 -Le compte développeur (parfois) : Sur les versions récentes d'iOS, Apple exige que le site web utilise un protocole de clé sécurisé (VAPID).
 Heureusement, c'est gratuit à générer.
 
+MUI :
+
+p → padding Ajoute de l'espace à l'intérieur du composant.
+
+m → margin Ajoute de l'espace à l'extérieur du composant.
+
+mt → margin-top Espace au-dessus
+
+mb → margin-bottom Espace en-dessous
+
+mx → margin horizontal Gauche + droite
+
+my → margin vertical Haut + bas
+
+px / py Même principe pour le padding.
+
+gap crée un espace entre les enfants d'un composant flex ou grid.

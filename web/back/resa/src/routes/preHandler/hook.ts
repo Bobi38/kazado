@@ -44,14 +44,14 @@ export async function checkDate(req: FastifyRequest, rep: FastifyReply) {
 }
 
 export async function checkNewRole(req: FastifyRequest, rep: FastifyReply) {
-        const {name, calendar} = req.query as {name : string, calendar: number}
+        const {name, calendar} = req.query as {name : string, calendar: string}
 
         if (!name)
             return;
         const isUser = await prisma.core_user.findUnique({where:{pseudo: name}})
         if (!isUser)
             return rep.status(401).send({success: false, message: `The name doesn't exist`})
-        const isInCal= await prisma.core_calendare_user.findUnique({where:{calendarId: calendar, userId: isUser.id}});
+        const isInCal= await prisma.core_calendar_user.findUnique({where:{calendarId: calendar, userId: isUser.id}});
         if (!isInCal)
             return rep.status(401).send({success: false, message: `The user is not in the calendar`})
         req.nuser = isUser.id;

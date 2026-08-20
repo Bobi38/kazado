@@ -68,11 +68,34 @@
     background-color: #eef5f3 !important;
 }
 
-.my-calendar .fc-day-today .fc-daygrid-day-number {
+.my-calendar .my-day-number {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.my-calendar .fc-day-today .my-day-number {
     background-color: #7C9D96;
     color: white;
     border-radius: 50%;
     padding: 4px 8px;
+}
+
+.my-calendar .reservation-count {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    margin-top: 5px;
+    color: #16a34a;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.my-calendar .green-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background-color: #22c55e;
 }
 
 .my-calendar .fc-event {

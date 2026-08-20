@@ -36,14 +36,22 @@ export class ReservationService{
     }
 
     async getReservation(calendar: string, endOfMonth: string, startOfMonth: string){
-            console.log (startOfMonth + endOfMonth)
             const start = new Date(startOfMonth )
             const end = new Date(endOfMonth)
             const resa = await prisma.core_reservation.findMany({where: {calendarId: calendar,
                                                                 date_start: {lte: end},
                                                                 date_end: {gte: start}
-                                                              }})
-            return { success: true, message: "all resa good", data: resa };
+                                                              },
+                                                            include:{
+                                                                allHome: {include:{id_home:true}},
+                                                                id_user :true,
+                                                            }})
+            const result = resa.map((r) => ({
+                ...r,
+                allHome: r.allHome.map((h) => h.id_home.name),
+                userby: r.id_user.pseudo
+            }))
+            return { success: true, message: "all resa good", data: result };
     }
 
     async getReservationid(calendar: string, id: number){
@@ -86,7 +94,6 @@ export class ReservationService{
 
     async getValidation(calendar: string, id: number){
         const now = new Date()
-        console.log("coucou" + id + " " + now)
         const admid = await prisma.core_calendar_validator.findMany({
             where:{idvalidator: id},
             select:{calendarId: true}
@@ -122,8 +129,6 @@ export class ReservationService{
             user: reservation.allUser.map(u => u.id_user.name).join(", "),
             homes: reservation.allHome.map(h => h.id_home.name ).join(", ")
         }));
-        console.log("au revoir");
-        console.log(dataparse)
         return { success: true, message: "all resa good", data: dataparse };
     }
 }
