@@ -9,11 +9,16 @@ export async function Invitation(fastify: FastifyInstance) {
     const controller = new InvitationController(service);
 
     fastify.get('/send', {schema: {response: {200: InvitationSchema.ReturnData}}},
-    controller.getInvitation)
+    controller.getInvitationSend)
     fastify.get('/waiting', {schema: {response: {200: InvitationSchema.ReturnData}}},
     controller.getInvitationWaiting)
-    fastify.patch('/:id', {schema: {response: {200: InvitationSchema.ReturnMessage}}},
+    fastify.patch('/:id', {schema: {response: {200: InvitationSchema.ReturnMessage}},
+        preHandler: [H.checkInvit]},
     controller.validate)
-    fastify.delete('/:id', {schema: {response: {200: InvitationSchema.ReturnMessage}}},
+    fastify.delete('/:id', {schema: {response: {200: InvitationSchema.ReturnMessage}},
+        preHandler: [H.checkInvit]},
+    controller.decline)
+    fastify.delete('/remove/:id', {schema: {response: {200: InvitationSchema.ReturnMessage}},
+        preHandler: [H.checkInvit]},
     controller.remove)
 }

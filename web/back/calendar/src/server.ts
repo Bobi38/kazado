@@ -3,6 +3,7 @@ import Fastify from 'fastify';
 import { registerRoutes } from './routes/index.ts';
 import fastifyCookie from '@fastify/cookie';
 import {prisma} from './lib/prisma.ts'
+import { errorHandler } from './routes/preHandler/errorHandler.ts';
 import fs from "fs"
 import jwt from "jsonwebtoken";
 
@@ -31,6 +32,11 @@ async function callPath(req: any, rep:any){
   console.log(req.user)
 }
 
+async function test(req: any, rep:any){
+  console.log("3 - AFTER CALL PATH")
+}
+
+
 fastify.addHook('onClose', async (instance) => {
   await prisma.$disconnect()
 })
@@ -39,6 +45,8 @@ const start = async () => {
   try {
     await fastify.register(fastifyCookie);
     fastify.addHook('onRequest', callPath);
+    fastify.setErrorHandler(errorHandler);
+    fastify.addHook('onRequest', test);
     fastify.register(registerRoutes);
     await fastify.listen({ port: 9103, host: '0.0.0.0' })
     console.log("SERVER User running ")

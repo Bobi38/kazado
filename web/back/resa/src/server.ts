@@ -2,6 +2,7 @@ import socketPlugin from './initServerSocket.ts';
 import Fastify from 'fastify';
 import { registerRoutes } from './routes/index.ts';
 import fastifyCookie from '@fastify/cookie';
+import { errorHandler } from './routes/preHandler/errorHandler.ts';
 import {prisma} from './lib/prisma.ts'
 import fs from "fs"
 import jwt from "jsonwebtoken";
@@ -39,6 +40,7 @@ const start = async () => {
   try {
     await fastify.register(fastifyCookie);
     await fastify.addHook('preHandler', callPath);
+    fastify.setErrorHandler(errorHandler);
     fastify.register(registerRoutes);
     await fastify.register(socketPlugin);
     await fastify.listen({ port: 9102, host: '0.0.0.0' })

@@ -82,7 +82,7 @@ services:
       - ./web/back/gateway/:/app
       - ./web/back/prisma:/app/prisma
       - /app/node_modules
-    restart: always
+    restart: "no"
 
   user:
     container_name: user
@@ -106,7 +106,7 @@ services:
       - ./web/back/user/:/app
       - ./web/back/prisma:/app/prisma
       - /app/node_modules
-    restart: always
+    restart: "no"
 
   resa:
     container_name: resa
@@ -130,7 +130,7 @@ services:
       - ./web/back/resa/:/app
       - ./web/back/prisma:/app/prisma
       - /app/node_modules
-    restart: always
+    restart: "no"
 
   calendar:
     container_name: calendar
@@ -154,7 +154,7 @@ services:
       - ./web/back/calendar/:/app
       - ./web/back/prisma:/app/prisma
       - /app/node_modules
-    restart: always
+    restart: "no"
 
   front:
     container_name: front
@@ -175,7 +175,7 @@ services:
     volumes:
       - ./web/front:/app
       - /app/node_modules
-    restart: always
+    restart: "no"
 
 
 secrets:

@@ -2,6 +2,7 @@ import { BottomNavigation, BottomNavigationAction, Paper, Container, Box } from 
 import HomeIcon from '@mui/icons-material/Home';
 import EventIcon from '@mui/icons-material/Event';
 import MailIcon from '@mui/icons-material/Mail';
+import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import checko from "../tool/function.usefull"
@@ -39,6 +40,7 @@ export default function Navigation({children}) {
           <BottomNavigationAction label="Home" value="/" icon={<HomeIcon />} />
           <BottomNavigationAction label="Réservations" value="/reservation" icon={<EventIcon />} />
           <BottomNavigationAction label="Invitations" value="/invitation" icon={<MailIcon />} />
+          <BottomNavigationAction label="Profil" value="/profil" icon={<AccountCircleIcon />} />
         </BottomNavigation>
       </Paper>
     </Container>

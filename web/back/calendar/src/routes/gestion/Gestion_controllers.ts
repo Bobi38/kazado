@@ -11,18 +11,19 @@ export class GestionController{
             return reply.send({success: rep.success, message: rep.message})
     }
 
-    addVal = async (req: FastifyRequest, reply: FastifyReply) => {
-            const userId = req.nuser as number;
-            const {calendar} = req.query as {calendar: string};
-            const rep = await this.GestionService.addValidator(calendar, userId);
-            return reply.send({success: rep.success, message: rep.message})
-    }
-
     addUser = async (req: FastifyRequest, reply: FastifyReply) => {
 			const user = req.user as number
             const nuserId = req.nuser as number;
             const {calendar} = req.query as {calendar: string};
             const rep = await this.GestionService.addUser(calendar, user, nuserId);
+            return reply.send({success: rep.success, message: rep.message})
+    }
+
+    DelUser = async (req: FastifyRequest, reply: FastifyReply) => {
+			const user = req.user as number
+            const nuserId = req.nuser as number;
+            const {calendar} = req.query as {calendar: string};
+            const rep = await this.GestionService.DelUser(calendar, user, nuserId);
             return reply.send({success: rep.success, message: rep.message})
     }
 

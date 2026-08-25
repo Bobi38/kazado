@@ -9,7 +9,6 @@ model core_user {
     invitationsReceived core_user_invit[]           @relation("UserGuest")
     userAdm             core_calendar_admin[]       @relation("UserAdmin")
     UserId				core_calendar_user[]		@relation("UserId")
-    userValidator       core_calendar_validator[]   @relation("UserValidator")
 	reservationUser		core_reservation[]			@relation("UserIdResa")
 	inResaUser			core_reservation_user[]		@relation("UserId")
 	receiveNotifUser	core_notification_user_receive[]		@relation("UserId")

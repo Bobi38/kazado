@@ -8,12 +8,12 @@ export async function Gestion(fastify: FastifyInstance) {
     const service = new GestionService();
     const controller = new GestionController(service);
 
-    fastify.post('/Validator', {schema: {query: GestionSchema.Id ,response: {200: GestionSchema.ReturnMessage}}, 
-        preHandler: [H.checkCal, H.checkUser, H.checkNewRole, H.checkAdm("Validator")]},
-    controller.addVal)
     fastify.post('/User', {schema: {query: GestionSchema.Id ,response: {200: GestionSchema.ReturnMessage}}, 
         preHandler: [H.checkCal, H.checkUser, H.checkNewUser, H.checkAdm("User")]},
     controller.addUser)
+    fastify.delete('/User', {schema: {query: GestionSchema.Id ,response: {200: GestionSchema.ReturnMessage}}, 
+        preHandler: [H.checkCal, H.checkUser, H.checkAdm("User")]},
+    controller.DelUser)
     fastify.post('/Adm', {schema: {query: GestionSchema.Id ,response: {200: GestionSchema.ReturnMessage}}, 
         preHandler: [H.checkCal, H.checkUser, H.checkNewRole, H.checkAdm("Admin")]},
     controller.addAdm)

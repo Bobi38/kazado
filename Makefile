@@ -1,6 +1,6 @@
 export DATABASE_URL=mysql://bobi:123@localhost:3306/Cal
 
-all: secrets compose update_prisma
+all: compose update_prisma
 
 compose:
 	docker compose up -d
@@ -37,6 +37,10 @@ update_prisma:
 	docker compose exec user npx prisma db push --schema=./prisma
 	@echo "✅ Tout est à jour !"
 
+
+tag_images:
+	@echo "[START] tag images ..."
+	
 push_images:
 	@echo "[START] push images ..."
 	docker push bobi38/kaz-mysql:latest
@@ -64,7 +68,7 @@ fclean: clean
 	docker volume prune -f
 	docker network prune -f
 	$(MAKE) volumes
-	$(MAKE) delete_secret
+
 
 
 

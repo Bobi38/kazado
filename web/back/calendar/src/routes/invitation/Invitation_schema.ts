@@ -9,6 +9,7 @@ export const data= Type.Object({
   name_user: Type.String(),
   name_calendar: Type.String(),
   calendarId: Type.String(),
+  guest: Type.Optional(Type.Number()),
 });
 
 

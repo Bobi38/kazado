@@ -10,5 +10,4 @@ export async function registerRoutes(fastify: FastifyInstance) {
     fastify.register(Calendar, { prefix: '/calendar' });
     fastify.register(Gestion, { prefix: '/gestion' });
     fastify.register(Invitation, { prefix: '/invitation' });
-  //fastify.register(User, { prefix: '/api/User' });
 }

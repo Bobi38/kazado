@@ -6,7 +6,6 @@ model core_calendar{
 	invitationSentUser			core_user_invit[]	@relation("IdCalendar")
 	userCalendar				core_calendar_user[]	@relation("IdCalendar")
     admCalendar         		core_calendar_admin[]   @relation("IdCalendar")
-    validatorCalendar			core_calendar_validator[]	@relation("IdCalendar")
 	reservationCalendat			core_reservation[]		@relation("IdCalendar")
 	relationCalHome				core_relation_CalendarHome[] @relation("IdCalendar")
 	HomeCalendar				core_home[]	@relation("IdCalendar")
@@ -49,14 +48,6 @@ model core_calendar_admin{
 	id_user			core_user		@relation("UserAdmin", fields: [idadm], references: [id])
 	calendarId		String
 	idadm			Int
-}
-
-model core_calendar_validator{
-	id				Int		@id @default(autoincrement())
-	id_calendar		core_calendar	@relation("IdCalendar", fields: [calendarId], references: [id])
-	id_user			core_user		@relation("UserValidator", fields: [idvalidator], references: [id])
-	calendarId		String
-	idvalidator		Int
 }
 
 model core_relation_CalendarHome{

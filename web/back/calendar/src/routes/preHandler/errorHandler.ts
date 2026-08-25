@@ -2,7 +2,7 @@ import { AppError } from "./AppError";
 
 export function errorHandler(error, request, reply) {
   const route = request.routerPath;
-
+  console.log("dans error handler")
   if (error instanceof AppError) {
     return reply.status(error.statusCode).send({
       success: false,

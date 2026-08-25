@@ -4,18 +4,22 @@ import { AppError } from "../preHandler/AppError";
 
 export class InvitationService{
 
-    async getInvitation(userId: number){
+    async getInvitationSend(userId: number){
+        console.log("coucou")
+        console.log(userId)
         const val : any[] = await prisma.$queryRaw`
         SELECT
-            inv.id as id,
-            cal.name as name_calendar,
-            cal.id as calendarId,
-            host.pseudo as name_user
-        FROM core_user u
-        INNER JOIN core_user_invit inv ON u.id = inv.guestId
-        INNER JOIN core_calendar cal ON inv.calendarId = cal.id
-        INNER JOIN core_user host ON inv.hostId = host.id
-        WHERE inv.guestId = ${userId}
+            inv.id AS id,
+            cal.name AS name_calendar,
+            cal.id AS calendarId,
+            guest.pseudo AS name_user,
+            inv.guestId AS guest
+        FROM core_user_invit inv
+        INNER JOIN core_calendar cal
+            ON inv.calendarId = cal.id
+        INNER JOIN core_user guest
+            ON inv.guestId = guest.id
+        WHERE inv.hostId = ${userId}
         `;
         return {success: true, message: "all invitations as Guest", data: val}
     }
@@ -33,11 +37,12 @@ export class InvitationService{
         INNER JOIN core_user guest ON inv.guestId = guest.id
         WHERE inv.guestId = ${userId}
         `;
+                console.log(`waitin ${val}`)
+                console.log("wowo")
         return {success: true, message: "all invitations as host", data: val}
     }
 
     async validateInvitation(calendar: string, invitation: string, user:number){
-        console.log(`validateInvitation calendar: ${calendar}, invitation: ${invitation}, user: ${user}`)
         await prisma.$transaction([
             prisma.core_calendar_user.updateMany({where:{calendarId: calendar, userId: user}, data: {status: true}}),
             prisma.core_user_invit.delete({where:{id: invitation}}),
@@ -45,13 +50,20 @@ export class InvitationService{
         return {success: true, message: "good user accept in the calendar"}
     }
 
-    async removeInvitation(calendar: string, userId: number, status: string){
-        if (status === "host") {
-
-            console.log(calendar)
-            const ret = await prisma.core_calendar_admin.findFirst({where:{calendarId: calendar, idadm: userId}})
-            const bool = ret ? "yes" : "no";
+    async declineInvitation(calendar: string, invitation: string, user:number){
+        await prisma.$transaction([
+            prisma.core_calendar_user.deleteMany({where:{calendarId: calendar, userId: user}}),
+            prisma.core_user_invit.delete({where:{id: invitation}}),
+        ]);
             return {success: true, message: "good"}
         }
-    }
+
+    async removeInvitation(calendar: string, invitation: string, user:number){
+        console.log(calendar, user, invitation)
+        await prisma.$transaction([
+            prisma.core_calendar_user.deleteMany({where:{calendarId: calendar, userId: user}}),
+            prisma.core_user_invit.delete({where:{id: invitation}}),
+        ]);
+            return {success: true, message: "good"}
+        }
 }

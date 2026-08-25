@@ -12,6 +12,7 @@ export async function checkUser(req: FastifyRequest, rep: FastifyReply) {
         const {calendar: calId} = req.query as {calendar : string}
         const userId = req.user;
 
+        console.log("in check user")
         if (!userId || !calId)
             throw new AppError(`Miss argument prehandler checkuser`, 404)
         const isUser = await prisma.core_calendar_user.findFirst({where:{calendarId: calId, userId: userId}})
@@ -36,6 +37,7 @@ export async function checkNewRole(req: FastifyRequest, rep: FastifyReply) {
 export async function checkNewUser(req: FastifyRequest, rep: FastifyReply) {
         const {name, calendar} = req.query as {name : string, calendar : string}
 
+                console.log("in check Newuser")
         if (!name)
             return;
         const isUser = await prisma.core_user.findFirst({where:{pseudo: name}})
@@ -51,9 +53,25 @@ export async function checkNewUser(req: FastifyRequest, rep: FastifyReply) {
         req.nuser = isUser.id;
 }
 
+export async function checkName(req: FastifyRequest, rep: FastifyReply) {
+        const {name, calendar} = req.query as {name : string, calendar : string}
+
+        if (!name)
+            return;
+        const isUser = await prisma.core_user.findFirst({where:{pseudo: name}})
+        if (!isUser)
+            throw new AppError(`Le user ${name} n'existe pas `, 401)
+        const isInCal= await prisma.core_calendar_user.findFirst({where:{calendarId: calendar, userId: isUser.id}});
+        if (!isInCal){
+            throw new AppError(`Le user ${name} n'est pas dans le calendar`, 401)
+        }
+        req.nuser = isUser.id;
+}
+
 export  async function checkCal(req: FastifyRequest, rep: FastifyReply) {
         const {calendar: calId} = req.query as {calendar : string}
 
+                console.log("in check cal")
         if (!calId)
             throw new AppError(`Need cal Id`, 404)
         const isCal = await prisma.core_calendar.findUnique({where:{id: calId}})
@@ -86,3 +104,17 @@ export  function checkAdm(ret: string) {
             throw new AppError(`You need to be ADMIN to add ${ret}`, 401)
     }
 }
+
+export  async function checkInvit(req: FastifyRequest, rep: FastifyReply) {
+        const user = req.user as number
+        const { id: invitationId } = req.params as { id: string };
+        const { calendar } = req.body as { calendar: string };
+        console.log(invitationId)
+        console.log(calendar)
+        if (!invitationId || !calendar)
+            throw new AppError(`Need resaId and calendarId`, 404)
+        const isInvit = await prisma.core_user_invit.findFirst({where:{OR:[{id: invitationId, calendarId: calendar, hostId: user},
+                                                                            {id: invitationId, calendarId: calendar, guestId: user}]}})
+        if (!isInvit)
+            throw new AppError(`Invitation doesn't exist`, 404)
+    }

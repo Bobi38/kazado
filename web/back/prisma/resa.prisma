@@ -6,9 +6,9 @@ model core_reservation {
     date_start      DateTime
     date_end        DateTime
     status          Boolean @default(false)
-    nb_adult        Int
-    nb_children     Int
-    nb_bedroom      Int
+    nb_adult        Int     @default(1)
+    nb_children     Int     @default(0)
+    nb_bedroom      Int     @default(1)
     note            String?
     userId          Int
     calendarId      String

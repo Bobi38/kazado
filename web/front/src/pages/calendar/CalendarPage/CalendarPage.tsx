@@ -1,12 +1,13 @@
 import { useParams, Link, useNavigate } from 'react-router-dom';
 import { useEffect, useState } from 'react';
 import {Box, Paper, Container, Button} from "@mui/material"
+import SettingsIcon from '@mui/icons-material/Settings';
 import AddIcon from '@mui/icons-material/AddBox';
 import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import "./CalendarPage.scss"
-import SetupAdm from '../setupAdm/SetupAdm';
+import SetupAdm from '../component/SetupAdm';
 import FormAddResa from '../component/FormAddResa';
 import DayResa from '../component/DayResa';
 
@@ -19,12 +20,9 @@ export default function CalendarPage(){
     const navigate = useNavigate()
     const {id, name} = useParams<{id: string, name:string}>();
     const [events, setEvents] = useState([]);
-    const [addevent, setAddEvent] = useState<"month" | "add" | "day">("month")
+    const [addevent, setAddEvent] = useState<"month" | "add" | "day" | "adm">("month")
     const [home, setHome] = useState([])
-    const [invit, setInvite] = useState([])
-    const [modal, setModal] = useState<"no" | "yes" | "popup" | "home_edit" | "home_create">("no");
-    const [selectedHomes, setSelectedHomes] = useState([]);
-    const [selectedInvit, setSelectedInvit] = useState([]);
+    const [modal, setModal] = useState<"no" | "yes">("no");
     const [period, setPeriod] = useState({start: new Date().toISOString(), end: new Date().toISOString()})
     const [today, setToday] = useState(formatDate(new Date()))
 
@@ -79,26 +77,6 @@ export default function CalendarPage(){
         }
     }
 
-    const updateInvit = async (id:string) => {
-        try{
-            const url = `/api/calendar/AllUsers?calendar=${encodeURIComponent(id)}`
-
-            const rep = await fetch(url,{
-                method: 'GET',
-                headers: {'Content-Type': 'application/json'},
-                credentials: "include"
-            })
-
-            const ret = await rep.json()
-            if (ret.success)
-                    setInvite(ret.data)
-            console.log(`in allUser = ${ret.message} && ${ret.id}`)
-            console.log(invit)
-        }catch(err){
-            console.log(`error front catch update ${err}`)
-        }
-    }
-
     const AdmCal = async (id:string) => {
         try{
             const url = `/api/gestion/setAdm?calendar=${encodeURIComponent(id)}`
@@ -122,7 +100,6 @@ export default function CalendarPage(){
 
     useEffect(() => {
         const co = async () => {
-            await updateInvit(id!)
             await AdmCal(id!)
         }
         co()
@@ -189,7 +166,7 @@ function renderDayCell(arg) {
                     <Box>
                         <Button variant="addResa" aria-label="Ajouter une réservation" onClick={() => {setAddEvent("add")}}><AddIcon/></Button>
                         {modal === "yes" && (
-                            <button onClick={() => {setModal("popup")}}>...</button>
+                            <Button variant="addResa" onClick={() => setAddEvent("adm")}><SettingsIcon/></Button>
                         )}
                     </Box>
                 </Box>
@@ -219,10 +196,8 @@ function renderDayCell(arg) {
         {addevent === "day" && (
             <DayResa setEvent={setAddEvent} data={events} date={today} title={name}/>
         )}
-          {modal != "no" && modal != "yes"  && (
-            <div className="popup">
-      		    <SetupAdm id={id!} setModal ={setModal} modal={modal} home={home} setHome={setHome}/>
-            </div>
+          {addevent === "adm" && (
+      		    <SetupAdm id={id!} setModal ={setAddEvent} modal={addevent}/>
           )}
         </Container>
     );

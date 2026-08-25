@@ -19,6 +19,8 @@ export const ParamsHome= Type.Object({
 export const Data = Type.Object({
   id: Type.String(),
   name: Type.String(),
+  email: Type.Optional(Type.String()),
+  adm: Type.Optional(Type.Boolean())
 });
 
 export const DataNumber = Type.Object({

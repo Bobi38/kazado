@@ -111,7 +111,8 @@ export class CalendarService{
             const Users: any[] = await prisma.$queryRaw`
                 SELECT
                     user.id as id,
-                    user.pseudo as name
+                    user.pseudo as name,
+                    user.email as email
                 FROM core_user user
                 INNER JOIN core_calendar_user rel ON user.id = rel.userId
                 WHERE rel.calendarId = ${calendar}

@@ -4,14 +4,6 @@ import { AppError } from "../preHandler/AppError";
 
 export class GestionService{
 
-    async addValidator(calendar: string, newId: number){
-        const val = await prisma.core_calendar_validator.findFirst({where:{calendarId: calendar, idvalidator: newId}})
-        if (val)
-            throw new AppError("validator already exist", 404);
-        await prisma.core_calendar_validator.create({data:{calendarId: calendar, idvalidator: newId}})
-        return {success: true, message: "good addValidator"}
-    }
-
     async addAdm(calendar: string, newId: number){
         const adm = await prisma.core_calendar_admin.findFirst({where:{calendarId: calendar, idadm: newId}})
         if (adm)
@@ -26,6 +18,16 @@ export class GestionService{
             prisma.core_calendar_user.create({data:{calendarId: calendar, userId: newId, status: false}}),
             prisma.core_user_invit.deleteMany({where:{hostId: user, guestId: newId, calendarId: calendar}}),
             prisma.core_user_invit.create({data:{hostId: user, guestId: newId, calendarId: calendar}})
+        ]);
+        return {success: true, message: "good addUser + send invit"}
+    }
+
+    async DelUser(calendar: string, user:number, newId: number){
+        
+        await prisma.$transaction([
+            prisma.core_calendar_user.deleteMany({where:{calendarId: calendar, userId: newId}}),
+            prisma.core_user_invit.deleteMany({where:{hostId: user, guestId: newId, calendarId: calendar}}),
+            prisma.core_calendar_admin.deleteMany({where:{calendarId: calendar, idadm: newId}})
         ]);
         return {success: true, message: "good addUser + send invit"}
     }
