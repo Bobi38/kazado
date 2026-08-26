@@ -1,3 +1,4 @@
+mysqldump: [Warning] Using a password on the command line interface can be insecure.
 -- MySQL dump 10.13  Distrib 8.4.11, for Linux (x86_64)
 --
 -- Host: localhost    Database: Cal
@@ -14,6 +15,7 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+mysqldump: Error: 'Access denied; you need (at least one of) the PROCESS privilege(s) for this operation' when trying to dump tablespaces
 
 --
 -- Table structure for table `core_calendar`
@@ -23,8 +25,8 @@ DROP TABLE IF EXISTS `core_calendar`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `core_calendar` (
-  `id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `nb_home` int NOT NULL,
   `validator` tinyint(1) NOT NULL,
   PRIMARY KEY (`id`)
@@ -37,7 +39,7 @@ CREATE TABLE `core_calendar` (
 
 LOCK TABLES `core_calendar` WRITE;
 /*!40000 ALTER TABLE `core_calendar` DISABLE KEYS */;
-INSERT INTO `core_calendar` VALUES ('cmt8o0y0v0000o417fob5mzri','Cal_Valid_NoToDo',1,1);
+INSERT INTO `core_calendar` VALUES ('cmt8o0y0v0000o417fob5mzri','Cal_Valid_NoToDo',2,1);
 /*!40000 ALTER TABLE `core_calendar` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -50,7 +52,7 @@ DROP TABLE IF EXISTS `core_calendar_admin`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `core_calendar_admin` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `calendarId` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `calendarId` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `idadm` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `core_calendar_admin_calendarId_fkey` (`calendarId`),
@@ -80,7 +82,7 @@ DROP TABLE IF EXISTS `core_calendar_user`;
 CREATE TABLE `core_calendar_user` (
   `id` int NOT NULL AUTO_INCREMENT,
   `status` tinyint(1) NOT NULL,
-  `calendarId` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `calendarId` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `userId` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `core_calendar_user_calendarId_fkey` (`calendarId`),
@@ -111,14 +113,14 @@ CREATE TABLE `core_home` (
   `id` int NOT NULL AUTO_INCREMENT,
   `nb_people` int NOT NULL,
   `nb_bedroom` int NOT NULL,
-  `adress` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `adress` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `isToDo` tinyint(1) NOT NULL DEFAULT '0',
-  `calendarId` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `calendarId` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `core_home_calendarId_fkey` (`calendarId`),
   CONSTRAINT `core_home_calendarId_fkey` FOREIGN KEY (`calendarId`) REFERENCES `core_calendar` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,7 +129,7 @@ CREATE TABLE `core_home` (
 
 LOCK TABLES `core_home` WRITE;
 /*!40000 ALTER TABLE `core_home` DISABLE KEYS */;
-INSERT INTO `core_home` VALUES (1,2,3,'','home',0,'cmt8o0y0v0000o417fob5mzri');
+INSERT INTO `core_home` VALUES (1,2,3,'','totot',1,'cmt8o0y0v0000o417fob5mzri'),(2,3,3,'','coco',0,'cmt8o0y0v0000o417fob5mzri');
 /*!40000 ALTER TABLE `core_home` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -141,7 +143,7 @@ DROP TABLE IF EXISTS `core_notification`;
 CREATE TABLE `core_notification` (
   `id` int NOT NULL AUTO_INCREMENT,
   `calendarId` int NOT NULL,
-  `affichage` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `affichage` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `createdAt` datetime(3) NOT NULL DEFAULT CURRENT_TIMESTAMP(3),
   `variables` json DEFAULT NULL,
   PRIMARY KEY (`id`),
@@ -168,12 +170,12 @@ DROP TABLE IF EXISTS `core_notification_template`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `core_notification_template` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `key` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `title` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `message` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `key` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `title` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `message` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `core_notification_template_key_key` (`key`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -224,14 +226,14 @@ DROP TABLE IF EXISTS `core_relation_CalendarHome`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `core_relation_CalendarHome` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `calendarId` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `calendarId` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `homeId` int NOT NULL,
   PRIMARY KEY (`id`),
   KEY `core_relation_CalendarHome_calendarId_fkey` (`calendarId`),
   KEY `core_relation_CalendarHome_homeId_fkey` (`homeId`),
   CONSTRAINT `core_relation_CalendarHome_calendarId_fkey` FOREIGN KEY (`calendarId`) REFERENCES `core_calendar` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `core_relation_CalendarHome_homeId_fkey` FOREIGN KEY (`homeId`) REFERENCES `core_home` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -240,7 +242,7 @@ CREATE TABLE `core_relation_CalendarHome` (
 
 LOCK TABLES `core_relation_CalendarHome` WRITE;
 /*!40000 ALTER TABLE `core_relation_CalendarHome` DISABLE KEYS */;
-INSERT INTO `core_relation_CalendarHome` VALUES (1,'cmt8o0y0v0000o417fob5mzri',1);
+INSERT INTO `core_relation_CalendarHome` VALUES (1,'cmt8o0y0v0000o417fob5mzri',1),(2,'cmt8o0y0v0000o417fob5mzri',2);
 /*!40000 ALTER TABLE `core_relation_CalendarHome` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -253,22 +255,22 @@ DROP TABLE IF EXISTS `core_reservation`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `core_reservation` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `date_start` datetime(3) NOT NULL,
   `date_end` datetime(3) NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '0',
   `nb_adult` int NOT NULL DEFAULT '1',
   `nb_children` int NOT NULL DEFAULT '0',
   `nb_bedroom` int NOT NULL DEFAULT '1',
-  `note` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `note` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `userId` int NOT NULL,
-  `calendarId` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `calendarId` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `core_reservation_userId_fkey` (`userId`),
   KEY `core_reservation_calendarId_fkey` (`calendarId`),
   CONSTRAINT `core_reservation_calendarId_fkey` FOREIGN KEY (`calendarId`) REFERENCES `core_calendar` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `core_reservation_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `core_user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -277,6 +279,7 @@ CREATE TABLE `core_reservation` (
 
 LOCK TABLES `core_reservation` WRITE;
 /*!40000 ALTER TABLE `core_reservation` DISABLE KEYS */;
+INSERT INTO `core_reservation` VALUES (1,'test1','2026-08-26 00:00:00.000','2026-08-28 00:00:00.000',0,2,2,2,NULL,1,'cmt8o0y0v0000o417fob5mzri'),(2,'le weeeeek-end','2026-08-26 00:00:00.000','2026-08-28 00:00:00.000',0,3,6,3,NULL,1,'cmt8o0y0v0000o417fob5mzri'),(3,'le teeeeessst 2 maisons','2026-08-26 00:00:00.000','2026-08-29 00:00:00.000',0,4,4,4,NULL,1,'cmt8o0y0v0000o417fob5mzri');
 /*!40000 ALTER TABLE `core_reservation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -296,7 +299,7 @@ CREATE TABLE `core_reservation_home` (
   KEY `core_reservation_home_homeId_fkey` (`homeId`),
   CONSTRAINT `core_reservation_home_homeId_fkey` FOREIGN KEY (`homeId`) REFERENCES `core_home` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `core_reservation_home_resaId_fkey` FOREIGN KEY (`resaId`) REFERENCES `core_reservation` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -305,6 +308,7 @@ CREATE TABLE `core_reservation_home` (
 
 LOCK TABLES `core_reservation_home` WRITE;
 /*!40000 ALTER TABLE `core_reservation_home` DISABLE KEYS */;
+INSERT INTO `core_reservation_home` VALUES (1,1,2),(2,2,1),(3,3,1),(4,3,2);
 /*!40000 ALTER TABLE `core_reservation_home` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -346,12 +350,12 @@ DROP TABLE IF EXISTS `core_todo`;
 CREATE TABLE `core_todo` (
   `id` int NOT NULL AUTO_INCREMENT,
   `homeId` int NOT NULL,
-  `task` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `task` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `status` tinyint(1) NOT NULL DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `core_todo_homeId_fkey` (`homeId`),
   CONSTRAINT `core_todo_homeId_fkey` FOREIGN KEY (`homeId`) REFERENCES `core_home` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -360,6 +364,7 @@ CREATE TABLE `core_todo` (
 
 LOCK TABLES `core_todo` WRITE;
 /*!40000 ALTER TABLE `core_todo` DISABLE KEYS */;
+INSERT INTO `core_todo` VALUES (3,1,'sortir poubelle',0),(4,1,'laver salle de bain',0);
 /*!40000 ALTER TABLE `core_todo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -372,11 +377,11 @@ DROP TABLE IF EXISTS `core_user`;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `core_user` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `email` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `name` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `lastname` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
-  `pseudo` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
-  `password` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `email` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `name` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `lastname` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
+  `pseudo` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `password` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `core_user_email_key` (`email`),
   UNIQUE KEY `core_user_pseudo_key` (`pseudo`)
@@ -401,10 +406,10 @@ DROP TABLE IF EXISTS `core_user_invit`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
 CREATE TABLE `core_user_invit` (
-  `id` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `id` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `hostId` int NOT NULL,
   `guestId` int NOT NULL,
-  `calendarId` varchar(191) COLLATE utf8mb4_unicode_ci NOT NULL,
+  `calendarId` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   KEY `core_user_invit_hostId_fkey` (`hostId`),
   KEY `core_user_invit_guestId_fkey` (`guestId`),
@@ -433,4 +438,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-08-25 12:53:21
+-- Dump completed on 2026-08-26 14:37:36
