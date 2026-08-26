@@ -27,24 +27,6 @@ export default function CalendarPage(){
     const [today, setToday] = useState(formatDate(new Date()))
 
 
-    const updateHome = async (id:string) => {
-        try{
-            const url = `/api/calendar/AllHomes?calendar=${encodeURIComponent(id)}`
-
-            const rep = await fetch(url,{
-                method: 'GET',
-                headers: {'Content-Type': 'application/json'},
-                credentials: "include"
-            })
-
-            const ret = await rep.json()
-            if (ret.success)
-                    setHome(ret.data)
-            console.log(`in add home = ${ret.message} && ${ret.id}`)
-        }catch(err){
-            console.log(`error front catch update ${err}`)
-        }
-    }
 
     const updateEvent = async (id:string, start: string, end: string) => {
         try{

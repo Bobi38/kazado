@@ -12,6 +12,14 @@ export class GestionService{
         return {success: true, message: "good addAdmin"}
     }
 
+    async DelAdm(calendar: string, newId: number){
+        const adm = await prisma.core_calendar_admin.findFirst({where:{calendarId: calendar, idadm: newId}})
+        if (!adm)
+            throw new AppError("admin not found", 404);
+        await prisma.core_calendar_admin.deleteMany({where:{calendarId: calendar, idadm: newId}})
+        return {success: true, message: "good DelAdmin"}
+    }
+
     async addUser(calendar: string, user:number, newId: number){
         
         await prisma.$transaction([

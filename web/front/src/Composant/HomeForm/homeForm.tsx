@@ -1,21 +1,23 @@
 import { useState } from "react";
 
-export default function HomeForm() {
+export default function HomeForm({data}:any) {
   const [showTodo, setShowTodo] = useState(false);
+
+  const {name, nb_bedroom, nb_people, adress, has_todo_checkout, todo_init_tasks} = data || {};
 
   return (
     <>
       <strong className="text">Nom</strong>
-      <input type="text" name="name_home" placeholder="Nom de votre home" required />
+      <input type="text" name="name_home" placeholder="Nom de votre home" value={name} required />
 
       <strong className="text">Nombre de chambre</strong>
-      <input type="number" name="nb_bedroom" required />
+      <input type="number" name="nb_bedroom" value={nb_bedroom} required />
 
       <strong className="text">Nombre de personne max</strong>
-      <input type="number" name="nb_people" required />
+      <input type="number" name="nb_people" value={nb_people} required />
 
       <strong className="text">Adresse</strong>
-      <input type="text" name="adress" placeholder="optionnelle" />
+      <input type="text" name="adress" placeholder="optionnelle" value={adress} />
 
       <h3>Options de Fin de Séjour</h3>
 
@@ -24,6 +26,7 @@ export default function HomeForm() {
         type="checkbox"
         name="has_todo_checkout"
         checked={showTodo}
+        value={has_todo_checkout}
         onChange={(e) => setShowTodo(e.target.checked)}
       />
 
@@ -35,6 +38,7 @@ export default function HomeForm() {
           <textarea
             name="todo_init_tasks"
             placeholder="Ex: Sortir les poubelles, Défaire les lits, Fermer les fenêtres"
+            value={todo_init_tasks}
           />
         </div>
       )}
