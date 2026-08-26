@@ -6,6 +6,7 @@ export function errorHandler(error, request, reply) {
   if (error instanceof AppError) {
     return reply.status(error.statusCode).send({
       success: false,
+      code: error.statusCode,
       message: error.message
     });
   }

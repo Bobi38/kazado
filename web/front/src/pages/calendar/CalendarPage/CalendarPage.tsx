@@ -7,9 +7,9 @@ import FullCalendar from "@fullcalendar/react";
 import dayGridPlugin from "@fullcalendar/daygrid";
 import interactionPlugin from "@fullcalendar/interaction";
 import "./CalendarPage.scss"
-import SetupAdm from '../component/SetupAdm';
-import FormAddResa from '../component/FormAddResa';
-import DayResa from '../component/DayResa';
+import SetupAdm from '../component/adm/SetupAdm';
+import FormAddResa from '../component/resa/FormAddResa';
+import DayResa from '../component/resa/DayResa';
 
 export default function CalendarPage(){
 
@@ -21,7 +21,6 @@ export default function CalendarPage(){
     const {id, name} = useParams<{id: string, name:string}>();
     const [events, setEvents] = useState([]);
     const [addevent, setAddEvent] = useState<"month" | "add" | "day" | "adm">("month")
-    const [home, setHome] = useState([])
     const [modal, setModal] = useState<"no" | "yes">("no");
     const [period, setPeriod] = useState({start: new Date().toISOString(), end: new Date().toISOString()})
     const [today, setToday] = useState(formatDate(new Date()))
@@ -39,6 +38,7 @@ export default function CalendarPage(){
             })
 
             const ret = await rep.json()
+            console.log("my event")
             ret.data.map((r:any) => {console.log(r)})
             if (ret.success)
                 setEvents(
@@ -91,7 +91,6 @@ export default function CalendarPage(){
         const co = async () => {
             if (!period || !period.start || !period.end) 
                 return
-            await updateHome(id!)
             await updateEvent(id!, period.start!, period.end!)
         }
         co()
@@ -106,8 +105,17 @@ export default function CalendarPage(){
 function renderDayCell(arg) {
     const date = arg.date.toLocaleDateString("sv-SE");
 
-    const count = events.filter((event) => {
+    const countVal = events.filter((event) => {
         if (!event.start || !event.status) return false;
+
+        const eventDateS = new Date(event.start).toLocaleDateString("sv-SE");
+        const eventDateE= new Date(event.end).toLocaleDateString("sv-SE");
+
+        return ((eventDateS <= date) && (eventDateE >= date));
+    }).length;
+
+    const countWait = events.filter((event) => {
+        if (!event.start) return false;
 
         const eventDateS = new Date(event.start).toLocaleDateString("sv-SE");
         const eventDateE= new Date(event.end).toLocaleDateString("sv-SE");
@@ -127,10 +135,16 @@ function renderDayCell(arg) {
                 {arg.dayNumberText}
             </Box>
 
-            {count > 0 && (
+            {countVal > 0 && (
                 <Box className="reservation-count">
                     <Box className="green-dot" />
-                    {count}
+                    {countVal}
+                </Box>
+            )}
+            {countWait > 0 && (
+                <Box className="reservation-count">
+                    <Box className="orange-dot" />
+                    {countWait}
                 </Box>
             )}
         </Box>
@@ -173,7 +187,7 @@ function renderDayCell(arg) {
             </Box>
         )}
         {addevent === "add" && (
-            <FormAddResa id={id} setEvent={setAddEvent} home={home} today={today}/>
+            <FormAddResa id={id} setEvent={setAddEvent} today={today}/>
         )}
         {addevent === "day" && (
             <DayResa setEvent={setAddEvent} data={events} date={today} title={name}/>

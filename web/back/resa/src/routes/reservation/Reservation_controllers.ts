@@ -23,7 +23,8 @@ export class ReservationController{
         const {calendar} = req.query as {calendar: string};
         const id = req.user;
         const ret = await this.ReservationService.getReservationid(calendar, id);
-        console.log(JSON.stringify(ret))
+        console.log("in getresaID")
+        console.log(ret)
         reply.status(200).send({success: ret.success, message: ret.message, data: ret.data });
     }
 

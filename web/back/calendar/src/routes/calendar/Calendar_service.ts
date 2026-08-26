@@ -99,7 +99,11 @@ export class CalendarService{
             const homes: any[] = await prisma.$queryRaw`
                 SELECT
                     home.id as id,
-                    home.name as name
+                    home.name as name,
+                    home.nb_people as nb_people,
+                    home.nb_bedroom as nb_bedroom,
+                    home.adress as adress,
+                    home.isToDo as isToDo
                 FROM core_home home
                 INNER JOIN core_relation_CalendarHome rel ON home.id = rel.homeId
                 WHERE rel.calendarId = ${calendar}

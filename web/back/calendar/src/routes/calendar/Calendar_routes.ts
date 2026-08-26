@@ -11,17 +11,20 @@ export async function Calendar(fastify: FastifyInstance) {
     fastify.get('/getMy', {schema: {response: {200: CalendarSchema.ReturnData}}},
     controller.myCal)
     fastify.post('/Home', {schema: {query: CalendarSchema.Id, body: CalendarSchema.BodyHome ,response: {200: CalendarSchema.ReturnMessage}}, 
-        preHandler: [H.checkCal, H.checkUser, H.checkAdm("Home")]},
+        preHandler: [H.checkCal, H.checkUser, H.checkAdm("Home"), H.checkHomeName]},
     controller.addHome)
+    fastify.patch('/home/:id', {schema: {query: CalendarSchema.Id, body: CalendarSchema.BodyHome ,response: {200: CalendarSchema.ReturnMessage}},
+        preHandler: [H.checkCal, H.checkUser, H.checkHome, H.checkAdm("Home"), H.checkHomeName]},
+    controller.patchHome)
+    fastify.delete('/home/:id', {schema: {query: CalendarSchema.Id, body: CalendarSchema.BodyHome ,response: {200: CalendarSchema.ReturnMessage}},
+        preHandler: [H.checkCal, H.checkUser, H.checkHome, H.checkAdm("Home")]},
+    controller.patchHome)
     fastify.post('/Calendar', {schema: {body: CalendarSchema.BodyCal ,response: {200: CalendarSchema.ReturIdCal}}, },
     controller.addCal)
     fastify.get('/AllHomes', {schema: {response: {200: CalendarSchema.ReturnDataNumber}}, preHandler: H.checkCal },
     controller.allHomes)
     fastify.get('/AllUsers', {schema: {response: {200: CalendarSchema.ReturnDataNumber}}, preHandler: H.checkCal },
     controller.allUsers)
-    fastify.patch('/home/:id', {schema: {query: CalendarSchema.Id, body: CalendarSchema.BodyHome ,response: {200: CalendarSchema.ReturnMessage}},
-        preHandler: [H.checkCal, H.checkUser, H.checkHome, H.checkAdm("Home")]},
-    controller.patchHome)
     fastify.get('/home/:id', {schema: {params: CalendarSchema.ParamsHome, query: CalendarSchema.Id ,response: {200: CalendarSchema.ReturnBodyHome}},
         preHandler: [H.checkCal, H.checkUser, H.checkHome, H.checkAdm("Home")] },
     controller.infoHome)

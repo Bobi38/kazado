@@ -29,6 +29,9 @@ export const DataResa= Type.Object({
   name_cal: Type.String(),
   calId: Type.String(),
   homes: Type.String(),
+  nb_adult: Type.Number(),
+  nb_children: Type.Number(),
+  nb_bedroom: Type.Number(),
 })
 
 export const ReturnDataResa = Type.Object({

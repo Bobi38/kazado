@@ -5,7 +5,7 @@ import { AppError } from "../preHandler/AppError";
 export class ReservationService{
     async addReservation(data: any, calendar: string, id: number){
             const bool = await prisma.core_calendar.findFirst({where:{id: calendar}, select:{validator:true}})
-            const vali = await prisma.core_calendar_admin.findFirst({where:{calendarId: calendar, idvalidator: id}})
+            const vali = await prisma.core_calendar_admin.findFirst({where:{calendarId: calendar, idadm: id}})
             let validator: boolean = false;
             if (vali)
                 validator = false;
@@ -49,7 +49,7 @@ export class ReservationService{
                                                             }})
             const result = resa.map((r) => ({
                 ...r,
-                allHome: r.allHome.map((h) => h.id_home.name),
+                allHome: r.allHome.map((h) => h.id_home.name).join(' , '),
                 userby: r.id_user.pseudo
             }))
             return { success: true, message: "all resa good", data: result };
@@ -59,7 +59,8 @@ export class ReservationService{
         const now = new Date()
         const data = await prisma.core_reservation.findMany({
             where: {
-                allUser:{some:{userId : id}},
+                OR: [{allUser:{some:{userId : id}}},
+                    {userId: id}],
                 date_end: { gte: now },
                 calendarId: calendar !== "null" ? calendar : undefined
             },
@@ -69,11 +70,14 @@ export class ReservationService{
                 date_start: true,
                 date_end: true,
                 status: true,
+                nb_adult: true,
+                nb_children: true,
+                nb_bedroom: true,
                 id_calendar: { select: { id: true, name: true } },
-                allHome: { select: { id_home: { select: { id: true, name: true } } } }
+                allHome: { select: { id_home: { select: { id: true, name: true}}}},
+
             },
         })
-        console.log(data)
         const dataparse = data.map(reservation => ({
             name: reservation.name,
             start: reservation.date_start,
@@ -81,10 +85,11 @@ export class ReservationService{
             status: reservation.status === true ? "validé":"en attente",
             name_cal: reservation.id_calendar.name,
             calId: reservation.id_calendar.id,
+            nb_adult: reservation.nb_adult,
+            nb_children: reservation.nb_children,
+            nb_bedroom: reservation.nb_bedroom,
             homes: reservation.allHome.map(h => h.id_home.name ).join(", ")
         }));
-        console.log("au revoir");
-        console.log(dataparse)
         return { success: true, message: "all resa good", data: dataparse };
     }
 
@@ -110,7 +115,8 @@ export class ReservationService{
                 nb_children: true,
                 id_calendar: { select: { id: true, name: true } },
                 allHome: { select: { id_home: { select: { id: true, name: true }}}},
-                allUser: {select: {id_user: {select: {id:true, name: true}}}},
+                allUser: {select: {id_user: {select: {id:true, pseudo: true}}}},
+                id_user:{select: {pseudo: true}}
             },
         })
         console.log(data)
@@ -122,7 +128,7 @@ export class ReservationService{
             name_cal: reservation.id_calendar.name,
             nb_adult: reservation.nb_adult,
             nb_children: reservation.nb_children,
-            user: reservation.allUser.map(u => u.id_user.name).join(", "),
+            user: [reservation.id_user.pseudo, ...reservation.allUser.map(u => u.id_user.pseudo)].join(", "),
             homes: reservation.allHome.map(h => h.id_home.name ).join(", ")
         }));
         return { success: true, message: "all resa good", data: dataparse };

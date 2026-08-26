@@ -28,3 +28,5 @@ my → margin vertical Haut + bas
 px / py Même principe pour le padding.
 
 gap crée un espace entre les enfants d'un composant flex ou grid.
+
+borderaddius: arrondie

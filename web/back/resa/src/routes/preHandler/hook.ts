@@ -27,15 +27,21 @@ export async function checkDate(req: FastifyRequest, rep: FastifyReply) {
             return;
         const start = new Date(databody.date_start + "T00:00:00.000Z")
         const end = new Date(databody.date_end + "T00:00:00.000Z")
+        console.log("before bucle for")
         for(const h of databody.Home ?? []){
-            const validDate = await prisma.core_reservation.findFirst({where: {
-                                                                            calendarId: calId,date_start: {lt: end},
-                                                                            date_end: {gt: start}}
+            const validDate = await prisma.core_reservation.findMany({where: {
+                                                                            calendarId: calId,
+                                                                            date_start: {lt: end},
+                                                                            date_end: {gt: start},
+                                                                            status: true,}
                                                                         })
+            console.log(validDate)
             if (validDate){
-                const home = await prisma.core_reservation_home.findFirst({where:{homeId: h, resaId: validDate.id}})
-                if (home)
-                    return rep.status(401).send({success: false, message: `Créneau déjà pris`})
+                for(const d of validDate){
+                    const home = await prisma.core_reservation_home.findFirst({where:{homeId: h, resaId: d.id}})
+                    if (home)
+                        return rep.status(401).send({success: false, message: `Créneau déjà pris`})
+                }
             }
         }
     }catch(err){

@@ -92,6 +92,27 @@ export  async function checkHome(req: FastifyRequest, rep: FastifyReply) {
 
     }
 
+export  async function checkHomeName(req: FastifyRequest, rep: FastifyReply) {
+        const {calendar: calId} = req.query as {calendar : string}
+        const {id}= req.params as { id: string };
+        const bodyData = req.body as any;
+        if (!calId)
+            throw new AppError(`Need cal id`, 404)
+        if (id){
+            const home = parseInt(id,10)
+            const isHome = await prisma.core_home.findFirst({where:{calendarId: calId, name:bodyData.name, id :{not : home}}})
+            if (isHome)
+                throw new AppError(`home name existe déjà`, 404)
+            return
+        }
+        const isHome = await prisma.core_home.findFirst({where:{calendarId: calId, name:bodyData.name}})
+        if (isHome)
+            throw new AppError(`home name existe déjà`, 404)
+        
+
+
+}
+
 export  function checkAdm(ret: string) {
     return async function (req: FastifyRequest, rep: FastifyReply) {
         const {calendar: calId} = req.query as {calendar : string}

@@ -18,7 +18,7 @@ export default function DayResa({setEvent, data, date, title}: Props){
 
     useEffect(() =>{
         const parse = data.filter((event) =>{
-            if (!event.start || !event.status) return false;
+            if (!event.start) return false;
             const eventDateS = new Date(event.start).toLocaleDateString("sv-SE");
             const eventDateE= new Date(event.end).toLocaleDateString("sv-SE");
 

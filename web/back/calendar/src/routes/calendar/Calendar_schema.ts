@@ -20,7 +20,11 @@ export const Data = Type.Object({
   id: Type.String(),
   name: Type.String(),
   email: Type.Optional(Type.String()),
-  adm: Type.Optional(Type.Boolean())
+  adm: Type.Optional(Type.Boolean()),
+  nb_people: Type.Optional(Type.Number()),
+  nb_bedroom: Type.Optional(Type.Number()),
+  adress: Type.Optional(Type.String()),
+  isToDo: Type.Optional(Type.Boolean()),
 });
 
 export const DataNumber = Type.Object({

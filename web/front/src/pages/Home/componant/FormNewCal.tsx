@@ -3,6 +3,7 @@ import { useEffect, useRef, useState, Dispatch, SetStateAction }            from
 import CloseIcon from '@mui/icons-material/Close';
 import {FormControlLabel, Checkbox, Paper, Box, Stack, TextField, Typography, Button, Divider} from "@mui/material"
 import HomeForm from "../../../Composant/HomeForm/homeForm";
+import parseForm from "../../../Composant/HomeForm/parseForm";
 
 type ListCalProps = {
   setFormCal: Dispatch<SetStateAction<boolean>>;
@@ -53,27 +54,12 @@ export default function FormNewCal({setFormCal}: ListCalProps){
 
     const FORMCall_submit = async (e) => {
         e.preventDefault();
-        console.log (e.target.name.value)
-        console.log (e.target.validator.checked)
         const d = e.target
         const dataCal ={
             name: d.name_cal.value,
             validator: d.validator.checked
         }
-        let checkoutTasks = [];
-        if (d.has_todo_checkout && d.has_todo_checkout.checked) {
-            const rawTasks = d.todo_init_tasks.value;
-            if (rawTasks.trim() !== "") {
-                checkoutTasks = rawTasks.split(',').map(task => task.trim()).filter(task => task !== "");
-            }
-        }
-        const dataHome = {
-            name: d.name_home.value,
-            nb_people: Number(d.nb_people.value),
-            nb_bedroom: Number(d.nb_bedroom.value),
-            adress: d.adress.value || "",
-            tasksArray: checkoutTasks
-        };
+        const dataHome = parseForm(e)
         const ret = await AddCal(dataCal)
         if(ret.success && ret.id)
             await AddHome(dataHome, ret.id)
@@ -104,7 +90,7 @@ export default function FormNewCal({setFormCal}: ListCalProps){
                                 label="Souhaitez-vous une politique de validation"
                             />
                         <Typography sx={{fontSize:"17px"}}>Premiere Home</Typography>
-                            <HomeForm/>
+                            <HomeForm data={null}/>
                             <button type="submit">valider</button>
                         </Stack>
                     </form>

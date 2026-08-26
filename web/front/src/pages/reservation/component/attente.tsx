@@ -29,7 +29,6 @@ export default function Attente () {
 
 
     useEffect(() =>{
-        console.log("useeffect")
         const co = async () => {
             await get_all_validation()
         }

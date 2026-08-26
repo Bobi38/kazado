@@ -11,7 +11,7 @@ type Props ={
     today: string
 }
 
-export default function FormAddResa({id, setEvent, home, today}: Props){
+export default function FormAddResa({id, setEvent, today}: Props){
     
     const formatDate = (date: Date) => {
         return date.toISOString().split("T")[0];
@@ -19,6 +19,7 @@ export default function FormAddResa({id, setEvent, home, today}: Props){
 
     const [selectedHomes, setSelectedHomes] = useState([]);
     const [selectedInvit, setSelectedInvit] = useState([]);
+    const [home, setHome] = useState([])
     const [invit, setInvite] = useState([])
     const [dateStart, setDateStart] = useState(formatDate(new Date()));
 
@@ -30,6 +31,25 @@ export default function FormAddResa({id, setEvent, home, today}: Props){
             : [...prev, id]
         );
     };
+
+    const init_Home = async (id:string) => {
+        try{
+            const url = `/api/calendar/AllHomes?calendar=${encodeURIComponent(id)}`
+
+            const rep = await fetch(url,{
+                method: 'GET',
+                headers: {'Content-Type': 'application/json'},
+                credentials: "include"
+            })
+
+            const ret = await rep.json()
+            if (ret.success)
+                    setHome(ret.data)
+            console.log(`in add home = ${ret.message} && ${ret.id}`)
+        }catch(err){
+            console.log(`error front catch update ${err}`)
+        }
+    }
     
     const updateInvit = async (id:string) => {
         try{
@@ -89,7 +109,7 @@ export default function FormAddResa({id, setEvent, home, today}: Props){
             Home: selectedHomes,
             Invit : selectedInvit
         }
-        const res = await addResa(dataRes, id)
+        const res = await addResa(dataRes, id!)
         setSelectedHomes([])
         setSelectedInvit([])
         setInvite([])
@@ -100,6 +120,7 @@ export default function FormAddResa({id, setEvent, home, today}: Props){
     useEffect(() => {
         const co = async () => {
             await updateInvit(id!)
+            await init_Home(id!)
         }
         co()
     },[])
@@ -113,7 +134,9 @@ export default function FormAddResa({id, setEvent, home, today}: Props){
             <form onSubmit={resaFrom_submit}>
                 <Stack sx={{p:2}} spacing={2}>
                 <strong>Titre</strong>
-                <input type="text" id="name_resa" required/>
+                <input type="text" maxLength="40" id="name_resa" placeholder="max 40 caractères" required/>
+                {/* <strong>Description</strong>
+                <input type="text" id="note" option/> */}
                 <strong>Date de debut</strong>
                 <input type="date" id="date_start" value={dateStart > today ? dateStart : today} min={today} onChange={(e) => setDateStart(e.target.value)} required/>
                 <strong>Date de fin</strong>
