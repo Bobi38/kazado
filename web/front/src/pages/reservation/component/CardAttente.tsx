@@ -1,6 +1,6 @@
 import {Card, CardContent, Typography, Chip, Grid, Paper, Stack, Tabs, Tab, Button} from '@mui/material'
 
-export default function CardAttente ({data}){
+export default function CardAttente ({data, setResaId, setAction}: any){
 
     const {name, name_cal, homes, start, end, status} = data
 

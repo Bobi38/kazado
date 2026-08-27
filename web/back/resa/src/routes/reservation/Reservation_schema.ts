@@ -42,6 +42,7 @@ export const ReturnDataResa = Type.Object({
 
 export const DataResaAdm= Type.Object({
   name: Type.String(),
+  id_cal: Type.String(),
   id_resa: Type.Number(),
   start: Type.String(),
   end: Type.String(),

@@ -7,7 +7,7 @@ import BedIcon from '@mui/icons-material/Bed';
 
 import {Container, Paper, Box, Stack, Typography, Button, Divider} from "@mui/material"
 
-export function CardResa ({data}: any []){
+export function CardResa ({data}: any){
 
     const {nb_children, nb_adult, nb_bedroom, title, start, end, status, backgroundColor, borderColor, allHome, userby} = data
 

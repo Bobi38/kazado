@@ -18,4 +18,8 @@ export async function Reservation(fastify: FastifyInstance) {
     controller.getReservationId)
     fastify.get('/reservationVal', {schema: {response: {200: ReservationSchema.ReturnDataResaAdm}}},
     controller.getValidation)
+    fastify.delete('/reject', {schema: {response: {200: ReservationSchema.ReturnDataResaAdm}}},
+    controller.rejectReservation)
+    fastify.patch('/validation', {schema: {response: {200: ReservationSchema.ReturnDataResaAdm}}},
+    controller.validateReservation)
 }

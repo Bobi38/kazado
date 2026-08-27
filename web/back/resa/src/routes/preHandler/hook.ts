@@ -89,6 +89,22 @@ export  async function checkCalResa(req: FastifyRequest, rep: FastifyReply) {
     }
 }
 
+export  async function checkCalResa(req: FastifyRequest, rep: FastifyReply) {
+    const { calendar: calId } = req.query as { calendar: string | undefined | null };
+
+    if (!calId || calId === "null" || calId.trim() === "") {
+        return; 
+    }
+
+    const isCal = await prisma.core_calendar.findUnique({
+        where: { id: calId }
+    });
+
+    if (!isCal) {
+        return rep.status(401).send({ success: false, message: `Cal doesn't exist` });
+    }
+}
+
 export  function checkAdm(ret: string) {
     return async function (req: FastifyRequest, rep: FastifyReply) {
         const {calendar: calId} = req.query as {calendar : number}

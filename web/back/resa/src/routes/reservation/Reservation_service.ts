@@ -122,6 +122,7 @@ export class ReservationService{
         console.log(data)
         const dataparse = data.map(reservation => ({
             name: reservation.name,
+            id_cal: reservation.id_calendar.id,
             id_resa: reservation.id,
             start: reservation.date_start,
             end: reservation.date_end,
