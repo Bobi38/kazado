@@ -1,4 +1,4 @@
-import socketPlugin from './initServerSocket.ts';
+// import socketPlugin from './initServerSocket.ts';
 import Fastify from 'fastify';
 import { registerRoutes } from './routes/index.ts';
 import fastifyCookie from '@fastify/cookie';
@@ -42,7 +42,7 @@ const start = async () => {
     await fastify.addHook('preHandler', callPath);
     fastify.setErrorHandler(errorHandler);
     fastify.register(registerRoutes);
-    await fastify.register(socketPlugin);
+    // await fastify.register(socketPlugin);
     await fastify.listen({ port: 9102, host: '0.0.0.0' })
     console.log("SERVER resa good ")
   } catch (err) {

@@ -27,7 +27,8 @@ export const DataResa= Type.Object({
   end: Type.String(),
   status: Type.String(),
   name_cal: Type.String(),
-  calId: Type.String(),
+  id_cal: Type.String(),
+  id_resa: Type.Number(),
   homes: Type.String(),
   nb_adult: Type.Number(),
   nb_children: Type.Number(),
@@ -50,7 +51,8 @@ export const DataResaAdm= Type.Object({
   homes: Type.String(),
   user: Type.String(),
   nb_adult: Type.Number(),
-  nb_children: Type.Number()
+  nb_children: Type.Number(),
+  nb_bedroom: Type.Number(),
 })
 
 export const ReturnDataResaAdm = Type.Object({

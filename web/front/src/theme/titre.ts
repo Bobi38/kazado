@@ -4,6 +4,7 @@ import { createTheme, ThemeProvider } from "@mui/material/styles";
 declare module "@mui/material/Button" {
     interface ButtonPropsVariantOverrides {
         valid: true;
+        delete: true;
         redir: true;
         close: true;
         addResa: true;
@@ -57,6 +58,26 @@ const theme = createTheme({
                     props: { variant: "valid" },
                     style: {
                         backgroundColor: "#7C9D96",
+                        color: "white",
+                        border: "none",
+                        padding: "0.75rem 1.5rem",
+                        borderRadius: "8px",
+                        textTransform: "none",
+                        fontSize: "1rem",
+                        fontWeight: 500,
+                        cursor: "pointer",
+                        transition: "background-color 0.2s ease",
+                        marginTop: "1rem",
+
+                        "&:hover": {
+                            backgroundColor: "#6B8B84",
+                        },
+                    },
+                },
+                {
+                    props: { variant: "delete" },
+                    style: {
+                        backgroundColor: "#9D7C83",
                         color: "white",
                         border: "none",
                         padding: "0.75rem 1.5rem",

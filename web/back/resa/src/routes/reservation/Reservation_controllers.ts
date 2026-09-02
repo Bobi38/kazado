@@ -32,7 +32,22 @@ export class ReservationController{
         const {calendar} = req.query as {calendar: string};
         const id = req.user;
         const ret = await this.ReservationService.getValidation(calendar, id);
+        console.log("my validation")
         console.log(JSON.stringify(ret))
         reply.status(200).send({success: ret.success, message: ret.message, data: ret.data });
+    }
+
+    rejectReservation = async (req: FastifyRequest, reply: FastifyReply) => {
+        const {idResa} = req.query as {idResa: string}
+        const id = parseInt(idResa,10)
+        const ret = await this.ReservationService.DelResa(id)
+        reply.status(200).send({success: ret.success, message: ret.message}); 
+    }
+
+    validateReservation = async (req: FastifyRequest, reply: FastifyReply) => {
+        const {idResa} = req.query as {idResa: string}
+        const id = parseInt(idResa,10)
+        const ret = await this.ReservationService.ValidateResa(id)
+        reply.status(200).send({success: ret.success, message: ret.message}); 
     }
 }

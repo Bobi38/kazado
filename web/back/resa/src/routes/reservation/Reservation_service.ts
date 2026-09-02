@@ -4,13 +4,16 @@ import { AppError } from "../preHandler/AppError";
 
 export class ReservationService{
     async addReservation(data: any, calendar: string, id: number){
+            console.log("DANS ADD")
             const bool = await prisma.core_calendar.findFirst({where:{id: calendar}, select:{validator:true}})
             const vali = await prisma.core_calendar_admin.findFirst({where:{calendarId: calendar, idadm: id}})
             let validator: boolean = false;
             if (vali)
-                validator = false;
+                validator = true;
             else
                 validator = !bool?.validator
+            console.log("MON VALIDATOR")
+            console.log(validator)
             const start = new Date(data.date_start + "T00:00:00.000Z")
             const end = new Date(data.date_end + "T00:00:00.000Z")
             const result = await prisma.$transaction(async (tx: any) => {
@@ -84,7 +87,8 @@ export class ReservationService{
             end: reservation.date_end,
             status: reservation.status === true ? "validé":"en attente",
             name_cal: reservation.id_calendar.name,
-            calId: reservation.id_calendar.id,
+            id_cal: reservation.id_calendar.id,
+            id_resa: reservation.id,
             nb_adult: reservation.nb_adult,
             nb_children: reservation.nb_children,
             nb_bedroom: reservation.nb_bedroom,
@@ -113,6 +117,7 @@ export class ReservationService{
                 date_end: true,
                 nb_adult: true,
                 nb_children: true,
+                nb_bedroom: true,
                 id_calendar: { select: { id: true, name: true } },
                 allHome: { select: { id_home: { select: { id: true, name: true }}}},
                 allUser: {select: {id_user: {select: {id:true, pseudo: true}}}},
@@ -126,6 +131,7 @@ export class ReservationService{
             id_resa: reservation.id,
             start: reservation.date_start,
             end: reservation.date_end,
+            nb_bedroom: reservation.nb_bedroom,
             name_cal: reservation.id_calendar.name,
             nb_adult: reservation.nb_adult,
             nb_children: reservation.nb_children,
@@ -133,5 +139,19 @@ export class ReservationService{
             homes: reservation.allHome.map(h => h.id_home.name ).join(", ")
         }));
         return { success: true, message: "all resa good", data: dataparse };
+    }
+
+    async DelResa(id: number){
+        const result = await prisma.$transaction(async (tx: any) => {
+            await tx.core_reservation_user.deleteMany({where:{resaId: id}});
+            await tx.core_reservation_home.deleteMany({where:{resaId: id}});
+            await tx.core_reservation.delete({where:{id: id}});
+        })
+        return { success: true, message: "Réservation supprimé"};
+    }
+
+    async ValidateResa(id: number){
+        const result = await prisma.core_reservation.update({where:{id:id}, data:{status:true}})
+        return { success: true, message: "Réservation Validé"};
     }
 }

@@ -11,6 +11,6 @@ export async function User(fastify: FastifyInstance) {
     controller.post)
     fastify.post('/login', {schema: {body: UserSchema.UserLogin, response: {200: UserSchema.UserReturnMess}}},
     controller.login)
-    fastify.post('/logout', {schema: {body: UserSchema.UserLogin, response: {200: UserSchema.UserReturnMess}}},
-    controller.logout)
+    // fastify.post('/logout', {schema: {body: UserSchema.UserLogin, response: {200: UserSchema.UserReturnMess}}},
+    // controller.logout)
 }
