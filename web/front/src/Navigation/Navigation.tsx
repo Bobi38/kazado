@@ -1,4 +1,4 @@
-import { BottomNavigation, BottomNavigationAction, Paper, Container, Box } from '@mui/material';
+import { BottomNavigation, BottomNavigationAction, Paper, Badge, Container, Box } from '@mui/material';
 import HomeIcon from '@mui/icons-material/Home';
 import EventIcon from '@mui/icons-material/Event';
 import MailIcon from '@mui/icons-material/Mail';
@@ -12,6 +12,8 @@ export default function Navigation({children}) {
 
   const navigate = useNavigate()
   const {pathname} = useLocation();
+
+
 
 
 	useEffect(() => {

@@ -1,33 +1,17 @@
-import {Card, CardContent, Typography, Grid, Paper, Stack, Tabs, Tab} from '@mui/material'
+import {Box, CardContent, Typography, Grid, Paper, Stack, Tabs, Tab} from '@mui/material'
 import { useEffect, useRef, useState }            from    "react";
 import CardAttente from './CardAttente';
 
-export default function Attente () {
+type Props ={
+    valid: [],
+    setValid: (value: []) => void
+}
 
-    const [valid, setValid] = useState([])
+export default function Attente({valid, setValid}: Props ) {
+
+    // const [valid, setValid] = useState([])
     const [resaId, setResaId] = useState(null)
     const [action, setAction] = useState(null)
-
-    const get_all_validation = async () => {
-        try{
-            const url =`/api/resa/reservationVal`
-
-            const rep = await fetch(url,{
-                    method: 'GET',
-                    headers: {'Content-Type': 'application/json'},
-                    credentials: "include"
-                })
-
-                const ret = await rep.json()
-                if (ret.success)
-                    setValid(ret.data)
-                else 
-                    console.log(`front cal_submit success false: ${ret.message}`)
-        }catch(err){
-            console.log(`cal_submit error TRY ${err}`)
-        }
-
-    }
 
     const validateReservation = async () => {
         try{
@@ -80,12 +64,6 @@ export default function Attente () {
         setResaId(null)
     }
 
-    useEffect(() =>{
-        const co = async () => {
-            await get_all_validation()
-        }
-        co()
-    }, [])
 
     useEffect(() =>{
         const co = async () => {
@@ -102,11 +80,11 @@ export default function Attente () {
             <Typography>Pas de reservation en attente de validation</Typography>
             </>
         ) : (
-            <>
+            <Box sx={{ maxHeight: 400, overflowY: "auto"}}>
             {valid.map((m, id) => (
                 <CardAttente key={id} data={m} setResaId={setResaId} setAction={setAction} />
             ))}
-            </>
+            </Box>
         )}
         </>
     )

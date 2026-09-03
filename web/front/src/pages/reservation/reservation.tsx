@@ -45,6 +45,13 @@ export default function Reservation (){
         )
     }
 
+    useEffect(() => {
+        const co = async () => {
+            await get_all_validation()
+        }
+        co()
+    }, [valid])
+
 
     return (
         <Container sx={{minHeight: "100vh"}}>
@@ -56,10 +63,10 @@ export default function Reservation (){
                     </Tabs>
                 </Box>
             </Paper>
-            <Paper sx={{p:2, borderRadius: 3}}>
+            <Paper sx={{p:1, borderRadius: 3}}>
                 <Box sx={{p:3}}>
                     {aff === 'resa' && <Res/> }
-                    {aff === 'adm' && <Attente/>}
+                    {aff === 'adm' && <Attente valid={valid} setValid={setValid}/>}
                 </Box>
             </Paper>
         </Container>

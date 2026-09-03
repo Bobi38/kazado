@@ -1,7 +1,8 @@
-import {Card, CardContent, Typography, Grid, Paper, Stack, Tabs, Tab} from '@mui/material'
+import {Card, CardContent, Typography, Grid, Paper, Stack, Tabs, Box} from '@mui/material'
 import { useEffect, useRef, useState }            from    "react";
 import {CardResa} from './CardResa';
 import {toast} from 'sonner'
+import {List} from 'react-window'
 
 export default function Res () {
 
@@ -76,11 +77,11 @@ export default function Res () {
             <Typography>Pas de reservation en attente</Typography>
             </>
         ) : (
-            <>
+            <Box sx={{ maxHeight: 400, overflowY: "auto"}}>
             {resa.map((m) => (
                 <CardResa data={m} handleDelete={handleDelete}/>
             ))}
-            </>
+            </Box>
         )}
         </>
     )

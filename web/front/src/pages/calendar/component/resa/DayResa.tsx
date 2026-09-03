@@ -37,7 +37,7 @@ export default function DayResa({setEvent, data, date, title}: Props){
                 </Box>
                 <Divider sx={{width: "100%", borderColor: "#7C9D96", borderBottomWidth: "2px", my: 1}}/>
                 {dataParse && dataParse.length > 0 ? (
-                    <Box>
+                    <Box sx={{ maxHeight: 400, overflowY: "auto"}}>
                         {dataParse.map((m, key) =>(
                             <CardResa data={m}/>
                         ))}

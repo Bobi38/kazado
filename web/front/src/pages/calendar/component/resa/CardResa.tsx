@@ -14,10 +14,10 @@ export function CardResa ({data}: any []){
         <Paper elevation={0} sx={{ my: 1, p: 1.5, backgroundColor, border: `1px solid ${borderColor}`, borderRadius: 2, color: "white", transition: "all 0.2s ease",
                 "&:hover": { transform: "translateY(-2px)", boxShadow: 3,},
         }}>
-            <Stack direction="row" sx={{display: "flex"}}>
-                <Typography sx={{ fontWeight: 600, fontSize: "14px", flex:1 }}>{title}</Typography>
-                <Typography sx={{flex:1}}>{start.slice(5,10)} ➜ {end.slice(5,10)}</Typography>
-                <Typography sx={{flex:1}}>
+            <Stack direction="row" sx={{display: "flex" , justifyContent: "space-between",}}>
+                <Typography sx={{ fontWeight: 600, fontSize: "14px" }}>{title}</Typography>
+                <Typography>{start.slice(5,10)} ➜ {end.slice(5,10)}</Typography>
+                <Typography>
                     {status === true ? <CheckCircleIcon /> : <HourglassBottomIcon />}</Typography>
             </Stack>
             <Stack direction="row"spacing={2}sx={{ mt: 0.5 }}>

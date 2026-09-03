@@ -9,17 +9,20 @@ declare module "@mui/material/Button" {
         close: true;
         addResa: true;
     }
+
 }
 
 declare module "@mui/material/styles" {
     interface TypographyVariants {
         h3Custom: React.CSSProperties;
         FormTitle: React.CSSProperties;
+        Card: React.CSSProperties;
     }
 
     interface TypographyVariantsOptions {
         h3Custom?: React.CSSProperties;
         FormTitle: React.CSSProperties;
+        Card: React.CSSProperties;
     }
 }
 
@@ -27,6 +30,7 @@ declare module "@mui/material/Typography" {
     interface TypographyPropsVariantOverrides {
         h3Custom: true;
         FormTitle: true;
+        Card: true;
     }
 }
 
@@ -51,6 +55,21 @@ const theme = createTheme({
                     fontFamily: "'Trebuchet MS', sans-serif",
                 },
             },
+        },
+        MuiTypography: {
+            variants: [
+                {
+                    props: { variant: "Card" },
+                    style: ({ theme }) => ({
+                        fontSize: "18px",
+                        color: "#7C9D96",
+
+                        [theme.breakpoints.down("sm")]: {
+                            fontSize: "10px",
+                        },
+                    }),
+                },
+            ],
         },
         MuiButton: {
             variants: [

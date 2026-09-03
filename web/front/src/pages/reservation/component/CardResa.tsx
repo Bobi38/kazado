@@ -13,7 +13,7 @@ export function CardResa ({data, handleDelete}: any ){
     const {nb_children, nb_adult, nb_bedroom, title, start, end, status, calId, backgroundColor, borderColor, allHome, userby, id} = data
 
     return (
-        <Paper elevation={0} sx={{ my: 1, p: 1.5, backgroundColor, border: `1px solid ${borderColor}`, borderRadius: 2, color: "white", transition: "all 0.2s ease",
+        <Paper elevation={0} sx={{ maxHeight: 100, my: 1, p: 1.5, backgroundColor, border: `1px solid ${borderColor}`, borderRadius: 2, color: "white", transition: "all 0.2s ease",
                 "&:hover": { transform: "translateY(-2px)", boxShadow: 3,},
         }}>
             <Stack direction="row" sx={{display: "flex", justifyContent: "space-between"}}>
@@ -26,6 +26,7 @@ export function CardResa ({data, handleDelete}: any ){
                 )}
             </Stack>
             <Stack direction="row"spacing={2}sx={{ mt: 0.5 }}>
+                <Stack direction="row" spacing={{xs: 0.5, sm: 2}} sx={{display: "flex", my:{xs: 1, sm: 0}}}>
                 <Box sx={{ display: "flex", alignItems: "center", gap: 0.5,}}>
                     <PersonIcon sx={{ fontSize: 17 }} />
                     <Typography variant="caption">{nb_adult}</Typography>
@@ -51,10 +52,10 @@ export function CardResa ({data, handleDelete}: any ){
                         {allHome}
                     </Typography>
                 </Box>
-                {userby && (
-                    <Typography variant="caption">by: {userby}</Typography>
-                )}
-                <Button type="button" onClick={() => handleDelete(id, calId)}><DeleteIcon/></Button>
+                </Stack>
+                <Stack direction="row" spacing={2}     sx={{display: "flex",alignItems: "center",justifyContent: {xs: "center",sm: "flex-start",}, mt: {xs: 1,sm: 0,},}}>
+                    <Button type="button" sx={{color:'white'}} onClick={() => handleDelete(id, calId)}><DeleteIcon/></Button>
+                </Stack>
             </Stack>
         </Paper>
     );

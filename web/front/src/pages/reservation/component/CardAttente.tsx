@@ -13,50 +13,50 @@ export default function CardAttente ({data, handleDelete, handleValidation}: any
     const {nb_children, nb_adult, nb_bedroom, name, name_cal, start, end, status, homes, user, id} = data
 
     return (
-        <Paper elevation={0} sx={{ my: 1, p: 1.5, border: `1px solid`, borderRadius: 2, color: "#7C9D96", transition: "all 0.2s ease",
+        <Paper elevation={0} sx={{ my: 1, p: 1.5, border: 2, borderRadius: 3, borderColor: "#7C9D96", transition: "all 0.2s ease",
                 "&:hover": { transform: "translateY(-2px)", boxShadow: 3,},
         }}>
             <Stack direction="row" sx={{display: "flex", justifyContent: "space-between", }}>
-                <Typography sx={{fontSize: { xs: "10px", md: "18px" }, fontWeight: 600,}}>{name}</Typography>
-                <Typography sx={{fontSize: { xs: "10px", md: "18px" }, fontWeight: 600,}}>{start.slice(5,10)} ➜ {end.slice(5,10)}</Typography>
-                <Typography sx={{fontSize: { xs: "10px", md: "18px" }, fontWeight: 600,}}>{name_cal}</Typography>
+                <Typography variant='Card'>{name}</Typography>
+                <Typography variant='Card'>{start.slice(5,10)} ➜ {end.slice(5,10)}</Typography>
+                <Typography variant='Card'>{name_cal}</Typography>
             </Stack>
-            <Stack direction={{ xs: "column", sm: "row" }} sx={{ mt: 0.5,  display: "flex", justifyContent: "space-between"}}>
-                <Stack direction="row" spacing={2} sx={{display: "flex"}}>
+            <Stack direction={{ xs: "column", sm: "row" }} sx={{ mt: 0.5,  display: "flex",alignItems: "center",justifyContent: {xs: "center",sm: "flex-start",},justifyContent: "space-between"}}>
+                <Stack direction="row" spacing={{xs: 0.8, sm: 2}} sx={{display: "flex", my:{xs: 1, sm: 0}}}>
                     <Box sx={{ display: "flex", alignItems: "center", gap: 0.5,}}>
-                        <PersonIcon sx={{ fontSize: 20 }} />
-                        <Typography variant="caption">{nb_adult}</Typography>
+                        <PersonIcon sx={{ fontSize:{xs: 12, sm: 20} }} />
+                        <Typography variant='Card'>{nb_adult}</Typography>
                     </Box>
                     <Box sx={{display: "flex", alignItems: "center", gap: 0.5,}}
                     >
-                        <ChildCareIcon sx={{ fontSize: 17 }} />
-                        <Typography variant="caption">
+                        <ChildCareIcon sx={{ fontSize:{xs: 12, sm: 20} }} />
+                        <Typography variant='Card'>
                             {nb_children}
                         </Typography>
                     </Box>
                     <Box sx={{display: "flex", alignItems: "center", gap: 0.5,}}
                     >
-                        <BedIcon sx={{ fontSize: 17 }} />
-                        <Typography variant="caption">
+                        <BedIcon sx={{ fontSize:{xs: 12, sm: 20} }} />
+                        <Typography variant='Card'>
                             {nb_bedroom}
                         </Typography>
                     </Box>
                     <Box sx={{display: "flex", alignItems: "center", gap: 0.5,}}
                     >
-                        <HomeFilledIcon sx={{ fontSize: 17 }} />
-                        <Typography variant="caption">
+                        <HomeFilledIcon sx={{ fontSize:{xs: 12, sm: 20} }} />
+                        <Typography variant='Card'>
                             {homes}
                         </Typography>
                     </Box>
                     <Box sx={{display: "flex", alignItems: "center", gap: 0.5,}}
                     >
-                        <GroupIcon sx={{ fontSize: 17 }} />
-                        <Typography variant="caption">
+                        <GroupIcon sx={{ fontSize:{xs: 12, sm: 20} }} />
+                        <Typography variant='Card'>
                             {user}
                         </Typography>
                     </Box>
                 </Stack>
-                <Stack direction="row" spacing={2} sx={{xs:{mt: 5}}}>
+                <Stack direction="row" spacing={2}     sx={{display: "flex",alignItems: "center",justifyContent: {xs: "center",sm: "flex-start",}, mt: {xs: 1,sm: 0,},}}>
                     <Button type="button" variant="delete" onClick={() => handleDelete(id)}><DeleteIcon/></Button>
                     <Button type="button" variant="valid"  onClick={() => handleValidation(id)}><CheckCircleIcon/></Button>
                 </Stack>
