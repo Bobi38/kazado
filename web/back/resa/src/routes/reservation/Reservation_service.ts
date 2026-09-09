@@ -59,6 +59,7 @@ export class ReservationService{
     }
 
     async getReservationid(calendar: string, id: number){
+        console.log("NOOOOOOOOOOOOOOOOOOOO")
         const now = new Date()
         const data = await prisma.core_reservation.findMany({
             where: {
@@ -77,10 +78,11 @@ export class ReservationService{
                 nb_children: true,
                 nb_bedroom: true,
                 id_calendar: { select: { id: true, name: true } },
-                allHome: { select: { id_home: { select: { id: true, name: true}}}},
+                allHome: { select: { id_home: { select: { id: true, name: true, toDoTasks: {select:{id:true, homeId: true, task:true, status: true}}}}}},
 
             },
         })
+        console.log("before parse")
         const dataparse = data.map(reservation => ({
             name: reservation.name,
             start: reservation.date_start,
@@ -92,8 +94,12 @@ export class ReservationService{
             nb_adult: reservation.nb_adult,
             nb_children: reservation.nb_children,
             nb_bedroom: reservation.nb_bedroom,
-            homes: reservation.allHome.map(h => h.id_home.name ).join(", ")
+            homes: reservation.allHome.map(h => h.id_home.name ).join(", "),
+            task: reservation.allHome.flatMap(h => h.id_home.toDoTasks.map((task : any) => ({id : task.id, homeid: task.homeId, task: task.task, status: task.status})))
         }));
+        dataparse.sort((a,b) => a.start - b.start)
+        console.log("before")
+        console.log(dataparse.map(h => console.log(h.task.length)))
         return { success: true, message: "all resa good", data: dataparse };
     }
 

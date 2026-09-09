@@ -50,7 +50,7 @@ export default function Reservation (){
             await get_all_validation()
         }
         co()
-    }, [valid])
+    }, [])
 
 
     return (

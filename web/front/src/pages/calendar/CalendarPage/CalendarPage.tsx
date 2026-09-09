@@ -115,7 +115,7 @@ function renderDayCell(arg) {
     }).length;
 
     const countWait = events.filter((event) => {
-        if (!event.start) return false;
+        if (!event.start || event.status) return false;
 
         const eventDateS = new Date(event.start).toLocaleDateString("sv-SE");
         const eventDateE= new Date(event.end).toLocaleDateString("sv-SE");

@@ -7,6 +7,7 @@ import {List} from 'react-window'
 export default function Res () {
 
     const [resa, setResa] = useState([])
+    const [today, setToday] = useState(new Date().toISOString().split("T")[0])
 
     const get_all_my_resa = async () => {
         try{
@@ -19,21 +20,25 @@ export default function Res () {
                 })
 
                 const ret = await rep.json()
+                console.log("TASK BACK :", ret.data.map((r: any) => r.task?.length));
+
                 if (ret.success)
                     setResa(ret.data.map((r: any) => ({
-                        id: r.id,
+                        id: r.id_resa,
                         title: r.name,
-                        start: r.start,
-                        end: r.end,
+                        start: r.start.slice(0,10),
+                        end: r.end.slice(0,10),
                         calId: r.id_cal,
                         status: r.status,
                         nb_adult: r.nb_adult,
                         nb_children: r.nb_children,
                         nb_bedroom: r.nb_bedroom,
-                        backgroundColor: r.status === "validé" ? "#7C9D96" : "#D4B483",
-                        borderColor: r.status === "validé" ? "#668780" : "#B8955F",
+                        backgroundColor: r.status === "en attente" ? "#D4B483" : (today >=r.start.slice(0,10) && today <= r.end.slice(0,10)) ? "#7C8AA8" : "#7C9D96" ,
+                        borderColor: r.status === "en attente" ? "#B8955F" : (today >=r.start.slice(0,10) && today <= r.end.slice(0,10)) ? "#3C4980" : "#668780" ,
                         userby: r.userby,
-                        allHome: r.homes
+                        allHome: r.homes,
+                        encours: r.status === "en attente" ? false : (today >=r.start.slice(0,10) && today <= r.end.slice(0,10)) ? true : false ,
+                        task : r.task ? r.task : []
                     })))
                 else 
                     console.log(`front cal_submit success false: ${ret.message}`)
@@ -44,10 +49,10 @@ export default function Res () {
 
     const DeleteResa = async(id: number, calId: string) =>{
         try{
-            const url=`api/resa/delete/id=${encodeURIComponent(id)}&calendar=${encodeURIComponent(calId)}`
+            console.log("in delete")
+            const url=`api/resa/dd/${encodeURIComponent(id)}?calendar=${encodeURIComponent(calId)}`
             const rep = await fetch(url,{
                     method: 'DELETE',
-                    headers: {'Content-Type': 'application/json'},
                     credentials: "include"
                 })
                 const ret = await rep.json()
@@ -59,8 +64,8 @@ export default function Res () {
         }
     }
 
-    const handleDelete =  async (id: number) => {
-        await DeleteResa(id)
+    const handleDelete =  async (id: number, calId: string) => {
+        await DeleteResa(id, calId)
     }
 
     useEffect(() =>{
@@ -78,8 +83,8 @@ export default function Res () {
             </>
         ) : (
             <Box sx={{ maxHeight: 400, overflowY: "auto"}}>
-            {resa.map((m) => (
-                <CardResa data={m} handleDelete={handleDelete}/>
+            {resa.map((m : any, index: number) => (
+                <CardResa key={index} data={m} handleDelete={handleDelete}/>
             ))}
             </Box>
         )}

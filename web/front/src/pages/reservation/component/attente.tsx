@@ -15,7 +15,7 @@ export default function Attente({valid, setValid}: Props ) {
 
     const validateReservation = async () => {
         try{
-            const url =`/api/resa/validation/id=${encodeURIComponent(resaId.id)}&calendar=${encodeURIComponent(resaId.id_cal)}`
+            const url =`/api/resa/validation/i${encodeURIComponent(resaId.id)}?calendar=${encodeURIComponent(resaId.id_cal)}`
 
             const rep = await fetch(url,{
                     method: 'PATCH',
@@ -35,7 +35,7 @@ export default function Attente({valid, setValid}: Props ) {
 
     const rejectReservation = async () => {
         try{
-            const url =`/api/resa/reject/id=${encodeURIComponent(resaId.id)}&calendar=${encodeURIComponent(resaId.id_cal)}`
+            const url =`/api/resa/reject/${encodeURIComponent(resaId.id)}?calendar=${encodeURIComponent(resaId.id_cal)}`
 
             const rep = await fetch(url,{
                     method: 'DELETE',

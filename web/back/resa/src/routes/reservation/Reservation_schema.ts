@@ -21,6 +21,13 @@ export const IncomeCalendar= Type.Object({
   end: Type.String(),
 })
 
+export const task= Type.Object({
+  id: Type.Number(),
+  homeid: Type.Number(),
+  task: Type.String(),
+  status: Type.Boolean(),
+})
+
 export const DataResa= Type.Object({
   name: Type.String(),
   start: Type.String(),
@@ -33,6 +40,7 @@ export const DataResa= Type.Object({
   nb_adult: Type.Number(),
   nb_children: Type.Number(),
   nb_bedroom: Type.Number(),
+  task: Type.Optional(Type.Array(task))
 })
 
 export const ReturnDataResa = Type.Object({

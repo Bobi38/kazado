@@ -38,9 +38,9 @@ export class ReservationController{
     }
 
     rejectReservation = async (req: FastifyRequest, reply: FastifyReply) => {
-        const {idResa} = req.query as {idResa: string}
-        const id = parseInt(idResa,10)
-        const ret = await this.ReservationService.DelResa(id)
+        const {id} = req.params as {id: string}
+        const idR = parseInt(id,10)
+        const ret = await this.ReservationService.DelResa(idR)
         reply.status(200).send({success: ret.success, message: ret.message}); 
     }
 
