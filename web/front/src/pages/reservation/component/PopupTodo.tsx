@@ -1,4 +1,4 @@
-import { Checkbox, Box, Paper, List, ListItem, ListitemText, Dialog, DialogTitle, Typography, Button} from '@mui/material'
+import { Checkbox, Stack, Paper, List, ListItem, ListitemText, Dialog, DialogTitle, Typography, Button} from '@mui/material'
 import {useState }  from    "react";
 import DoneIcon from '@mui/icons-material/Done';
 
@@ -8,7 +8,15 @@ export default function PopupTodo({task, open, setOpen}: any) {
 
     console.log("IN POP")
 
-    // const handleChange
+    const handleChange = (index: number) => {
+        setLocalTasks((prev: any[]) =>
+            prev.map((t, i) =>
+            i === index
+                ? { ...t, status: !t.status }
+                : t
+            )
+        );
+    };
 
     const handleValidate = async () => {
 
@@ -20,12 +28,14 @@ export default function PopupTodo({task, open, setOpen}: any) {
                 <DialogTitle>List To Do</DialogTitle>
                 <List sx={{ my: 1, mx:2}}>
                     {task.map((t: any, index: number) =>
-                        <ListItem disablePadding key={index}>
-                            <Checkbox checked={t.status}disabled/>
+                        <ListItem disablePadding key={t.id}>
+                            <Checkbox checked={t.status} onChange={() => handleChange(t.id)} disabled/>
                             <Typography>{t.task}</Typography>
                         </ListItem>
                     )}
+                    <Stack>
                     <Button variant="valid" onClick={() => handleValidate()}><DoneIcon/></Button>
+                    </Stack>
                 </List>
 
             </Dialog>
