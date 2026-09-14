@@ -30,3 +30,15 @@ px / py Même principe pour le padding.
 gap crée un espace entre les enfants d'un composant flex ou grid.
 
 borderaddius: arrondie
+
+
+copnnect deux network
+
+docker network connect kazado_home n8n-n8n-1
+
+docker inspect n8n-n8n-1 --format='{{json .NetworkSettings.Networks}}'
+
+deco
+docker network disconnect kazado_home n8n-n8n-1
+
+

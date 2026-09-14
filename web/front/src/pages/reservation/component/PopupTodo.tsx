@@ -42,7 +42,6 @@ export default function PopupTodo({task, open, setOpen}: any) {
         }
     };
 
-    }
 
     return (
         <>
