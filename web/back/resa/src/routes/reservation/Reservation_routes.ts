@@ -26,4 +26,7 @@ export async function Reservation(fastify: FastifyInstance) {
     fastify.patch('/validation/:id', {schema: {response: {200: ReservationSchema.ReservationReturnMessage}},
         preHandler: [H.checkCal, H.checkAdm]},
     controller.validateReservation)
+    fastify.patch('/todo', {schema: {response: {200: ReservationSchema.ReservationReturnMessage}},
+        preHandler: [H.checkCal, H.checkUser]},
+    controller.updateTodo)
 }

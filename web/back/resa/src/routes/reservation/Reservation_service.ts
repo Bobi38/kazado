@@ -130,7 +130,6 @@ export class ReservationService{
                 id_user:{select: {pseudo: true}}
             },
         })
-        console.log(data)
         const dataparse = data.map(reservation => ({
             name: reservation.name,
             id_cal: reservation.id_calendar.id,
@@ -159,5 +158,18 @@ export class ReservationService{
     async ValidateResa(id: number){
         const result = await prisma.core_reservation.update({where:{id:id}, data:{status:true}})
         return { success: true, message: "Réservation Validé"};
+    }
+
+    async UpdateTodo(tasks: any[]){
+        const result = await prisma.$transaction(
+            tasks.map(task =>
+                prisma.core_todo.update({
+                where: { id: task.id },
+                data: { status: task.status },
+                })
+            )
+        )
+    
+        return { success: true, message: "Todo updated"};
     }
 }

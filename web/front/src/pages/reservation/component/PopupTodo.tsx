@@ -18,7 +18,29 @@ export default function PopupTodo({task, open, setOpen}: any) {
         );
     };
 
+    const updateTaskStatus = async (localTasks: any[]) => {
+        try {
+            const url = '/api/reservation/todo';
+            const rep = await fetch(url, {
+                method: 'PATCH',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(localTasks),
+            });
+            const ret = await rep.json();
+            return ret.success;
+        } catch (error) {
+            console.error("Error updating task status:", error);
+        }
+    };
+
     const handleValidate = async () => {
+        const success = await updateTaskStatus(localTasks);
+        if (success) {
+            setOpen(false);
+        }
+    };
 
     }
 

@@ -22,7 +22,6 @@ export function CardResa ({data, handleDelete}: any ){
     const [anchorEl, setAnchorEl] = useState(null);
 
     const handleClick = (event) => {
-        console.log("coucou")
         setAnchorEl(event.currentTarget);
         setOpen((previousOpen) => !previousOpen);
     };

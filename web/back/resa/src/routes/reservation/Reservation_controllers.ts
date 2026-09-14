@@ -50,4 +50,10 @@ export class ReservationController{
         const ret = await this.ReservationService.ValidateResa(id)
         reply.status(200).send({success: ret.success, message: ret.message}); 
     }
+
+    updateTodo = async (req: FastifyRequest, reply: FastifyReply) => {
+        const tasks = req.body as any[];
+        const ret = await this.ReservationService.UpdateTodo(tasks);
+        reply.status(200).send({success: ret.success, message: ret.message}); 
+    }
 }
