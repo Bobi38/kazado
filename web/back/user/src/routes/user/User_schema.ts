@@ -9,6 +9,15 @@ export const UserReturnMess= Type.Object({
   message: Type.String(),
 })
 
+export const UserForget= Type.Object({
+  email: Type.String({ format: 'email' }),
+})
+
+export const ReturnToken= Type.Object({
+  success:  Type.Boolean(),
+  message: Type.String(),
+})
+
 
 export const UserPost= Type.Object({
   email: Type.String({ format: 'email' }),
@@ -22,4 +31,12 @@ export const UserPost= Type.Object({
 export const UserLogin= Type.Object({
   email: Type.String({ format: 'email' }),
   password: Type.String({minLength: 4}),
+})
+
+export const UserReset= Type.Object({
+  token: Type.String(),
+  password: Type.String({
+    minLength: 4,
+    pattern: '(?=.*[A-Z])(?=.*[0-9])'
+  }),
 })

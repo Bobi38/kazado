@@ -2,6 +2,7 @@ import { BottomNavigation, BottomNavigationAction, Paper, Badge, Container, Box 
 import HomeIcon from '@mui/icons-material/Home';
 import EventIcon from '@mui/icons-material/Event';
 import MailIcon from '@mui/icons-material/Mail';
+import LogoutIcon from '@mui/icons-material/Logout';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
@@ -12,8 +13,6 @@ export default function Navigation({children}) {
 
   const navigate = useNavigate()
   const {pathname} = useLocation();
-
-
 
 
 	useEffect(() => {
@@ -42,7 +41,8 @@ export default function Navigation({children}) {
           <BottomNavigationAction label="Home" value="/" icon={<HomeIcon />} />
           <BottomNavigationAction label="Réservations" value="/reservation" icon={<EventIcon />} />
           <BottomNavigationAction label="Invitations" value="/invitation" icon={<MailIcon />} />
-          <BottomNavigationAction label="Profil" value="/profil" icon={<AccountCircleIcon />} />
+          {/* <BottomNavigationAction label="Profil" value="/profil" icon={<AccountCircleIcon />} /> */}
+          <BottomNavigationAction label="Déconnexion" value="/logout" icon={<LogoutIcon />} />
         </BottomNavigation>
       </Paper>
     </Container>

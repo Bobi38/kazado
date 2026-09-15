@@ -5,6 +5,7 @@ model core_user {
 	lastname			String?
 	pseudo				String	@unique
 	password			String
+	token				String?
 	invitationsSent     core_user_invit[]           @relation("UserHost")
     invitationsReceived core_user_invit[]           @relation("UserGuest")
     userAdm             core_calendar_admin[]       @relation("UserAdmin")

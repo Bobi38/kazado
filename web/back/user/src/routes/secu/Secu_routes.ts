@@ -7,7 +7,7 @@ import {secret} from "../index.ts"
 
 
 async function checkAuthToken(req: FastifyRequest, rep: FastifyReply) {
-    const token = req.cookies.auth;
+    const token = req.cookies.auth_kaza;
     console.log("coucou")
     console.log(secret)
     console.log(token)

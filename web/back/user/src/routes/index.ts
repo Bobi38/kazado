@@ -23,8 +23,8 @@ export function generateToken(MPFA: boolean, token: string, res: FastifyReply) {
       return res.cookie('temp', token, { path: '/', httpOnly: true, secure: false, sameSite: 'lax', maxAge: 12 * 60 * 60 * 1000 });
   }else{
     if (status === "prod")
-      return res.cookie('auth', token, { path: '/', httpOnly: true, secure: true, sameSite: 'strict', maxAge: 12 * 60 * 60 * 1000 });
+      return res.cookie('auth_kaza', token, { path: '/', httpOnly: true, secure: true, sameSite: 'strict', maxAge: 12 * 60 * 60 * 1000 });
     else
-      return res.cookie('auth', token, { path: '/', httpOnly: true, secure: false, sameSite: 'lax', maxAge: 12 * 60 * 60 * 1000 });
+      return res.cookie('auth_kaza', token, { path: '/', httpOnly: true, secure: false, sameSite: 'lax', maxAge: 12 * 60 * 60 * 1000 });
   }
 }

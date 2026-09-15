@@ -1,3 +1,4 @@
+mysqldump: [Warning] Using a password on the command line interface can be insecure.
 -- MySQL dump 10.13  Distrib 8.4.11, for Linux (x86_64)
 --
 -- Host: localhost    Database: Cal
@@ -14,6 +15,7 @@
 /*!40014 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0 */;
 /*!40101 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='NO_AUTO_VALUE_ON_ZERO' */;
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
+mysqldump: Error: 'Access denied; you need (at least one of) the PROCESS privilege(s) for this operation' when trying to dump tablespaces
 
 --
 -- Table structure for table `core_calendar`
@@ -37,7 +39,7 @@ CREATE TABLE `core_calendar` (
 
 LOCK TABLES `core_calendar` WRITE;
 /*!40000 ALTER TABLE `core_calendar` DISABLE KEYS */;
-INSERT INTO `core_calendar` VALUES ('cmt8o0y0v0000o417fob5mzri','Cal_Valid_NoToDo',2,1);
+INSERT INTO `core_calendar` VALUES ('cmt8o0y0v0000o417fob5mzri','Cal_Valid_NoToDo',2,1),('cmttx6m1g0000qx18o8ao4veg','Cal_WithTodo',2,0);
 /*!40000 ALTER TABLE `core_calendar` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -57,7 +59,7 @@ CREATE TABLE `core_calendar_admin` (
   KEY `core_calendar_admin_idadm_fkey` (`idadm`),
   CONSTRAINT `core_calendar_admin_calendarId_fkey` FOREIGN KEY (`calendarId`) REFERENCES `core_calendar` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `core_calendar_admin_idadm_fkey` FOREIGN KEY (`idadm`) REFERENCES `core_user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -66,7 +68,7 @@ CREATE TABLE `core_calendar_admin` (
 
 LOCK TABLES `core_calendar_admin` WRITE;
 /*!40000 ALTER TABLE `core_calendar_admin` DISABLE KEYS */;
-INSERT INTO `core_calendar_admin` VALUES (1,'cmt8o0y0v0000o417fob5mzri',1);
+INSERT INTO `core_calendar_admin` VALUES (1,'cmt8o0y0v0000o417fob5mzri',1),(2,'cmttx6m1g0000qx18o8ao4veg',1);
 /*!40000 ALTER TABLE `core_calendar_admin` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -87,7 +89,7 @@ CREATE TABLE `core_calendar_user` (
   KEY `core_calendar_user_userId_fkey` (`userId`),
   CONSTRAINT `core_calendar_user_calendarId_fkey` FOREIGN KEY (`calendarId`) REFERENCES `core_calendar` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `core_calendar_user_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `core_user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -96,7 +98,7 @@ CREATE TABLE `core_calendar_user` (
 
 LOCK TABLES `core_calendar_user` WRITE;
 /*!40000 ALTER TABLE `core_calendar_user` DISABLE KEYS */;
-INSERT INTO `core_calendar_user` VALUES (1,1,'cmt8o0y0v0000o417fob5mzri',1);
+INSERT INTO `core_calendar_user` VALUES (1,1,'cmt8o0y0v0000o417fob5mzri',1),(2,1,'cmttx6m1g0000qx18o8ao4veg',1);
 /*!40000 ALTER TABLE `core_calendar_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -118,7 +120,7 @@ CREATE TABLE `core_home` (
   PRIMARY KEY (`id`),
   KEY `core_home_calendarId_fkey` (`calendarId`),
   CONSTRAINT `core_home_calendarId_fkey` FOREIGN KEY (`calendarId`) REFERENCES `core_calendar` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -127,7 +129,7 @@ CREATE TABLE `core_home` (
 
 LOCK TABLES `core_home` WRITE;
 /*!40000 ALTER TABLE `core_home` DISABLE KEYS */;
-INSERT INTO `core_home` VALUES (1,2,3,'','totot',1,'cmt8o0y0v0000o417fob5mzri'),(2,3,3,'','coco',0,'cmt8o0y0v0000o417fob5mzri');
+INSERT INTO `core_home` VALUES (1,2,3,'','totot',1,'cmt8o0y0v0000o417fob5mzri'),(2,3,3,'','coco',0,'cmt8o0y0v0000o417fob5mzri'),(3,3,3,'','home',1,'cmttx6m1g0000qx18o8ao4veg'),(4,3,3,'','home2',1,'cmttx6m1g0000qx18o8ao4veg');
 /*!40000 ALTER TABLE `core_home` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -173,7 +175,7 @@ CREATE TABLE `core_notification_template` (
   `message` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `core_notification_template_key_key` (`key`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -231,7 +233,7 @@ CREATE TABLE `core_relation_CalendarHome` (
   KEY `core_relation_CalendarHome_homeId_fkey` (`homeId`),
   CONSTRAINT `core_relation_CalendarHome_calendarId_fkey` FOREIGN KEY (`calendarId`) REFERENCES `core_calendar` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `core_relation_CalendarHome_homeId_fkey` FOREIGN KEY (`homeId`) REFERENCES `core_home` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -240,7 +242,7 @@ CREATE TABLE `core_relation_CalendarHome` (
 
 LOCK TABLES `core_relation_CalendarHome` WRITE;
 /*!40000 ALTER TABLE `core_relation_CalendarHome` DISABLE KEYS */;
-INSERT INTO `core_relation_CalendarHome` VALUES (1,'cmt8o0y0v0000o417fob5mzri',1),(2,'cmt8o0y0v0000o417fob5mzri',2);
+INSERT INTO `core_relation_CalendarHome` VALUES (1,'cmt8o0y0v0000o417fob5mzri',1),(2,'cmt8o0y0v0000o417fob5mzri',2),(3,'cmttx6m1g0000qx18o8ao4veg',3),(4,'cmttx6m1g0000qx18o8ao4veg',4);
 /*!40000 ALTER TABLE `core_relation_CalendarHome` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -268,7 +270,7 @@ CREATE TABLE `core_reservation` (
   KEY `core_reservation_calendarId_fkey` (`calendarId`),
   CONSTRAINT `core_reservation_calendarId_fkey` FOREIGN KEY (`calendarId`) REFERENCES `core_calendar` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `core_reservation_userId_fkey` FOREIGN KEY (`userId`) REFERENCES `core_user` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -277,7 +279,7 @@ CREATE TABLE `core_reservation` (
 
 LOCK TABLES `core_reservation` WRITE;
 /*!40000 ALTER TABLE `core_reservation` DISABLE KEYS */;
-INSERT INTO `core_reservation` VALUES (1,'test1','2026-08-26 00:00:00.000','2026-08-28 00:00:00.000',0,2,2,2,NULL,1,'cmt8o0y0v0000o417fob5mzri'),(2,'le weeeeek-end','2026-08-26 00:00:00.000','2026-08-28 00:00:00.000',0,3,6,3,NULL,1,'cmt8o0y0v0000o417fob5mzri'),(3,'le teeeeessst 2 maisons','2026-08-26 00:00:00.000','2026-08-29 00:00:00.000',0,4,4,4,NULL,1,'cmt8o0y0v0000o417fob5mzri');
+INSERT INTO `core_reservation` VALUES (1,'test1','2026-08-26 00:00:00.000','2026-08-28 00:00:00.000',0,2,2,2,NULL,1,'cmt8o0y0v0000o417fob5mzri'),(2,'le weeeeek-end','2026-08-26 00:00:00.000','2026-08-28 00:00:00.000',0,3,6,3,NULL,1,'cmt8o0y0v0000o417fob5mzri'),(3,'le teeeeessst 2 maisons','2026-08-26 00:00:00.000','2026-08-29 00:00:00.000',0,4,4,4,NULL,1,'cmt8o0y0v0000o417fob5mzri'),(4,'test','2026-09-01 00:00:00.000','2026-09-04 00:00:00.000',0,2,3,2,NULL,1,'cmt8o0y0v0000o417fob5mzri'),(5,'test','2026-09-02 00:00:00.000','2026-09-04 00:00:00.000',0,3,3,2,NULL,1,'cmt8o0y0v0000o417fob5mzri'),(6,'valid','2026-09-02 00:00:00.000','2026-09-05 00:00:00.000',1,2,2,3,NULL,1,'cmt8o0y0v0000o417fob5mzri'),(7,'test en cours','2026-09-09 00:00:00.000','2026-09-11 00:00:00.000',1,2,2,2,NULL,1,'cmt8o0y0v0000o417fob5mzri'),(8,'bientot','2026-09-16 00:00:00.000','2026-09-18 00:00:00.000',1,3,3,3,NULL,1,'cmt8o0y0v0000o417fob5mzri'),(9,'test todo','2026-09-18 00:00:00.000','2026-09-20 00:00:00.000',1,2,2,3,NULL,1,'cmttx6m1g0000qx18o8ao4veg');
 /*!40000 ALTER TABLE `core_reservation` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -297,7 +299,7 @@ CREATE TABLE `core_reservation_home` (
   KEY `core_reservation_home_homeId_fkey` (`homeId`),
   CONSTRAINT `core_reservation_home_homeId_fkey` FOREIGN KEY (`homeId`) REFERENCES `core_home` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE,
   CONSTRAINT `core_reservation_home_resaId_fkey` FOREIGN KEY (`resaId`) REFERENCES `core_reservation` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -306,7 +308,7 @@ CREATE TABLE `core_reservation_home` (
 
 LOCK TABLES `core_reservation_home` WRITE;
 /*!40000 ALTER TABLE `core_reservation_home` DISABLE KEYS */;
-INSERT INTO `core_reservation_home` VALUES (1,1,2),(2,2,1),(3,3,1),(4,3,2);
+INSERT INTO `core_reservation_home` VALUES (1,1,2),(2,2,1),(3,3,1),(4,3,2),(5,4,1),(6,5,2),(7,6,1),(8,7,2),(9,8,1),(10,9,3);
 /*!40000 ALTER TABLE `core_reservation_home` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -353,7 +355,7 @@ CREATE TABLE `core_todo` (
   PRIMARY KEY (`id`),
   KEY `core_todo_homeId_fkey` (`homeId`),
   CONSTRAINT `core_todo_homeId_fkey` FOREIGN KEY (`homeId`) REFERENCES `core_home` (`id`) ON DELETE RESTRICT ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=13 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -362,7 +364,7 @@ CREATE TABLE `core_todo` (
 
 LOCK TABLES `core_todo` WRITE;
 /*!40000 ALTER TABLE `core_todo` DISABLE KEYS */;
-INSERT INTO `core_todo` VALUES (3,1,'sortir poubelle',0),(4,1,'laver salle de bain',0);
+INSERT INTO `core_todo` VALUES (5,3,'laver salle de bain',0),(6,3,'laver poele a bois',0),(7,3,'laver cuisine',0),(8,3,'passer aspirateur',0),(9,3,'passer serpillière sol',0),(10,4,'let s go',0),(11,4,'la team',0),(12,4,'on nettoie',0);
 /*!40000 ALTER TABLE `core_todo` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -380,10 +382,11 @@ CREATE TABLE `core_user` (
   `lastname` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   `pseudo` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
   `password` varchar(191) CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci NOT NULL,
+  `token` varchar(191) COLLATE utf8mb4_unicode_ci DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `core_user_email_key` (`email`),
   UNIQUE KEY `core_user_pseudo_key` (`pseudo`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -392,7 +395,7 @@ CREATE TABLE `core_user` (
 
 LOCK TABLES `core_user` WRITE;
 /*!40000 ALTER TABLE `core_user` DISABLE KEYS */;
-INSERT INTO `core_user` VALUES (1,'tr0@yopmail.com',NULL,NULL,'name0','$2b$10$xfPtN0lCqDu.yzwayI11ee9nk.ph24a4iRo5P3j2JjyERcRxGLx0C'),(2,'tr1@yopmail.com',NULL,NULL,'name1','$2b$10$xfPtN0lCqDu.yzwayI11ee9nk.ph24a4iRo5P3j2JjyERcRxGLx0C'),(3,'tr2@yopmail.com',NULL,NULL,'name2','$2b$10$xfPtN0lCqDu.yzwayI11ee9nk.ph24a4iRo5P3j2JjyERcRxGLx0C'),(4,'tr3@yopmail.com',NULL,NULL,'name3','$2b$10$xfPtN0lCqDu.yzwayI11ee9nk.ph24a4iRo5P3j2JjyERcRxGLx0C'),(5,'tr4@yopmail.com',NULL,NULL,'name4','$2b$10$xfPtN0lCqDu.yzwayI11ee9nk.ph24a4iRo5P3j2JjyERcRxGLx0C'),(6,'tr5@yopmail.com',NULL,NULL,'name5','$2b$10$xfPtN0lCqDu.yzwayI11ee9nk.ph24a4iRo5P3j2JjyERcRxGLx0C');
+INSERT INTO `core_user` VALUES (1,'tr0@yopmail.com',NULL,NULL,'name0','$2b$10$xfPtN0lCqDu.yzwayI11ee9nk.ph24a4iRo5P3j2JjyERcRxGLx0C',NULL),(2,'tr1@yopmail.com',NULL,NULL,'name1','$2b$10$xfPtN0lCqDu.yzwayI11ee9nk.ph24a4iRo5P3j2JjyERcRxGLx0C',NULL),(3,'tr2@yopmail.com',NULL,NULL,'name2','$2b$10$xfPtN0lCqDu.yzwayI11ee9nk.ph24a4iRo5P3j2JjyERcRxGLx0C',NULL),(4,'tr3@yopmail.com',NULL,NULL,'name3','$2b$10$xfPtN0lCqDu.yzwayI11ee9nk.ph24a4iRo5P3j2JjyERcRxGLx0C',NULL),(5,'tr4@yopmail.com',NULL,NULL,'name4','$2b$10$xfPtN0lCqDu.yzwayI11ee9nk.ph24a4iRo5P3j2JjyERcRxGLx0C',NULL),(6,'tr5@yopmail.com',NULL,NULL,'name5','$2b$10$xfPtN0lCqDu.yzwayI11ee9nk.ph24a4iRo5P3j2JjyERcRxGLx0C',NULL),(7,'tr28@yopmail.com',NULL,NULL,'kiki','$2b$10$rFXKH1AyZ45jJDZ.xtzTpOHcw5K0LmlS2pK3lKsUYEKzYdO5V4v/y',NULL);
 /*!40000 ALTER TABLE `core_user` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -436,4 +439,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2026-08-26 14:37:36
+-- Dump completed on 2026-09-15  8:37:50

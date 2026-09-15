@@ -18,7 +18,7 @@ const fastify = Fastify({ logger: { level: 'warn' } });
 
 
 async function MiddCoocki(req:FastifyRequest, rep:FastifyReply){
-    const token = req.cookies.auth;
+    const token = req.cookies.auth_kaza;
     console.log("coucou")
     if (!token) {
         return rep.status(401).send({ success: false, message: `Token doesn't exist` });
@@ -26,16 +26,16 @@ async function MiddCoocki(req:FastifyRequest, rep:FastifyReply){
     try{
         const decoded = await jwt.verify(token, secretTOK) as { id: number };
     }catch(err){
-        rep.clearCookie("auth");
+        rep.clearCookie("auth_kaza");
         return rep.status(401).send({ success: false, message: `Token invalide` });
     }
 }
 
 async function DeleteCoock(req:FastifyRequest, rep:FastifyReply){
-    const token = req.cookies.auth;
+    const token = req.cookies.auth_kaza;
     console.log("coucou")
     if (token) 
-      rep.clearCookie("auth");
+      rep.clearCookie("auth_kaza");
 }
 
 async function callPath(req: FastifyRequest, rep:FastifyReply){

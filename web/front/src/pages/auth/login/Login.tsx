@@ -4,6 +4,7 @@ import { useEffect, useRef, useState }            from    "react";
 import { VscEye, VscEyeClosed }     from    "react-icons/vsc";
 // import socketStore from "../../../Composant/context/socketContext";
 import "./Login.scss"
+import {toast} from 'sonner'
 
 
 export default function Login(){
@@ -39,13 +40,10 @@ export default function Login(){
 
             const ret = await rep.json()
             if (!ret.success){
-                console.log(`front register success false: ${ret.message}`)
+                toast.error(`front register success false: ${ret.message}`)
+                return
             }
-
-            if (ret.success)
-                navigate("/")
-            else 
-                console.log(`front register success false: ${ret.message}`)
+            navigate("/")
         }catch(err){
             console.log(`Register error TRY ${err}`)
         }
@@ -75,8 +73,9 @@ export default function Login(){
                 <Box sx={{display:"flex", justifyContent:"center", gap:2}} >
                     <Button type="submit" variant="valid">Connect</Button>
                     <Button type="button" variant="redir" onClick={() => navigate("/register")}>Register</Button>
+                    <Button type="button" variant="redir" onClick={() => navigate("/sendmail")}>Forgot Password</Button>
                 </Box>
-                 </form>
+                </form>
             </Paper>
         </Container>
     )

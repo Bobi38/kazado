@@ -22,7 +22,7 @@ declare module 'fastify' {
 async function callPath(req: any, rep:any){
   console.log("WELCOME to CALENDAR")
   console.log(req.url)
-  const token = req.cookies.auth;
+  const token = req.cookies.auth_kaza;
   try{
     const decoded = jwt.verify(token, secret) as { id: number };
     req.user = decoded.id;
